@@ -7,7 +7,7 @@ export default config({
   },
   ui: {
     brand: {
-      name: "Astro News",
+      name: "Docpie",
     },
     navigation: ["---", "articles", "---", "authors", "categories"],
   },

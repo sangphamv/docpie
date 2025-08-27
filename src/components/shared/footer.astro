@@ -2,6 +2,7 @@
 import { NAVIGATION_LINKS, SOCIAL_LINKS, OTHER_LINKS } from "@/lib/config";
 import Hashtag from "@/assets/svgs/hashtag.astro";
 import Icon from "../bases/icon.astro";
+import { CONSTANTS } from "@/lib/config";
 ---
 
 <footer
@@ -14,18 +15,17 @@ import Icon from "../bases/icon.astro";
         <p>
           <strong class="text-lg">Astro News</strong>
           <br />
-          A news website built with <a
-            class="underline"
-            href="https://astro.build"
-            target="_blank">Astro</a
+          A news website built with
+          <a class="underline" href="https://astro.build" target="_blank"
+            >Astro</a
           >.
         </p>
       </aside>
       <nav
         class="flex flex-col gap-4 lg:flex-row lg:flex-wrap text-base lg:text-sm font-semibold"
       >
-        <a href="/" class="link link-hover">Home</a>
-        <a href="/articles" class="link link-hover">Articles</a>
+        <a href="/" class="link link-hover">{CONSTANTS.Homepage}</a>
+        <a href="/articles" class="link link-hover">{CONSTANTS.Articles}</a>
         {
           NAVIGATION_LINKS.map(({ href, text, target }) => (
             <a href={href} class="link link-hover" target={target ?? "_self"}>
@@ -39,7 +39,7 @@ import Icon from "../bases/icon.astro";
     <div class="flex flex-col gap-4">
       <nav>
         <div class="flex gap-4">
-          <p class="font-bold">Social Media:</p>
+          <p class="font-bold">{CONSTANTS.Social_Media}</p>
           <ul class="flex flex-wrap gap-4">
             {
               SOCIAL_LINKS.map(({ href, icon, text, target }) => (

@@ -3,6 +3,7 @@ import ArrowLeftDouble from "@/assets/svgs/arrow-left-double.astro";
 import ArrowRightDouble from "@/assets/svgs/arrow-right-double.astro";
 import ArrowLeft01 from "@/assets/svgs/arrow-left-01.astro";
 import ArrowRight01 from "@/assets/svgs/arrow-right-01.astro";
+import { PAGINATION } from "@/lib/config";
 
 type Props = {
   length: number;
@@ -60,11 +61,11 @@ const paginationList = Array.from(
     {
       prevUrl ? (
         <a href={prevUrl} class="join-item btn btn-sm">
-          <ArrowLeft01 /> <span class="hidden lg:block">Previous</span>
+          <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </a>
       ) : (
         <span class="join-item btn btn-sm btn-disabled">
-          <ArrowLeft01 /> <span class="hidden lg:block">Previous</span>
+          <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </span>
       )
     }
@@ -83,11 +84,11 @@ const paginationList = Array.from(
     {
       !nextUrl ? (
         <span class="join-item btn btn-sm btn-disabled">
-          <span class="hidden lg:block">Next</span> <ArrowRight01 />
+          <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </span>
       ) : (
         <a href={nextUrl} class="join-item btn btn-sm">
-          <span class="hidden lg:block">Next</span> <ArrowRight01 />
+          <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </a>
       )
     }

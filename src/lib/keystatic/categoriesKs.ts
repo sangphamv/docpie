@@ -1,18 +1,18 @@
 import { collection, fields } from "@keystatic/core";
-
+import {KEYSTATIC_CATEGORIES} from "@/lib/config"
 export const categoriesKs = collection({
-  label: "Categories",
+  label: KEYSTATIC_CATEGORIES.label,
   slugField: "path",
   path: "src/content/categories/*/",
   format: { data: "json" },
   schema: {
     title: fields.text({
-      label: "Title",
-      description: "The title of the category.",
+      label: KEYSTATIC_CATEGORIES.title,
+      description: KEYSTATIC_CATEGORIES.description,
     }),
     path: fields.text({
-      label: "Path",
-      description: "The path of the category.",
+      label: KEYSTATIC_CATEGORIES.path,
+      description: KEYSTATIC_CATEGORIES.path_description,
     }),
   },
 });

@@ -13,6 +13,8 @@ export const articleSchema = (image: ImageFunction) =>
     category: reference("categories"),
     authors: z.array(reference("authors")).min(1),
     publishedTime: z.string().datetime().or(z.date()),
+    // Đây là custom Nút tải xuống
+    link: z.string().optional(),
   });
 
 export const viewSchema = z.object({

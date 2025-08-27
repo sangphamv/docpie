@@ -1,76 +1,92 @@
 import type { Link } from "../types";
 
 export const SITE = {
-  title: "Astro News",
-  description: "A news website built with Astro",
-  author: "Mohammad Rahmani",
-  url: "https://astro-news-six.vercel.app",
-  github: "https://github.com/Mrahmani71/astro-news",
-  locale: "en-US",
+  // vi-VN
+  title: "Docpie",
+  description: "Trang web chia sẻ tài liệu miễn phí",
+  author: "sangphamv",
+  url: "https://docpie.click",
+  github: "https://github.com/sangphamv",
+  locale: "vi-VN",
   dir: "ltr",
   charset: "UTF-8",
   basePath: "/",
   postsPerPage: 4,
 };
 
+export const CATEGORY_TITLES: Record<string, string> = {
+  technology: "Công nghệ",
+  programming: "Lập trình",
+  lifestyle: "Lối sống",
+  productivity: "Năng suất",
+  health: "Sức khỏe",
+  finance: "Tài chính",
+  wellness: "Sống khỏe",
+};
+
 export const NAVIGATION_LINKS: Link[] = [
+  // vi-VN
   {
     href: "/categories/technology",
-    text: "Technology",
+    text: "Công Nghệ",
   },
   {
     href: "/categories/programming",
-    text: "Programming",
+    text: "Lập Trình",
   },
   {
     href: "/categories/lifestyle",
-    text: "Lifestyle",
+    text: "Lối Sống",
   },
   {
     href: "/categories/productivity",
-    text: "Productivity",
+    text: "Năng Suất",
   },
   {
     href: "/categories/health",
-    text: "Health",
+    text: "Sức Khỏe",
   },
   {
     href: "/categories/finance",
-    text: "Finance",
+    text: "Tài Chính",
+  },
+  {
+    href: "/categories/wellness",
+    text: "Sống Khỏe",
   },
 ];
 
 export const OTHER_LINKS: Link[] = [
   {
     href: "/about",
-    text: "About us",
+    text: "Về Website",
   },
   {
     href: "/authors",
-    text: "Authors",
+    text: "Tác giả",
   },
   {
     href: "/contact",
-    text: "Contact",
+    text: "Liên hệ",
   },
   {
     href: "/privacy",
-    text: "Privacy",
+    text: "Chính sách bảo mật",
   },
   {
     href: "/terms",
-    text: "Terms",
+    text: "Điều khoản",
   },
   {
     href: "/cookie-policy",
-    text: "Cookie Policy",
+    text: "Chính sách cookie",
   },
   {
-    href: "https://astro-news-six.vercel.app/rss.xml",
+    href: "https://docpie.click/rss.xml",
     text: "RSS",
   },
   {
-    href: "https://astro-news-six.vercel.app/sitemap-index.xml",
+    href: "https://docpie.click/sitemap-index.xml",
     text: "Sitemap",
   },
 ];
@@ -97,3 +113,56 @@ export const SOCIAL_LINKS: Link[] = [
     icon: "facebook",
   },
 ];
+
+export const CONSTANTS = {
+  Homepage: "Trang Chủ",
+  Articles: "Bài Viết",
+  Categories: "Danh Mục",
+  Other_Pages: "Các Trang Khác",
+  Social_Media: "Mạng Xã Hội:",
+  View_All: "Xem Tất Cả",
+  Latest_News: "Tin Tức Mới Nhất",
+  Authors: "Tác Giả"
+};
+
+export const KEYSTATIC_ARTICLES = {
+  label: "Bài viết",
+  isDraft: "Là bản nháp?",
+  isMainHeadline: "Là tiêu đề chính?",
+  isSubHeadline: "Là tiêu đề phụ?",
+  description: "Mô tả",
+  title: "Tiêu đề",
+  cover: "Bìa",
+  category: "Danh mục",
+  publishedTime: "Thời gian xuất bản",
+  authors: "Tác giả",
+  link: "Nút tải xuống",
+  linkDesc: "Mô tả nút tải xuống",
+  content: "Nội dung",
+};
+
+export const KEYSTATIC_CATEGORIES = {
+  label: "Danh mục",
+  title: "Tiêu đề",
+  description: "Mô tả",
+  path: "Đường dẫn",
+  path_description: "Mô tả đường dẫn",
+};
+
+export const KEYSTATIC_AUTHORS = {
+  label: "Tác giả",
+  name: "Tên",
+  job: "Công việc",
+  avatar: "Hình ảnh",
+  bio: "Mô tả",
+  social_name: "Tên",
+  social_url: "URL",
+  social_icon: "Biểu tượng",
+  social: "Liên kết mạng xã hội",
+  content: "Nội dung",
+};
+
+export const PAGINATION = {
+  previous: "Trang Trước",
+  next: "Trang Sau",
+};

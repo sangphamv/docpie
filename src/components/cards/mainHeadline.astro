@@ -43,10 +43,11 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
       </p>
     </div>
     <div class="flex items-center text-xs text-base-content/80 mt-2">
-      <span class="text-primary dark:text-secondary">{category.data.title}</span
-      >
+      <span class="text-primary dark:text-secondary">{category.data.title}</span>
       <Divider />
-      <span>{getDateDistance(remarkPluginFrontmatter.lastModified)}</span>
+      <!-- <span>{getDateDistance(remarkPluginFrontmatter.lastModified)}</span> -->
+      <!-- Phút đọc -->
+      <span>{remarkPluginFrontmatter.minutesRead}</span>
     </div>
   </div>
 </article>

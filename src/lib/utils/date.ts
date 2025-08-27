@@ -1,16 +1,18 @@
-import { formatDistanceToNow, parseISO, format } from "date-fns";
+//npm install date-fns
 
-const FORMAT_LONG = "EEEE, MMMM d, yyyy h:mm a zz";
-const FORMAT_SHORT = "MMMM dd, yyyy zz";
+import { formatDistanceToNow, parseISO, format } from "date-fns";
+import { vi } from "date-fns/locale";
+
+const FORMAT_LONG = "EEEE, dd MMMM , yyyy h:mm a zz";
+const FORMAT_SHORT = "dd MMMM , yyyy zz";
 
 const dateCache = new Map<string, Date>();
-
 
 export const getDateDistance = (date: string) =>
   formatDistanceToNow(parseISO(date), {
     addSuffix: true,
+    locale: vi,
   });
-
 
 export const normalizeDate = (date: string | Date): string =>
   date instanceof Date ? date.toISOString() : date;
@@ -34,12 +36,12 @@ export const formatDate = (
   date: string | Date,
   formatType: "long" | "short" = "long"
 ) => {
-  // Ensure that the date is a valid Date string
   const dateString = date instanceof Date ? date.toISOString() : date;
-
-  // Get parsed date from cache or parse it
   const parsedDate = getParsedDate(dateString);
 
-  // Format the date based on the requested format
-  return format(parsedDate, formatType === "short" ? FORMAT_SHORT : FORMAT_LONG);
+  return format(
+    parsedDate,
+    formatType === "short" ? FORMAT_SHORT : FORMAT_LONG,
+    { locale: vi }
+  );
 };

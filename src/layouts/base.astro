@@ -5,6 +5,7 @@ import Header from "@/components/shared/header.astro";
 import Footer from "@/components/shared/footer.astro";
 import type { Entry } from "@/lib/types";
 import { getMeta } from "@/lib/utils/getMeta";
+import ScriptFooter from "@/components/bases/script-footer.astro";
 
 type Props = {
   entry: Entry;
@@ -24,5 +25,6 @@ const meta = await getMeta(entry);
       <slot />
     </main>
     <Footer />
+    <ScriptFooter />
   </body>
 </html>

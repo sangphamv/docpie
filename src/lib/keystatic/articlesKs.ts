@@ -1,51 +1,51 @@
 import { collection, fields } from "@keystatic/core";
-
+import { KEYSTATIC_ARTICLES } from "@/lib/config";
 export const articlesKs = collection({
-  label: "Articles",
+  label: KEYSTATIC_ARTICLES.label,
   slugField: "title",
   path: "src/content/articles/*/",
   format: { contentField: "content" },
   entryLayout: "form",
   schema: {
     isDraft: fields.checkbox({
-      label: "Is this a draft?",
+      label: KEYSTATIC_ARTICLES.isDraft,
       defaultValue: false,
     }),
     isMainHeadline: fields.checkbox({
-      label: "Is this a main headline?",
+      label: KEYSTATIC_ARTICLES.isMainHeadline,
       defaultValue: false,
     }),
     isSubHeadline: fields.checkbox({
-      label: "Is this a sub headline?",
+      label: KEYSTATIC_ARTICLES.isSubHeadline,
       defaultValue: false,
     }),
     description: fields.text({
-      label: "Description",
+      label: KEYSTATIC_ARTICLES.description,
       validation: { isRequired: true, length: { max: 160 } },
     }),
     title: fields.slug({
-      name: { label: "Title", validation: { length: { max: 60 } } },
+      name: { label: KEYSTATIC_ARTICLES.title, validation: { length: { max: 60 } } },
     }),
     cover: fields.image({
-      label: "Cover",
+      label: KEYSTATIC_ARTICLES.cover,
       directory: "src/assets/images/articles",
       publicPath: "@assets/images/articles/",
     }),
     category: fields.relationship({
-      label: "Category",
+      label: KEYSTATIC_ARTICLES.category,
       collection: "categories",
     }),
     publishedTime: fields.datetime({
-      label: "Published Time",
+      label: KEYSTATIC_ARTICLES.publishedTime,
       validation: { isRequired: true },
     }),
     authors: fields.array(
       fields.relationship({
-        label: "Authors",
+        label: KEYSTATIC_ARTICLES.authors,
         collection: "authors",
       }),
       {
-        label: "Authors",
+        label: KEYSTATIC_ARTICLES.authors,
         itemLabel: (props) => props.value ?? "",
         validation: {
           length: {
@@ -54,8 +54,14 @@ export const articlesKs = collection({
         },
       }
     ),
+    // Đây là custom Nút tải xuống
+    link: fields.text({
+      label: KEYSTATIC_ARTICLES.link,
+      description: KEYSTATIC_ARTICLES.linkDesc,
+    }),
+    // 
     content: fields.mdx({
-      label: "Content",
+      label: KEYSTATIC_ARTICLES.content,
       options: {
         image: {
           directory: "src/assets/images/articles",

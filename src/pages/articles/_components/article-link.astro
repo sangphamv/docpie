@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  article: CollectionEntry<"articles">;
+};
+
+const { article } = Astro.props;
+---
+
+{article.data.link && (
+  <div class="border-y-2 border-blue-500 dark:border-pink-500">
+    <div class="py-4">
+      <span class="italic">Nhấn nút dưới đây để tải xuống:</span>
+    </div>
+    <div class="flex items-center justify-center px-6 pb-8 sm:px-8">
+      <a
+        href={article.data.link}
+        rel="noopener noreferrer"
+        aria-describedby="tier-company"
+        class="upercase flex items-center justify-center w-[10rem] px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black dark:bg-white dark:text-black dark:hover:bg-transparent dark:hover:border-white dark:hover:text-white dark:focus-visible:ring-white"
+      >
+        Download
+      </a>
+    </div>
+  </div>
+)}

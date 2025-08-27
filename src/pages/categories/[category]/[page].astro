@@ -9,6 +9,8 @@ import Pagination from "@/components/shared/pagination.astro";
 import WideCard from "@/components/cards/wideCard.astro";
 import { getEntry } from "astro:content";
 
+import { CATEGORY_TITLES } from "@/lib/config";
+
 export const getStaticPaths = (async ({ paginate }) => {
   const allCategories = categoriesHandler.allCategories();
   const allArticles = articlesHandler.allArticles();
@@ -37,9 +39,11 @@ const entry = await getEntry("views", "categories");
 if (!entry) {
   return Astro.redirect("/404");
 }
+
+const category = CATEGORY_TITLES[params.category] ?? params.category;
 ---
 
-<ListLayout header={params.category} entry={entry}>
+<ListLayout header={category} entry={entry}>
   <ul class="flex flex-col gap-2 flex-1">
     {
       articles.map((article) => (
