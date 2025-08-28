@@ -116,7 +116,7 @@ export const SOCIAL_LINKS: Link[] = [
 
 export const CONSTANTS = {
   Homepage: "Trang Chủ",
-  Articles: "Bài Viết",
+  Articles: "Bài Viết Mới",
   Categories: "Danh Mục",
   Other_Pages: "Các Trang Khác",
   Social_Media: "Mạng Xã Hội:",

@@ -1,5 +1,6 @@
 ---
 import type { Link } from "@/lib/types";
+import { CONSTANTS } from "@/lib/config";
 
 type Props = {
   item: Link;
@@ -7,16 +8,36 @@ type Props = {
 const currentPath = Astro.url.pathname;
 const { item } = Astro.props;
 
+// function isActive(item: Link, currentPath: string) {
+//   const segment = currentPath.split("/")[2];
+//   return (
+//     (item.text === CONSTANTS.Homepage && currentPath === "/") ||
+//     (item.text === CONSTANTS.Articles &&
+//       segment !== undefined &&
+//       !Number.isNaN(Number(segment)) &&
+//       Number(segment) >= 1) ||
+//     (
+//       item.text !== CONSTANTS.Articles &&
+//       currentPath.split("/").includes(item.text.toLocaleLowerCase()))
+//   );
+// }
+
 function isActive(item: Link, currentPath: string) {
   const segment = currentPath.split("/")[2];
   return (
-    (item.text === "Trang Chủ" && currentPath === "/") ||
-    (item.text === "Bài Viết" &&
+    // Điều kiện cho Homepage
+    (item.text === CONSTANTS.Homepage && currentPath === "/") ||
+
+    // Điều kiện cho Articles
+    (item.text === CONSTANTS.Articles &&
       segment !== undefined &&
       !Number.isNaN(Number(segment)) &&
       Number(segment) >= 1) ||
-    (item.text !== "Bài Viết" &&
-      currentPath.split("/").includes(item.text.toLocaleLowerCase()))
+
+    // Điều kiện cho các link khác, nhưng loại trừ Homepage
+    (item.text !== CONSTANTS.Homepage &&
+     item.text !== CONSTANTS.Articles &&
+     currentPath.startsWith(item.href))
   );
 }
 

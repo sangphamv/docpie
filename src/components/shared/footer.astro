@@ -3,6 +3,7 @@ import { NAVIGATION_LINKS, SOCIAL_LINKS, OTHER_LINKS } from "@/lib/config";
 import Hashtag from "@/assets/svgs/hashtag.astro";
 import Icon from "../bases/icon.astro";
 import { CONSTANTS } from "@/lib/config";
+import { SITE } from "@/lib/config";
 ---
 
 <footer
@@ -13,12 +14,9 @@ import { CONSTANTS } from "@/lib/config";
       <aside class="flex items-center gap-2">
         <Hashtag />
         <p>
-          <strong class="text-lg">Astro News</strong>
+          <strong class="text-lg">{SITE.title}</strong>
           <br />
-          A news website built with
-          <a class="underline" href="https://astro.build" target="_blank"
-            >Astro</a
-          >.
+          {SITE.description}
         </p>
       </aside>
       <nav
