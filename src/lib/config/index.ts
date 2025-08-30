@@ -15,6 +15,11 @@ export const SITE = {
 };
 
 export const CATEGORY_TITLES: Record<string, string> = {
+  document: "Tài liệu",
+  courses: "Khóa học",
+  software: "Phần mềm",
+  seo: "SEO",
+  wordpress: "Wordpress",
   technology: "Công nghệ",
   programming: "Lập trình",
   lifestyle: "Lối sống",
@@ -26,6 +31,26 @@ export const CATEGORY_TITLES: Record<string, string> = {
 
 export const NAVIGATION_LINKS: Link[] = [
   // vi-VN
+  {
+    href: "/categories/document",
+    text: "Tài Liệu",
+  },
+  {
+    href: "/categories/courses",
+    text: "Khóa Học",
+  },
+  {
+    href: "/categories/software",
+    text: "Phần Mềm",
+  },
+  {
+    href: "/categories/seo",
+    text: "SEO",
+  },
+  {
+    href: "/categories/wordpress",
+    text: "Wordpress",
+  },
   {
     href: "/categories/technology",
     text: "Công Nghệ",
@@ -122,7 +147,7 @@ export const CONSTANTS = {
   Social_Media: "Mạng Xã Hội:",
   View_All: "Xem Tất Cả",
   Latest_News: "Tin Tức Mới Nhất",
-  Authors: "Tác Giả"
+  Authors: "Tác Giả",
 };
 
 export const KEYSTATIC_ARTICLES = {
