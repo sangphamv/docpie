@@ -3,7 +3,7 @@ import type { Link } from "../types";
 export const SITE = {
   // vi-VN
   title: "Docpie",
-  description: "Trang web chia sẻ tài liệu miễn phí",
+  description: "Docpie là trang web chia sẻ tài liệu miễn phí",
   author: "sangphamv",
   url: "https://docpie.click",
   github: "https://github.com/sangphamv",
