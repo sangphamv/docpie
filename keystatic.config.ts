@@ -3,10 +3,10 @@ import { config } from "@keystatic/core";
 
 export default config({
   storage: {
-    // kind: "local",
-    kind: "github",
-    repo: "sangphamv/docpie", // 🔹 repo của bạn
-    branch: "main", // 🔹 hoặc 'master' nếu repo dùng branch này
+    kind: "local",
+    // kind: "github",
+    // repo: "sangphamv/docpie", // 🔹 repo của bạn
+    // branch: "main", // 🔹 hoặc 'master' nếu repo dùng branch này
   },
   ui: {
     brand: {
