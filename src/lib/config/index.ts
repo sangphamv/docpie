@@ -33,15 +33,15 @@ export const NAVIGATION_LINKS: Link[] = [
   // vi-VN
   {
     href: "/categories/document",
-    text: "Tài Liệu",
+    text: "Tài liệu",
   },
   {
     href: "/categories/courses",
-    text: "Khóa Học",
+    text: "Khóa học",
   },
   {
     href: "/categories/software",
-    text: "Phần Mềm",
+    text: "Phần mềm",
   },
   {
     href: "/categories/seo",
@@ -49,35 +49,35 @@ export const NAVIGATION_LINKS: Link[] = [
   },
   {
     href: "/categories/wordpress",
-    text: "Wordpress",
+    text: "WordPress",
   },
   {
     href: "/categories/technology",
-    text: "Công Nghệ",
+    text: "Công nghệ",
   },
   {
     href: "/categories/programming",
-    text: "Lập Trình",
+    text: "Lập trình",
   },
   {
     href: "/categories/lifestyle",
-    text: "Lối Sống",
+    text: "Lối sống",
   },
   {
     href: "/categories/productivity",
-    text: "Năng Suất",
+    text: "Năng suất",
   },
   {
     href: "/categories/health",
-    text: "Sức Khỏe",
+    text: "Sức khỏe",
   },
   {
     href: "/categories/finance",
-    text: "Tài Chính",
+    text: "Tài chính",
   },
   {
     href: "/categories/wellness",
-    text: "Sống Khỏe",
+    text: "Sống khỏe",
   },
 ];
 
@@ -140,14 +140,15 @@ export const SOCIAL_LINKS: Link[] = [
 ];
 
 export const CONSTANTS = {
-  Homepage: "Trang Chủ",
-  Articles: "Bài Viết Mới",
-  Categories: "Danh Mục",
-  Other_Pages: "Các Trang Khác",
-  Social_Media: "Mạng Xã Hội:",
-  View_All: "Xem Tất Cả",
-  Latest_News: "Tin Tức Mới Nhất",
-  Authors: "Tác Giả",
+  Homepage: "Trang chủ",
+  Articles: "Bài viết mới",
+  Categories: "Danh mục",
+  Other_Pages: "Các trang khác",
+  Social_Media: "Mạng xã hội:",
+  View_All: "Xem tất cả",
+  Latest_News: "Tin tức mới nhất",
+  Authors: "Tác giả",
+  AuthorOf: "Bài viết của",
 };
 
 export const KEYSTATIC_ARTICLES = {
@@ -188,6 +189,6 @@ export const KEYSTATIC_AUTHORS = {
 };
 
 export const PAGINATION = {
-  previous: "Trang Trước",
-  next: "Trang Sau",
+  previous: "Trang trước",
+  next: "Trang sau",
 };

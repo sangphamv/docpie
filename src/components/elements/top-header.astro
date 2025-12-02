@@ -4,6 +4,9 @@ import Search01 from "@/assets/svgs/search-01.astro";
 import MenuDropdown from "./menu-dropdown.astro";
 import { SITE } from "@/lib/config";
 import ThemeController from "../bases/theme-controller.astro";
+
+const docPart = SITE.title.substring(0, 3);
+const piePart = SITE.title.substring(3);
 ---
 
 <div
@@ -14,7 +17,15 @@ import ThemeController from "../bases/theme-controller.astro";
     <a class="text-xl px-2 text-nowrap lg:hidden" href="/">{SITE.title}</a>
   </div>
   <div class="navbar-center hidden lg:flex">
-    <a class="text-4xl px-2 font-serif font-black uppercase text-blue-500 dark:text-pink-500" href="/">{SITE.title}</a>
+    <!-- <a class="text-4xl px-2 font-serif font-black uppercase text-blue-500 dark:text-pink-500" href="/">{SITE.title}</a> -->
+    <a class="text-4xl px-2 font-serif font-black uppercase tracking-[-0.1em]" href="/">
+      <span class="text-blue-500 dark:text-pink-500">
+        {docPart}
+      </span>
+      <span class="text-pink-500 dark:text-blue-500">
+        {piePart}
+      </span>
+    </a>
   </div>
   <div class="navbar-end">
     <ThemeController />

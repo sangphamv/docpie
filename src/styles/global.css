@@ -17,8 +17,8 @@
     "Times New Roman", Times, serif; */
   /* Chỉnh Font */
   --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Montserrat", ui-sans-serif, system-ui, sans-serif;
-
+  --font-serif: "Bricolage Grotesque", "Source Serif 4 Variable", ui-serif,
+    Georgia, Cambria, "Times New Roman", Times, serif;
   --breakpoint-2xl: initial;
 }
 
@@ -33,7 +33,7 @@
 
   @media (min-width: 1024px) {
     html {
-      @apply text-[17px];
+      @apply text-[16px];
     }
   }
 
@@ -42,7 +42,8 @@
   }
 
   h1,
-  h2 {
+  h2,
+  h3 {
     @apply font-serif;
   }
 
@@ -54,7 +55,6 @@
   .prose {
     pre {
       code {
-
         span,
         p {
           @apply break-all;

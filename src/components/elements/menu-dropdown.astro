@@ -3,59 +3,6 @@ import Menu from "@/assets/svgs/menu.astro";
 import { NAVIGATION_LINKS, OTHER_LINKS, CONSTANTS } from "@/lib/config";
 
 ---
-<!-- 
-<div class="dropdown">
-  <button
-    tabindex="0"
-    role="button"
-    class="btn btn-ghost btn-circle"
-    aria-label="Menu"
-  >
-    <Menu />
-  </button>
-
-  <ul
-    tabindex="0"
-    class="menu dropdown-content z-50 bg-base-100 rounded-box w-56 shadow"
-  >
-    <li><a href="/" aria-label="Homepage">{CONSTANTS.Homepage}</a></li>
-    <li><a href="/articles" aria-label="Articles Page">{CONSTANTS.Articles}</a></li>
-
-    <li>
-      <details>
-        <summary>{CONSTANTS.Categories}</summary>
-        <ul>
-          {
-            NAVIGATION_LINKS.map(({ href, text, target }) => (
-              <li>
-                <a href={href} target={target ?? "_self"} aria-label={text}>
-                  {text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </details>
-    </li>
-
-    <li>
-      <details>
-        <summary>{CONSTANTS.Other_Pages}</summary>
-        <ul>
-          {
-            OTHER_LINKS.map(({ href, text, target }) => (
-              <li>
-                <a href={href} target={target ?? "_self"} aria-label={text}>
-                  {text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </details>
-    </li>
-  </ul>
-</div> -->
 
 <div class="drawer">
   <!-- Checkbox input to control the drawer's open/close state -->
@@ -83,7 +30,7 @@ import { NAVIGATION_LINKS, OTHER_LINKS, CONSTANTS } from "@/lib/config";
     ></label>
     
     <!-- The menu itself, using the same navigation structure -->
-    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content uppercase">
+    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
       <li><a href="/" aria-label="Homepage">Trang chủ</a></li>
       <li><a href="/articles" aria-label="Articles Page">Bài viết mới</a></li>
       <li>

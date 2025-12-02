@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { SITE } from "@/lib/config";
+import {CONSTANTS } from "@/lib/config";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { authorsHandler } from "@/lib/handlers/authors";
 import ListLayout from "@/layouts/list.astro";
@@ -40,12 +41,12 @@ const [HEADER] = entry.data.blocks;
 ---
 
 <ListLayout
-  header={`${author.data.name}'s ${HEADER.title}`}
+  header={`${CONSTANTS.AuthorOf} ${author.data.name}`}
   entry={{
     ...entry,
     data: {
       ...entry.data,
-      title: `${author.data.name}'s ${entry.data.title}`,
+      title: `${CONSTANTS.AuthorOf} ${author.data.name}`,
     },
   }}
 >
