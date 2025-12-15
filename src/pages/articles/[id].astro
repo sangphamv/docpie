@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/base.astro";
 import ContentLayout from "@/layouts/content.astro";
 import ArticleHeader from "./_components/article-header.astro";
 import ArticleLink from "./_components/article-link.astro";
+import ArticleSidebar from "./_components/article-sidebar.astro";
 
 import { articlesHandler } from "@/lib/handlers/articles";
 
@@ -25,8 +26,19 @@ const { Content, remarkPluginFrontmatter } = await render(article);
     article={article}
     readingTime={remarkPluginFrontmatter.minutesRead}
   />
-  <ContentLayout>
-    <Content />
-    <ArticleLink article={article} />
-  </ContentLayout>
+  
+  <div class="container max-w-5xl pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-8">
+        <ContentLayout>
+          <Content />
+          <ArticleLink article={article} />
+        </ContentLayout>
+      </div>
+      
+      <div class="lg:col-span-4">
+        <ArticleSidebar article={article} content={Content} />
+      </div>
+    </div>
+  </div>
 </BaseLayout>

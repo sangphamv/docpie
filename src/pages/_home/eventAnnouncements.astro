@@ -1,0 +1,35 @@
+---
+import { articlesHandler } from "@/lib/handlers/articles";
+import { CONSTANTS } from "@/lib/config";
+
+const eventArticles = articlesHandler.allArticles().slice(0, 4);
+---
+
+<section class="bg-rose-100 dark:bg-slate-800 py-12" data-pagefind-ignore="all">
+  <div class="container">
+    <h2 class="text-2xl font-bold font-serif text-rose-700 dark:text-purple-300 mb-6">
+      {CONSTANTS.Event_Announcements}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        eventArticles.map((article) => (
+          <article class="group">
+            <a href={`/articles/${article.id}`} class="block">
+              <div class="aspect-video overflow-hidden rounded-lg mb-3">
+                <img
+                  src={article.data.cover.src}
+                  alt={article.data.covert_alt || article.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-white font-medium text-sm line-clamp-2 group-hover:underline">
+                {article.data.title}
+              </h3>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -13,7 +13,19 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout entry={entry}>
-  <ContentLayout>
-    <Content />
-  </ContentLayout>
+  <div class="container max-w-4xl py-8">
+    <header class="mb-8 pb-6 border-b border-base-300">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">
+        {entry.data.title}
+      </h1>
+      {entry.data.description && (
+        <p class="text-lg text-base-content/80">
+          {entry.data.description}
+        </p>
+      )}
+    </header>
+    <ContentLayout>
+      <Content />
+    </ContentLayout>
+  </div>
 </BaseLayout>

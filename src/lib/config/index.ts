@@ -146,9 +146,16 @@ export const CONSTANTS = {
   Other_Pages: "Các trang khác",
   Social_Media: "Mạng xã hội:",
   View_All: "Xem tất cả",
-  Latest_News: "Tin tức mới nhất",
+  Latest_News: "Bài viết mới",
   Authors: "Tác giả",
   AuthorOf: "Bài viết của",
+  Featured_Stories: "Featured Stories",
+  Latest_Stories_Published: "LATEST STORIES PUBLISHED",
+  Event_Announcements: "EVENT ANNOUNCEMENTS",
+  By: "By",
+  Table_Of_Contents: "Table of Contents",
+  Loading: "Loading...",
+  No_Headings: "No headings found",
 };
 
 export const KEYSTATIC_ARTICLES = {

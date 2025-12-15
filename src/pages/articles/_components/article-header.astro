@@ -8,7 +8,6 @@ import Calendar04 from "@/assets/svgs/calendar-04.astro";
 import Divider from "@/components/bases/divider.astro";
 import { categoriesHandler } from "@/lib/handlers/categories";
 import { authorsHandler } from "@/lib/handlers/authors";
-import Share from "@/components/elements/share.astro";
 
 type Props = {
   article: CollectionEntry<"articles">;
@@ -21,96 +20,90 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
 const authors = authorsHandler.getAuthors(article.data.authors);
 ---
 
-<section
-  class="mb-8 flex flex-col lg:flex-col-reverse border-b border-b-base-300 lg:border-none pb-4 pt-0 lg:pt-6"
->
-  <div
-    class="container px-0 max-w-5xl lg:mt-4 overflow-hidden lg:rounded-md"
-  >
-  <!-- Xóa class aspect-[20/9] -->
-    <Picture
-      src={article.data.cover}
-      alt="article"
-      layout="full-width"
-      loading={"eager"}
-      formats={["avif", "webp"]}
-      class="w-full h-full object-center"
-    />
-  </div>
-  <div class="container my-4 max-w-5xl lg:hidden flex items-center gap-2">
-    <ResourcesAdd size="16" />
-    <a href={`/categories/${category.data.path}`} class="a-01 font-semibold"
-      >{category.data.title}</a
-    >
-  </div>
+<section class="mb-0 py-6">
   <div class="container max-w-5xl">
-    <h1 class="text-3xl lg:text-4xl font-bold text-left text-pretty">
+    <!-- Category -->
+    <div class="mb-4">
+      <a 
+        href={`/categories/${category.id}`} 
+        class="text-sm font-bold uppercase tracking-wider text-primary dark:text-secondary hover:underline"
+      >
+        {category.data.title}
+      </a>
+    </div>
+
+    <!-- Title -->
+    <h1 class="text-3xl lg:text-5xl font-bold text-left leading-tight mb-4">
       {article.data.title}
     </h1>
-    <div class="flex flex-col gap-4 items-start mt-2 lg:mt-6 text-sm">
-      <div class="text-base-content/70 flex items-center gap-2">
-        <span class="hidden lg:flex items-center gap-1">
-          <ResourcesAdd size="15" />
-          <a href={`/categories/${category.id}`} class="a-01 font-semibold"
-            >{category.data.title}</a
-          >
-        </span>
-        <Divider responsive />
-        <span class="flex items-center gap-1">
-          <Calendar04 size="15" />
-          <time
-            class="hidden lg:block"
-            datetime={normalizeDate(article.data.publishedTime)}
-            >{
-              formatDate(normalizeDate(article.data.publishedTime), "long")
-            }</time
-          >
-          <time
-            class="block lg:hidden"
-            datetime={normalizeDate(article.data.publishedTime)}
-            >{
-              formatDate(normalizeDate(article.data.publishedTime), "short")
-            }</time
-          >
-        </span>
-        <Divider />
-        <span class="flex items-center gap-1">
-          <Time04 size="15" />
-          <span>{readingTime}</span>
-        </span>
-      </div>
-      <!-- TODO: fix name, href, avatar of author -->
-      <div class="w-full flex flex-wrap gap-2 items-center justify-between">
-        <div class="flex flex-wrap gap-4">
-          {
-            authors.map((author) => (
-              <div class="flex items-center gap-2">
-                <a
-                  href={`/authors/${author.id}`}
-                  class="flex items-center gap-2"
-                >
-                  <div class="avatar">
-                    <div class="w-8 rounded-full">
-                      <Image
-                        src={author.data.avatar}
-                        alt="author"
-                        width={48}
-                        height={48}
-                        loading={"eager"}
-                        format="webp"
-                        layout="constrained"
-                        quality={80}
-                      />
-                    </div>
-                  </div>
-                  <span class="font-bold capitalize">{author.data.name}</span>
-                </a>
+
+    <!-- Description -->
+    {article.data.description && (
+      <p class="text-lg text-base-content/80 mb-6 leading-relaxed">
+        {article.data.description}
+      </p>
+    )}
+
+    <!-- Meta Info -->
+    <div class="flex flex-wrap items-center gap-4 text-sm text-base-content/70 pb-6 mb-6 border-b border-base-300">
+      <!-- Authors -->
+      <div class="flex flex-wrap gap-3">
+        {
+          authors.map((author) => (
+            <a
+              href={`/authors/${author.id}`}
+              class="flex items-center gap-2 hover:text-primary dark:hover:text-secondary"
+            >
+              <div class="avatar">
+                <div class="w-8 rounded-full">
+                  <Image
+                    src={author.data.avatar}
+                    alt={author.data.name}
+                    width={48}
+                    height={48}
+                    loading={"eager"}
+                    format="webp"
+                    layout="constrained"
+                    quality={80}
+                  />
+                </div>
               </div>
-            ))
-          }
-        </div>
-        <Share text={article.data.title} />
+              <span class="font-semibold">{author.data.name}</span>
+            </a>
+          ))
+        }
       </div>
+
+      <Divider />
+
+      <!-- Date -->
+      <span class="flex items-center gap-1">
+        <Calendar04 size="15" />
+        <time datetime={normalizeDate(article.data.publishedTime)}>
+          {formatDate(normalizeDate(article.data.publishedTime), "long")}
+        </time>
+      </span>
+
+      <Divider />
+
+      <!-- Reading Time -->
+      <span class="flex items-center gap-1">
+        <Time04 size="15" />
+        <span>{readingTime}</span>
+      </span>
+    </div>
+
+    <!-- Featured Image -->
+    <div class="overflow-hidden rounded-lg mb-6">
+      <Picture
+        src={article.data.cover}
+        alt={article.data.covert_alt || article.data.title}
+        layout="constrained"
+        loading={"eager"}
+        formats={["avif", "webp"]}
+        class="w-full h-auto object-center"
+      />
     </div>
   </div>
 </section>
+

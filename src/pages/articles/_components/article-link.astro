@@ -9,17 +9,20 @@ const { article } = Astro.props;
 ---
 
 {article.data.link && (
-  <div class="border-y-2 border-blue-500 dark:border-pink-500">
-    <div class="py-4">
-      <span class="italic">Nhấn nút dưới đây để tải xuống:</span>
-    </div>
-    <div class="flex items-center justify-center px-6 pb-8 sm:px-8">
+  <div class="card bg-base-200 shadow-md mt-12">
+    <div class="card-body items-center text-center gap-4">
+      <p class="text-base-content/80">
+        <span class="italic">Nhấn nút dưới đây để tải xuống:</span>
+      </p>
       <a
         href={article.data.link}
         rel="noopener noreferrer"
-        aria-describedby="tier-company"
-        class="upercase flex items-center justify-center w-[10rem] px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black dark:bg-white dark:text-black dark:hover:bg-transparent dark:hover:border-white dark:hover:text-white dark:focus-visible:ring-white"
+        target="_blank"
+        class="btn btn-primary btn-wide gap-2"
       >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
         Download
       </a>
     </div>

@@ -1,0 +1,118 @@
+---
+// Table of Contents component - extracts headings from the article
+import { CONSTANTS } from "@/lib/config";
+---
+
+<div class="toc-container bg-base-100 border border-base-300 rounded-lg p-5 mb-6">
+  <h3 class="text-sm font-bold uppercase tracking-wider mb-4 text-base-content/80">
+    {CONSTANTS.Table_Of_Contents}
+  </h3>
+  <nav class="toc-nav" id="toc-nav">
+    <p class="text-sm text-base-content/60">{CONSTANTS.Loading}</p>
+  </nav>
+</div>
+
+<script is:inline>
+  (function() {
+    // Generate Table of Contents from article headings
+    function generateTOC() {
+      const article = document.querySelector('[data-pagefind-body]');
+      const tocNav = document.getElementById('toc-nav');
+      
+      if (!article || !tocNav) {
+        console.log('Article or TOC nav not found');
+        return;
+      }
+      
+      // Get all h2 and h3 headings from the article
+      const headings = article.querySelectorAll('h2, h3');
+      
+      console.log('Found headings:', headings.length);
+      
+      if (headings.length === 0) {
+        tocNav.innerHTML = '<p class="text-sm text-base-content/60">No headings found</p>';
+        return;
+      }
+      
+      const tocList = document.createElement('ol');
+      tocList.className = 'space-y-2 text-sm';
+      tocList.style.listStyleType = 'decimal';
+      tocList.style.paddingLeft = '1.25rem';
+      
+      headings.forEach((heading, index) => {
+        // Add ID to heading if it doesn't have one
+        if (!heading.id) {
+          const headingText = heading.textContent || '';
+          heading.id = headingText
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '') || `heading-${index}`;
+        }
+        
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent || '';
+        link.className = 'text-base-content/70 hover:text-primary dark:hover:text-secondary transition-colors block py-1';
+        
+        // Add indentation for h3
+        if (heading.tagName === 'H3') {
+          listItem.className = 'ml-4 text-sm';
+          listItem.style.listStyleType = 'circle';
+        }
+        
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
+      });
+      
+      // Clear and add new content
+      tocNav.innerHTML = '';
+      tocNav.appendChild(tocList);
+      
+      // Smooth scroll behavior
+      tocNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href')?.slice(1);
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+              const offset = 80; // Adjust for fixed header if any
+              const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+              window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+              // Update URL
+              history.pushState(null, '', `#${targetId}`);
+            }
+          }
+        });
+      });
+    }
+    
+    // Run after DOM is fully loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(generateTOC, 100); // Small delay to ensure content is rendered
+      });
+    } else {
+      setTimeout(generateTOC, 100);
+    }
+  })();
+</script>
+
+<style>
+  .toc-nav ol {
+    list-style-type: decimal !important;
+    padding-left: 1.25rem !important;
+    margin-left: 0 !important;
+  }
+  
+  .toc-nav li {
+    margin-bottom: 0.5rem;
+    display: list-item !important;
+  }
+  
+  .toc-nav li li {
+    list-style-type: circle !important;
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import { articlesHandler } from "@/lib/handlers/articles";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { render } from "astro:content";
+
+const allCategories = categoriesHandler.allCategories();
+const allArticles = articlesHandler.allArticles();
+
+// Get articles for each category
+const categoryColumns = allCategories.slice(0, 4).map((category) => {
+  const categoryArticles = allArticles
+    .filter((article) => article.data.category.id === category.id)
+    .slice(0, 5);
+  return {
+    category,
+    articles: categoryArticles,
+  };
+});
+---
+
+<section class="container py-12" data-pagefind-ignore="all">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    {
+      categoryColumns.map((column) => (
+        <div class="space-y-4">
+          <h2 class="text-lg font-bold font-serif uppercase border-b border-gray-200 dark:border-gray-700 pb-2">
+            {column.category.data.title}
+          </h2>
+          <ul class="space-y-4">
+            {column.articles.map(async (article) => {
+              const { remarkPluginFrontmatter } = await render(article);
+              return (
+                <li class="group">
+                  <a
+                    href={`/articles/${article.id}`}
+                    class="flex items-start gap-3"
+                  >
+                    <div class="flex-shrink-0 w-20 h-14 overflow-hidden rounded">
+                      <img
+                        src={article.data.cover.src}
+                        alt={article.data.covert_alt || article.data.title}
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-500 dark:group-hover:text-pink-500 transition-colors">
+                        {article.data.title}
+                      </h3>
+                    </div>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

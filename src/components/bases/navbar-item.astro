@@ -8,19 +8,6 @@ type Props = {
 const currentPath = Astro.url.pathname;
 const { item } = Astro.props;
 
-// function isActive(item: Link, currentPath: string) {
-//   const segment = currentPath.split("/")[2];
-//   return (
-//     (item.text === CONSTANTS.Homepage && currentPath === "/") ||
-//     (item.text === CONSTANTS.Articles &&
-//       segment !== undefined &&
-//       !Number.isNaN(Number(segment)) &&
-//       Number(segment) >= 1) ||
-//     (
-//       item.text !== CONSTANTS.Articles &&
-//       currentPath.split("/").includes(item.text.toLocaleLowerCase()))
-//   );
-// }
 
 function isActive(item: Link, currentPath: string) {
   const segment = currentPath.split("/")[2];

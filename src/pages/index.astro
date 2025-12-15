@@ -2,7 +2,12 @@
 import BaseLayout from "@/layouts/base.astro";
 import { getEntry } from "astro:content";
 import Headlines from "@/pages/_home/headlines.astro";
+import TrendingStories from "@/pages/_home/trendingStories.astro";
 import LatestNews from "@/pages/_home/latestNews.astro";
+import EventAnnouncements from "@/pages/_home/eventAnnouncements.astro";
+import Sponsors from "@/pages/_home/sponsors.astro";
+import CategoryColumns from "@/pages/_home/categoryColumns.astro";
+import Newsletter from "@/pages/_home/newsletter.astro";
 import Authors from "@/pages/_home/authors.astro";
 
 const entry = await getEntry("views", "home");
@@ -13,7 +18,33 @@ if (!entry) {
 ---
 
 <BaseLayout entry={entry}>
-  <Headlines />
+  <!-- Featured Stories & Trending Stories -->
+  <div class="container py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-8">
+        <Headlines />
+      </div>
+      <div class="lg:col-span-4">
+        <TrendingStories />
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest News -->
   <LatestNews />
+
+  <!-- Event Announcements -->
+  <EventAnnouncements />
+
+  <!-- Sponsors -->
+  <Sponsors />
+
+  <!-- Category Columns -->
+  <CategoryColumns />
+
+  <!-- Newsletter -->
+  <Newsletter />
+
+  <!-- Authors -->
   <Authors />
 </BaseLayout>

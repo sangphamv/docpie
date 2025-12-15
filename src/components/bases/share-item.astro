@@ -32,12 +32,13 @@ const Icon = iconMap[icon];
 const buttonClasses = [
   "slide",
   "active:scale-95",
-  "w-12",
+  "min-w-12",
   "h-12",
+  "px-4",
   "bg-base-200",
   "flex",
   "items-center",
-  "justify-center",
+  "gap-2",
   "rounded-xl",
   "overflow-hidden",
   "transition-all",
@@ -57,9 +58,10 @@ const buttonClasses = [
   data-aw-text={dataAwText}
   type="button"
 >
-  <span class="shareIcon" aria-hidden="true">
+  <span class="shareIcon flex-shrink-0" aria-hidden="true">
     <Icon />
   </span>
+  <span class="text-sm font-medium hidden md:inline">{title.replace('Share on ', '').replace('Copy ', '')}</span>
 </button>
 
 <style>

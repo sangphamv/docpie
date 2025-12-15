@@ -1,28 +1,31 @@
 ---
-import MainHeadline from "@/components/cards/mainHeadline.astro";
+import MainHeadlineCard from "@/components/cards/mainHeadlineCard.astro";
 import SubHeadlineCard from "@/components/cards/subHeadlineCard.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
+import { CONSTANTS } from "@/lib/config";
 
-const mainHeadlineArticle = articlesHandler.mainHeadline();
-const subHeadlinesArticles = articlesHandler.subHeadlines();
+const allArticles = articlesHandler.allArticles();
+const mainHeadline = allArticles[0];
+const subHeadlines = allArticles.slice(1, 5);
 ---
 
-<section
-  class="grid grid-cols-1 gap-6 md:grid-cols-10 container pt-4 md:pt-8"
-  data-pagefind-ignore="all"
->
-  <div class="col-span-1 md:col-span-6">
-    <MainHeadline article={mainHeadlineArticle} />
+<section data-pagefind-ignore="all">
+  <!-- Section Title -->
+  <div class="mb-6">
+    <h2 class="text-sm font-bold uppercase tracking-wider text-base-content/70 border-b-2 border-base-300 pb-2">
+      {CONSTANTS.Featured_Stories}
+    </h2>
   </div>
-  <div class="col-span-1 md:col-span-4">
-    {
-      subHeadlinesArticles.map((article, index) => (
-        <SubHeadlineCard
-          article={article}
-          isFirst={index === 0}
-          isLast={index === subHeadlinesArticles.length - 1}
-        />
-      ))
-    }
+  
+  <!-- Main Headline - Full Width -->
+  <div class="mb-8">
+    <MainHeadlineCard article={mainHeadline} />
+  </div>
+  
+  <!-- Sub Headlines - 2 Columns -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {subHeadlines.map((article) => (
+      <SubHeadlineCard article={article} />
+    ))}
   </div>
 </section>

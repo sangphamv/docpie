@@ -13,7 +13,6 @@ import pagefind from "astro-pagefind";
 const { RUN_KEYSTATIC } = loadEnv(import.meta.env.MODE, process.cwd(), "");
 
 const integrations = [mdx(), sitemap(), pagefind()];
-
 if (RUN_KEYSTATIC === "true") {
   integrations.push(react());
   integrations.push(keystatic());

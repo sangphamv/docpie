@@ -1,0 +1,110 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ShareItem from "@/components/bases/share-item.astro";
+import ScriptShare from "@/components/bases/script.astro";
+import TableOfContents from "./table-of-contents.astro";
+import { articlesHandler } from "@/lib/handlers/articles";
+
+type Props = {
+  article: CollectionEntry<"articles">;
+  content?: any;
+};
+
+const { article, content } = Astro.props;
+
+const shareUrl = `${import.meta.env.SITE}/articles/${article.id}`;
+const shareText = article.data.title;
+
+const trendingArticles = articlesHandler.allArticles()
+  .filter(a => a.id !== article.id)
+  .slice(0, 4);
+
+const socialPlatforms = [
+  {
+    icon: "twitter" as const,
+    title: "Share on Twitter",
+    platform: "twitter",
+    hoverColor: "hover:bg-[#00acee] hover:text-white",
+  },
+  {
+    icon: "linkedin" as const,
+    title: "Share on LinkedIn",
+    platform: "linkedin",
+    hoverColor: "hover:bg-[#0072b1] hover:text-white",
+  },
+  {
+    icon: "facebook" as const,
+    title: "Share on Facebook",
+    platform: "facebook",
+    hoverColor: "hover:bg-[#3b5998] hover:text-white",
+  },
+  {
+    icon: "clipboard" as const,
+    title: "Copy Link",
+    platform: "clipboard",
+    hoverColor: "hover:bg-base-300",
+  },
+] as const;
+---
+
+<aside class="sticky top-4 space-y-6">
+  <!-- Table of Contents -->
+  <TableOfContents />
+
+  <!-- Share This -->
+  <div class="bg-base-100 border border-base-300 rounded-lg p-5">
+    <h3 class="text-sm font-bold uppercase tracking-wider mb-4 text-base-content/80">Share This</h3>
+    <div class="flex flex-col gap-2">
+      {
+        socialPlatforms.map((platform) => (
+          <ShareItem
+            className={`${platform.hoverColor} w-full justify-start`}
+            title={platform.title}
+            dataAwSocialShare={platform.platform}
+            dataAwUrl={shareUrl}
+            dataAwText={shareText}
+            icon={platform.icon}
+          />
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Trending Stories -->
+  <div>
+    <h3 class="text-sm font-bold uppercase tracking-wider mb-6 pb-3 border-b-2 border-base-300">
+      Trending Stories
+    </h3>
+    <ul class="space-y-6">
+      {
+        trendingArticles.map((trendingArticle, index) => (
+          <li class="group">
+            <a
+              href={`/articles/${trendingArticle.id}`}
+              class="flex items-start gap-4 transition-opacity hover:opacity-70"
+            >
+              <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded">
+                <img
+                  src={trendingArticle.data.cover.src}
+                  alt={trendingArticle.data.covert_alt || trendingArticle.data.title}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <span class="text-xs text-primary dark:text-secondary font-medium mb-1 block">
+                  {index + 1}
+                </span>
+                <h4 class="text-sm font-medium leading-tight line-clamp-3">
+                  {trendingArticle.data.title}
+                </h4>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</aside>
+
+<ScriptShare />

@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import Divider from "@/components/bases/divider.astro";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { authorsHandler } from "@/lib/handlers/authors";
+import { formatDate, normalizeDate } from "@/lib/utils/date";
+import { CONSTANTS } from "@/lib/config";
+
+type Props = {
+  article: CollectionEntry<"articles">;
+};
+
+const { article } = Astro.props;
+
+const { remarkPluginFrontmatter } = await render(article);
+const category = categoriesHandler.oneCategory(article.data.category.id);
+const authors = authorsHandler.getAuthors(article.data.authors);
+const authorName = authors?.[0]?.data?.name || 'Author';
+const publishDate = formatDate(normalizeDate(article.data.publishedTime), 'long');
+---
+
+<article class="group relative isolate grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+  <!-- Featured Image - Left Side -->
+  <a href={`/articles/${article.id}`} class="relative z-0 block aspect-video overflow-hidden rounded-lg order-last lg:order-first">
+    <Image
+      src={article.data.cover}
+      alt={article.data.covert_alt ? article.data.covert_alt : article.data.title}
+      layout="constrained"
+      loading="eager"
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+  </a>
+  
+  <!-- Content - Right Side -->
+  <div class="relative z-10 flex flex-col gap-3 justify-start py-2">
+    <!-- Category & Meta -->
+    <div class="flex items-center text-xs text-base-content/70 gap-2">
+      <span class="text-primary dark:text-secondary font-medium uppercase tracking-wide">
+        {category.data.title}
+      </span>
+      <Divider />
+      <span>{remarkPluginFrontmatter.minutesRead}</span>
+    </div>
+    
+    <!-- Title -->
+    <h2 class="text-base md:text-lg lg:text-xl font-bold leading-snug group-hover:text-rose-500 dark:group-hover:text-purple-400 transition-colors">
+      <a href={`/articles/${article.id}`}>
+        <span class="absolute inset-0 z-10 pointer-events-none"></span>
+        {article.data.title}
+      </a>
+    </h2>
+    
+    <!-- Description -->
+    <p class="text-sm md:text-base text-base-content/80 leading-relaxed line-clamp-2">
+      {article.data.description}
+    </p>
+    
+    <!-- Author & Date -->
+    <div class="mt-auto pt-3 border-t border-base-300">
+      <p class="text-xs md:text-sm text-base-content/60 uppercase tracking-wide">{CONSTANTS.By} {authorName}</p>
+      <p class="text-xs md:text-sm text-base-content/60">{publishDate}</p>
+    </div>
+  </div>
+</article>
