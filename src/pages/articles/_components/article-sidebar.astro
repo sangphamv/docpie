@@ -8,9 +8,10 @@ import { articlesHandler } from "@/lib/handlers/articles";
 type Props = {
   article: CollectionEntry<"articles">;
   content?: any;
+  headings?: Array<{ depth: number; slug: string; text: string }>;
 };
 
-const { article, content } = Astro.props;
+const { article, content, headings = [] } = Astro.props;
 
 const shareUrl = `${import.meta.env.SITE}/articles/${article.id}`;
 const shareText = article.data.title;
@@ -49,7 +50,7 @@ const socialPlatforms = [
 
 <aside class="sticky top-4 space-y-6">
   <!-- Table of Contents -->
-  <TableOfContents />
+  <TableOfContents headings={headings} />
 
   <!-- Share This -->
   <div class="bg-base-100 border border-base-300 rounded-lg p-5">
