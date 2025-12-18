@@ -3,12 +3,11 @@ import BaseLayout from "@/layouts/base.astro";
 import { getEntry } from "astro:content";
 import Headlines from "@/pages/_home/headlines.astro";
 import TrendingStories from "@/pages/_home/trendingStories.astro";
-import LatestNews from "@/pages/_home/latestNews.astro";
 import EventAnnouncements from "@/pages/_home/eventAnnouncements.astro";
-import Sponsors from "@/pages/_home/sponsors.astro";
 import CategoryColumns from "@/pages/_home/categoryColumns.astro";
 import Newsletter from "@/pages/_home/newsletter.astro";
 import Authors from "@/pages/_home/authors.astro";
+import ParallaxShowcase from "@/pages/_home/parallaxShowcase.astro";
 
 const entry = await getEntry("views", "home");
 
@@ -18,9 +17,17 @@ if (!entry) {
 ---
 
 <BaseLayout entry={entry}>
+  <!-- Ghi chú: Trang chủ hiển thị các phần chính gồm:
+       - Tin nổi bật (Headlines)
+       - Xu hướng (TrendingStories)
+       - Tin mới nhất (LatestNews)
+       - Thông báo sự kiện (EventAnnouncements)
+       - Chuyên mục (CategoryColumns)
+       - Bản tin (Newsletter)
+       - Tác giả (Authors) -->
   <!-- Featured Stories & Trending Stories -->
   <div class="container py-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       <div class="lg:col-span-8">
         <Headlines />
       </div>
@@ -30,14 +37,11 @@ if (!entry) {
     </div>
   </div>
 
-  <!-- Latest News -->
-  <LatestNews />
+  <!-- Parallax + Shimmer Showcase -->
+  <ParallaxShowcase />
 
   <!-- Event Announcements -->
   <EventAnnouncements />
-
-  <!-- Sponsors -->
-  <Sponsors />
 
   <!-- Category Columns -->
   <CategoryColumns />

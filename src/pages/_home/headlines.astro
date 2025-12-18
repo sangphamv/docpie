@@ -6,13 +6,15 @@ import { CONSTANTS } from "@/lib/config";
 
 const allArticles = articlesHandler.allArticles();
 const mainHeadline = allArticles[0];
-const subHeadlines = allArticles.slice(1, 5);
+const subHeadlines = allArticles.slice(0, 2);
 ---
 
 <section data-pagefind-ignore="all">
   <!-- Section Title -->
   <div class="mb-6">
-    <h2 class="text-sm font-bold uppercase tracking-wider text-base-content/70 border-b-2 border-base-300 pb-2">
+    <h2
+      class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)] border-b border-[color:var(--border-color)] pb-2"
+    >
       {CONSTANTS.Featured_Stories}
     </h2>
   </div>
@@ -23,7 +25,7 @@ const subHeadlines = allArticles.slice(1, 5);
   </div>
   
   <!-- Sub Headlines - 2 Columns -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
     {subHeadlines.map((article) => (
       <SubHeadlineCard article={article} />
     ))}

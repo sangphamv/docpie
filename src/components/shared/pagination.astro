@@ -41,16 +41,16 @@ const paginationList = Array.from(
     !prevUrl && !nextUrl ? "hidden" : "",
   ]}
 >
-  <nav class="join shadow-md">
+  <nav class="join shadow-[var(--shadow-soft)]">
     {
       `${baseUrl}/1` == `${currentUrl}` ? (
-        <span class="join-item btn btn-sm btn-disabled" aria-label="First page">
+        <span class="join-item btn btn-sm btn-disabled border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-muted)]" aria-label="First page">
           <ArrowLeftDouble />
         </span>
       ) : (
         <a
           href={`${baseUrl}/1`}
-          class="join-item btn btn-sm"
+          class="join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)]"
           aria-label="First page"
         >
           <ArrowLeftDouble />
@@ -60,11 +60,11 @@ const paginationList = Array.from(
 
     {
       prevUrl ? (
-        <a href={prevUrl} class="join-item btn btn-sm">
+        <a href={prevUrl} class="join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)]">
           <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </a>
       ) : (
-        <span class="join-item btn btn-sm btn-disabled">
+        <span class="join-item btn btn-sm btn-disabled border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-muted)]">
           <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </span>
       )
@@ -74,7 +74,7 @@ const paginationList = Array.from(
       paginationList.map((num) => (
         <a
           href={`${baseUrl}${num == 1 ? "" : "/" + num}`}
-          class={`join-item btn btn-sm ${currentPage == num ? "btn-primary pointer-events-none" : ""}`}
+          class={`join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)] ${currentPage == num ? "bg-[color:var(--primary)] border-[color:var(--primary)] text-[color:var(--primary-contrast)] pointer-events-none" : ""}`}
         >
           {num}
         </a>
@@ -83,11 +83,11 @@ const paginationList = Array.from(
 
     {
       !nextUrl ? (
-        <span class="join-item btn btn-sm btn-disabled">
+        <span class="join-item btn btn-sm btn-disabled border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-muted)]">
           <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </span>
       ) : (
-        <a href={nextUrl} class="join-item btn btn-sm">
+        <a href={nextUrl} class="join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)]">
           <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </a>
       )
@@ -95,11 +95,11 @@ const paginationList = Array.from(
 
     {
       lastUrl == currentUrl ? (
-        <span class="join-item btn btn-sm btn-disabled" aria-label="Last page">
+        <span class="join-item btn btn-sm btn-disabled border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-muted)]" aria-label="Last page">
           <ArrowRightDouble />
         </span>
       ) : (
-        <a href={lastUrl} class="join-item btn btn-sm" aria-label="Last page">
+        <a href={lastUrl} class="join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)]" aria-label="Last page">
           <ArrowRightDouble />
         </a>
       )

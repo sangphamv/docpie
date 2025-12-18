@@ -23,7 +23,9 @@ const categoryColumns = allCategories.slice(0, 4).map((category) => {
     {
       categoryColumns.map((column) => (
         <div class="space-y-4">
-          <h2 class="text-lg font-bold font-serif uppercase border-b border-gray-200 dark:border-gray-700 pb-2">
+          <h2
+            class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)] border-b border-[color:var(--border-color)] pb-2"
+          >
             {column.category.data.title}
           </h2>
           <ul class="space-y-4">
@@ -35,19 +37,11 @@ const categoryColumns = allCategories.slice(0, 4).map((category) => {
                     href={`/articles/${article.id}`}
                     class="flex items-start gap-3"
                   >
-                    <div class="flex-shrink-0 w-20 h-14 overflow-hidden rounded">
-                      <img
-                        src={article.data.cover.src}
-                        alt={article.data.covert_alt || article.data.title}
-                        class="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-500 dark:group-hover:text-pink-500 transition-colors">
-                        {article.data.title}
-                      </h3>
-                    </div>
+                    <h3
+                      class="text-sm font-medium line-clamp-2 text-[color:var(--text-primary)] transition-colors group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+                    >
+                      {article.data.title}
+                    </h3>
                   </a>
                 </li>
               );

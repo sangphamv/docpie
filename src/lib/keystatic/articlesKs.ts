@@ -35,6 +35,16 @@ export const articlesKs = collection({
       label: KEYSTATIC_ARTICLES.category,
       collection: "categories",
     }),
+    tags: fields.array(
+      fields.relationship({
+        label: KEYSTATIC_ARTICLES.tags,
+        collection: "tags",
+      }),
+      {
+        label: KEYSTATIC_ARTICLES.tags,
+        itemLabel: (props) => props.value ?? "",
+      }
+    ),
     publishedTime: fields.datetime({
       label: KEYSTATIC_ARTICLES.publishedTime,
       validation: { isRequired: true },

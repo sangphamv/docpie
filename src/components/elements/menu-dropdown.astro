@@ -2,14 +2,19 @@
 import Menu from "@/assets/svgs/menu.astro";
 import { NAVIGATION_LINKS, OTHER_LINKS, CONSTANTS } from "@/lib/config";
 
-// Organize categories by columns (show in 2 columns on mobile, 4+ on desktop)
+// Split categories into 2 columns
 const categoryLinks = NAVIGATION_LINKS;
 const footerLinks = OTHER_LINKS;
+
+// Split categories into 2 equal columns
+const halfIndex = Math.ceil(categoryLinks.length / 2);
+const categoryColumn1 = categoryLinks.slice(0, halfIndex);
+const categoryColumn2 = categoryLinks.slice(halfIndex);
 ---
 
 <!-- Menu Toggle Button -->
 <button
-  class="btn btn-ghost btn-circle"
+  class="btn btn-ghost btn-circle text-[color:var(--text-primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,transparent)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
   aria-label="Toggle Menu"
   onclick="menu_modal.showModal()"
 >
@@ -18,58 +23,74 @@ const footerLinks = OTHER_LINKS;
 
 <!-- Mega Menu Modal -->
 <dialog id="menu_modal" class="modal">
-  <div class="modal-box w-full h-full max-w-none rounded-none p-6 overflow-y-auto ">
+  <div class="modal-box w-full h-full max-w-none rounded-none p-6 overflow-y-auto border border-[color:var(--border-color)] bg-[color:var(--bg-page)]">
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
         ✕
       </button>
     </form>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="space-y-4">
-        <h3
-          class="text-sm font-bold uppercase tracking-wider text-base-content/60"
+    <div class="container max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Category Column 1 -->
+        <section
+          class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)]"
         >
-          DANH MỤC
-        </h3>
-        <ul class="space-y-3">
-          {
-            categoryLinks.map(({ href, text }) => (
-              <li>
-                <a
-                  href={href}
-                  class="block text-base-content hover:text-primary transition-colors"
-                  onclick="menu_modal.close()"
-                >
-                  {text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+          <div class="flex items-center mb-4">
+            <h3 class="font-bold text-sm uppercase tracking-wider">Danh mục</h3>
+          </div>
+          <div class="grid gap-3 text-sm">
+            {categoryColumn1.map(({ href, text }) => (
+              <a
+                href={`${href}/1`}
+                class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+                onclick="menu_modal.close()"
+              >
+                <span class="font-medium">{text}</span>
+              </a>
+            ))}
+          </div>
+        </section>
 
-      <div class="space-y-4">
-        <h3
-          class="text-sm font-bold uppercase tracking-wider text-base-content/60"
+        <!-- Category Column 2 -->
+        <section
+          class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)]"
         >
-          KHÁC
-        </h3>
-        <ul class="space-y-3">
-          {
-            footerLinks.map(({ href, text }) => (
-              <li>
-                <a
-                  href={href}
-                  class="block text-base-content hover:text-primary transition-colors"
-                  onclick="menu_modal.close()"
-                >
-                  {text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+          <div class="flex items-center mb-4">
+            <h3 class="font-bold text-sm uppercase tracking-wider">Danh mục</h3>
+          </div>
+          <div class="grid gap-3 text-sm">
+            {categoryColumn2.map(({ href, text }) => (
+              <a
+                href={`${href}/1`}
+                class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+                onclick="menu_modal.close()"
+              >
+                <span class="font-medium">{text}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- Other Links Column -->
+        <section
+          class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)]"
+        >
+          <div class="flex items-center mb-4">
+            <h3 class="font-bold text-sm uppercase tracking-wider">Liên kết</h3>
+          </div>
+          <div class="grid gap-3 text-sm">
+            {footerLinks.map(({ href, text }) => (
+              <a
+                href={href}
+                class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+                onclick="menu_modal.close()"
+              >
+                <span class="font-medium">{text}</span>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   </div>

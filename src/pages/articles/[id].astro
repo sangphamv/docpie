@@ -5,8 +5,13 @@ import ContentLayout from "@/layouts/content.astro";
 import ArticleHeader from "./_components/article-header.astro";
 import ArticleLink from "./_components/article-link.astro";
 import ArticleSidebar from "./_components/article-sidebar.astro";
+import Giscus from "@/components/bases/giscus.astro";
+import ReadingProgress from "@/components/bases/reading-progress.astro";
 
 import { articlesHandler } from "@/lib/handlers/articles";
+import { GISCUS } from "@/lib/config";
+import { authorsHandler } from "@/lib/handlers/authors";
+import { SITE } from "@/lib/config";
 
 export const getStaticPaths = async () => {
   const articles = articlesHandler.allArticles();
@@ -19,20 +24,76 @@ export const getStaticPaths = async () => {
 const { article } = Astro.props;
 
 const { Content, headings, remarkPluginFrontmatter } = await render(article);
+const hasGiscusConfig =
+  Boolean(GISCUS.repo) &&
+  Boolean(GISCUS.repoId) &&
+  Boolean(GISCUS.category) &&
+  Boolean(GISCUS.categoryId);
+const articleAuthors = authorsHandler.getAuthors(article.data.authors || []);
+const publishedISO = new Date(article.data.publishedTime).toISOString();
+const modifiedISO = remarkPluginFrontmatter?.lastModified || publishedISO;
+const lastModifiedDisplay = remarkPluginFrontmatter?.lastModified || article.data.publishedTime;
+const coverUrl = article.data.cover?.src
+  ? new URL(article.data.cover.src, SITE.url).toString()
+  : undefined;
+const canonicalUrl = `${SITE.url}/articles/${article.id}`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: article.data.title,
+  description: article.data.description,
+  image: coverUrl ? [coverUrl] : undefined,
+  author: articleAuthors.map((author) => ({
+    "@type": "Person",
+    name: author.data.name,
+    url: `${SITE.url}/authors/${author.id}`,
+  })),
+  datePublished: publishedISO,
+  dateModified: modifiedISO,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalUrl,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE.title,
+    url: SITE.url,
+  },
+};
 ---
 
 <BaseLayout entry={article}>
+  <ReadingProgress />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
   <ArticleHeader
     article={article}
     readingTime={remarkPluginFrontmatter.minutesRead}
+    lastModified={lastModifiedDisplay}
   />
   
   <div class="container max-w-5xl pb-12">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <div class="lg:col-span-8">
+      <div class="lg:col-span-8" data-reading-target>
         <ContentLayout>
           <Content />
           <ArticleLink article={article} />
+          {hasGiscusConfig && (
+            <div class="mt-10">
+              <Giscus
+                repo={GISCUS.repo}
+                repoId={GISCUS.repoId}
+                category={GISCUS.category}
+                categoryId={GISCUS.categoryId}
+                mapping={GISCUS.mapping}
+                strict={GISCUS.strict}
+                reactionsEnabled={GISCUS.reactionsEnabled}
+                emitMetadata={GISCUS.emitMetadata}
+                inputPosition={GISCUS.inputPosition}
+                theme={GISCUS.theme}
+                lang={GISCUS.lang}
+              />
+            </div>
+          )}
         </ContentLayout>
       </div>
       

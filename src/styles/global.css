@@ -7,24 +7,117 @@
   logs: false;
 }
 
+@plugin "daisyui/theme" {
+  name: "pastel";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  /**
+   * Global Design System Variables
+   * 
+   * Color Variables:
+   * --color-base-100: Primary background color (white/lightest)
+   * --color-base-200: Secondary background color
+   * --color-base-300: Tertiary background color
+   * --color-base-content: Default text color (dark/darkest)
+   * --color-primary: Primary brand color
+   * --color-primary-content: Text color for primary backgrounds
+   * --color-secondary: Secondary brand color
+   * --color-secondary-content: Text color for secondary backgrounds
+   * --color-accent: Accent/highlight color
+   * --color-accent-content: Text color for accent backgrounds
+   * --color-neutral: Neutral/gray color
+   * --color-neutral-content: Text color for neutral backgrounds
+   * --color-info: Info/informational message color
+   * --color-info-content: Text color for info backgrounds
+   * --color-success: Success/positive feedback color
+   * --color-success-content: Text color for success backgrounds
+   * --color-warning: Warning/caution message color
+   * --color-warning-content: Text color for warning backgrounds
+   * --color-error: Error/danger message color
+   * --color-error-content: Text color for error backgrounds
+   * 
+   * Border Radius Variables:
+   * --radius-selector: Border radius for buttons and selectors (1rem)
+   * --radius-field: Border radius for input fields (2rem)
+   * --radius-box: Border radius for boxes and containers (1rem)
+   * 
+   * Size Variables:
+   * --size-selector: Border/outline width for selectors (0.25rem)
+   * --size-field: Border/outline width for fields (0.25rem)
+   * --border: Default border width (2px)
+   * 
+   * Visual Effect Variables:
+   * --depth: Box shadow depth/elevation level (0 = no shadow)
+   * --noise: Texture/noise effect intensity (0 = no noise)
+   */
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: #859cdd;
+  --color-base-300: oklch(92.462% 0.001 247.838);
+  --color-base-content: oklch(20% 0 0);
+  --color-primary: oklch(90% 0.063 306.703);
+  --color-primary-content: oklch(49% 0.265 301.924);
+  --color-secondary: oklch(89% 0.058 10.001);
+  --color-secondary-content: oklch(51% 0.222 16.935);
+  --color-accent: oklch(90% 0.093 164.15);
+  --color-accent-content: oklch(50% 0.118 165.612);
+  --color-neutral: oklch(55% 0.046 257.417);
+  --color-neutral-content: oklch(92% 0.013 255.508);
+  --color-info: oklch(86% 0.127 207.078);
+  --color-info-content: oklch(52% 0.105 223.128);
+  --color-success: oklch(87% 0.15 154.449);
+  --color-success-content: oklch(52% 0.154 150.069);
+  --color-warning: oklch(83% 0.128 66.29);
+  --color-warning-content: oklch(55% 0.195 38.402);
+  --color-error: oklch(80% 0.114 19.571);
+  --color-error-content: oklch(50% 0.213 27.518);
+  --radius-selector: 1rem;
+  --radius-field: 2rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
+}
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  /* Font Family */
-  /* --font-sans: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: "Source Serif 4 Variable", ui-serif, Georgia, Cambria,
-    "Times New Roman", Times, serif; */
   /* Chỉnh Font */
-  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Bricolage Grotesque", "Source Serif 4 Variable", ui-serif,
-    Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Open Sans", sans-serif;
+  --font-serif: "Montserrat", sans-serif;
   --breakpoint-2xl: initial;
 }
 
 @layer base {
   :root {
+    /* Design tokens derived from DaisyUI winter theme */
+    --bg-page: var(--color-base-100);
+    --bg-surface: var(--color-base-200);
+    --bg-subtle: var(--color-base-300);
+    --text-primary: var(--color-base-content);
+    --text-muted: color-mix(in oklab, var(--color-base-content) 72%, transparent);
+    --border-color: color-mix(in oklab, var(--color-base-content) 12%, var(--color-base-300));
+    --shadow-soft: 0 12px 36px color-mix(in oklab, var(--color-base-content) 10%, transparent);
+    --primary: var(--color-primary);
+    --primary-contrast: var(--color-primary-content);
+    --secondary: var(--color-secondary);
+    --accent: var(--color-accent);
+    --radius-card: var(--radius-box);
+    --radius-chip: var(--radius-field);
+
     @apply cursor-default;
+  }
+
+  :root:where([data-theme=dark]) {
+    --bg-page: var(--color-neutral);
+    --bg-surface: color-mix(in oklab, var(--color-neutral) 80%, var(--color-base-200) 20%);
+    --bg-subtle: color-mix(in oklab, var(--color-neutral) 65%, black 35%);
+    --text-primary: var(--color-neutral-content);
+    --text-muted: color-mix(in oklab, var(--color-neutral-content) 70%, transparent);
+    --border-color: color-mix(in oklab, var(--color-neutral-content) 16%, var(--color-neutral) 84%);
+    --shadow-soft: 0 14px 38px color-mix(in oklab, var(--color-neutral-content) 12%, transparent);
   }
 
   html {
@@ -39,11 +132,14 @@
 
   body {
     @apply font-sans antialiased h-full;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
   }
 
   /* Headings & text scale */
   h1, h2, h3, h4 {
-    @apply font-serif font-bold text-base-content;
+    @apply font-serif font-bold;
+    color: var(--text-primary);
   }
 
   h1 {
@@ -63,19 +159,28 @@
   }
 
   p {
-    @apply text-base md:text-lg text-base-content/90 leading-relaxed;
+    @apply text-base md:text-lg leading-relaxed;
+    color: var(--text-muted);
   }
 
   a {
-    @apply text-rose-500 hover:text-rose-600 dark:text-purple-400 dark:hover:text-purple-300 transition-colors;
+    color: var(--primary);
+    @apply transition-colors;
+
+    &:hover {
+      color: color-mix(in oklab, var(--primary) 85%, var(--text-primary) 15%);
+    }
   }
 
   strong {
-    @apply font-semibold text-base-content;
+    @apply font-semibold;
+    color: var(--text-primary);
   }
 
   blockquote {
-    @apply border-l-4 border-base-300 pl-4 italic text-base-content/80;
+    @apply border-l-4 pl-4 italic;
+    border-color: var(--border-color);
+    color: var(--text-muted);
   }
 
   ul, ol {
@@ -117,7 +222,51 @@
 }
 
 @layer components {
-  .a-01 {
-    @apply hover:underline decoration-primary;
+  [data-parallax-card] {
+    perspective: 1400px;
+  }
+
+  [data-parallax-card] .parallax-inner {
+    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-parallax-card]:hover .parallax-inner {
+      transform: translateY(-8px) scale(1.01);
+    }
+  }
+
+  [data-skeleton] {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-subtle) 78%, var(--text-muted) 8%);
+  }
+
+  [data-skeleton]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      color-mix(in oklab, var(--bg-subtle) 82%, var(--text-muted) 4%) 0%,
+      color-mix(in oklab, var(--bg-subtle) 70%, white 12%) 50%,
+      color-mix(in oklab, var(--bg-subtle) 82%, var(--text-muted) 4%) 100%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 1s ease-in-out infinite;
+  }
+
+  [data-skeleton][data-loaded="true"]::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
   }
 }
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+

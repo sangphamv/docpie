@@ -149,13 +149,14 @@ export const CONSTANTS = {
   Latest_News: "Bài viết mới",
   Authors: "Tác giả",
   AuthorOf: "Bài viết của",
-  Featured_Stories: "Featured Stories",
-  Latest_Stories_Published: "LATEST STORIES PUBLISHED",
-  Event_Announcements: "EVENT ANNOUNCEMENTS",
-  By: "By",
-  Table_Of_Contents: "Table of Contents",
-  Loading: "Loading...",
-  No_Headings: "No headings found",
+  Featured_Stories: "Bài viết nổi bậc",
+  Latest_Stories_Published: "Bài viết mới",
+  Event_Announcements: "Thông báo sự kiện",
+  Table_Of_Contents: "Mục lục",
+  Loading: "Đang tải...",
+  No_Headings: "Không có tiêu đề nào trong bài viết này",
+  Parallax_Showcase_Title: "Bài viết mới nhất",
+  Parallax_Showcase_CTA: "Xem tất cả",
 };
 
 export const KEYSTATIC_ARTICLES = {
@@ -167,6 +168,7 @@ export const KEYSTATIC_ARTICLES = {
   title: "Tiêu đề",
   cover: "Bìa",
   category: "Danh mục",
+  tags: "Thẻ",
   publishedTime: "Thời gian xuất bản",
   authors: "Tác giả",
   link: "Nút tải xuống",
@@ -176,6 +178,14 @@ export const KEYSTATIC_ARTICLES = {
 
 export const KEYSTATIC_CATEGORIES = {
   label: "Danh mục",
+  title: "Tiêu đề",
+  description: "Mô tả",
+  path: "Đường dẫn",
+  path_description: "Mô tả đường dẫn",
+};
+
+export const KEYSTATIC_TAGS = {
+  label: "Thẻ",
   title: "Tiêu đề",
   description: "Mô tả",
   path: "Đường dẫn",
@@ -198,4 +208,18 @@ export const KEYSTATIC_AUTHORS = {
 export const PAGINATION = {
   previous: "Trang trước",
   next: "Trang sau",
+};
+
+export const GISCUS = {
+  repo: import.meta.env.PUBLIC_GISCUS_REPO ?? "sangphamv/docpie",
+  repoId: import.meta.env.PUBLIC_GISCUS_REPO_ID ?? "R_kgDOOVx57Q",
+  category: import.meta.env.PUBLIC_GISCUS_CATEGORY ?? "General",
+  categoryId: import.meta.env.PUBLIC_GISCUS_CATEGORY_ID ?? "DIC_kwDOOVx57c4Cz-B3",
+  mapping: import.meta.env.PUBLIC_GISCUS_MAPPING ?? "pathname",
+  reactionsEnabled: import.meta.env.PUBLIC_GISCUS_REACTIONS_ENABLED ?? "1",
+  emitMetadata: import.meta.env.PUBLIC_GISCUS_EMIT_METADATA ?? "0",
+  strict: import.meta.env.PUBLIC_GISCUS_STRICT ?? "0",
+  inputPosition: import.meta.env.PUBLIC_GISCUS_INPUT_POSITION ?? "bottom",
+  theme: import.meta.env.PUBLIC_GISCUS_THEME ?? "preferred_color_scheme",
+  lang: import.meta.env.PUBLIC_GISCUS_LANG ?? "vi",
 };

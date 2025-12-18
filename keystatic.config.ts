@@ -1,22 +1,20 @@
-import { articlesKs, authorsKs, categoriesKs } from "@/lib/keystatic";
+import { articlesKs, authorsKs, categoriesKs, tagsKs } from "@/lib/keystatic";
 import { config } from "@keystatic/core";
 
 export default config({
   storage: {
     kind: "local",
-    // kind: "github",
-    // repo: "sangphamv/docpie", // 🔹 repo của bạn
-    // branch: "main", // 🔹 hoặc 'master' nếu repo dùng branch này
   },
   ui: {
     brand: {
       name: "Docpie",
     },
-    navigation: ["---", "articles", "---", "authors", "categories"],
+    navigation: ["---", "articles", "---", "authors", "categories", "tags"],
   },
   collections: {
     articles: articlesKs,
     authors: authorsKs,
     categories: categoriesKs,
+    tags: tagsKs,
   },
 });

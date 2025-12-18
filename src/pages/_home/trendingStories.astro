@@ -3,11 +3,11 @@ import { articlesHandler } from "@/lib/handlers/articles";
 import { render } from "astro:content";
 import { CONSTANTS } from "@/lib/config";
 
-const trendingArticles = articlesHandler.allArticles().slice(0, 4);
+const trendingArticles = articlesHandler.allArticles().slice(0, 8);
 ---
 
-<aside class="sticky top-4">
-  <h2 class="text-sm font-bold uppercase tracking-wider mb-6 pb-3 border-b-2 border-base-300">
+<aside class="lg:sticky lg:top-6">
+  <h2 class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)] border-b border-[color:var(--border-color)] pb-2 mb-6">
     {CONSTANTS.Latest_Stories_Published}
   </h2>
   <ul class="space-y-6">
@@ -20,21 +20,13 @@ const trendingArticles = articlesHandler.allArticles().slice(0, 4);
               href={`/articles/${article.id}`}
               class="flex items-start gap-4 transition-opacity hover:opacity-70"
             >
-              <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded">
-                <img
-                  src={article.data.cover.src}
-                  alt={article.data.covert_alt || article.data.title}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div class="flex-1 min-w-0">
-                <span class="text-xs text-primary dark:text-secondary font-medium mb-1 block">
-                  {index + 1}
-                </span>
-                <h3 class="text-sm font-medium leading-tight line-clamp-3 mb-1">
-                  {article.data.title}
-                </h3>
+              <div class="flex items-center gap-2">
+              <span class="text-lg text-[color:var(--primary)] font-bold">
+                {index + 1}
+              </span>
+              <h3 class="text-lg font-bold leading-tight line-clamp-3">
+                {article.data.title}
+              </h3>
               </div>
             </a>
           </li>

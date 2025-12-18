@@ -1,0 +1,92 @@
+---
+interface Props {
+  repo: string;
+  repoId: string;
+  category: string;
+  categoryId: string;
+  mapping?: string;
+  strict?: string;
+  reactionsEnabled?: string;
+  emitMetadata?: string;
+  inputPosition?: string;
+  theme?: string;
+  lang?: string;
+}
+
+const {
+  repo,
+  repoId,
+  category,
+  categoryId,
+  mapping = "pathname",
+  strict = "0",
+  reactionsEnabled = "1",
+  emitMetadata = "0",
+  inputPosition = "bottom",
+  theme = "preferred_color_scheme",
+  lang = "vi",
+} = Astro.props;
+---
+
+<section class="mt-10" aria-label="Bình luận">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={repo}
+    data-repo-id={repoId}
+    data-category={category}
+    data-category-id={categoryId}
+    data-mapping={mapping}
+    data-strict={strict}
+    data-reactions-enabled={reactionsEnabled}
+    data-emit-metadata={emitMetadata}
+    data-input-position={inputPosition}
+    data-theme={theme}
+    data-lang={lang}
+    crossorigin="anonymous"
+    async
+  />
+
+  <script is:inline>
+    const getTheme = () =>
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "dark"
+        : "light";
+
+    const setGiscusTheme = () => {
+      const frame = document.querySelector("iframe.giscus-frame");
+      if (!frame) return;
+      const theme = getTheme();
+      frame.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme } } },
+        "https://giscus.app"
+      );
+    };
+
+    const waitForFrame = (attempt = 0) => {
+      const frame = document.querySelector("iframe.giscus-frame");
+      if (frame) {
+        setGiscusTheme();
+        return;
+      }
+      if (attempt < 20) {
+        requestAnimationFrame(() => waitForFrame(attempt + 1));
+      }
+    };
+
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type === "attributes" && record.attributeName === "data-theme") {
+          setGiscusTheme();
+          break;
+        }
+      }
+    });
+
+    document.addEventListener("astro:page-load", () => {
+      waitForFrame();
+      observer.observe(document.documentElement, { attributes: true });
+    });
+
+    waitForFrame();
+  </script>
+</section>

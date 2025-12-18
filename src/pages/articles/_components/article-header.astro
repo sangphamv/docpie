@@ -8,16 +8,21 @@ import Calendar04 from "@/assets/svgs/calendar-04.astro";
 import Divider from "@/components/bases/divider.astro";
 import { categoriesHandler } from "@/lib/handlers/categories";
 import { authorsHandler } from "@/lib/handlers/authors";
+import { tagsHandler } from "@/lib/handlers/tags";
 
 type Props = {
   article: CollectionEntry<"articles">;
   readingTime: string;
+  lastModified?: string;
 };
 
-const { article, readingTime } = Astro.props;
+const { article, readingTime, lastModified } = Astro.props;
 
 const category = categoriesHandler.oneCategory(article.data.category.id);
 const authors = authorsHandler.getAuthors(article.data.authors);
+const articleTags = (article.data.tags ?? []).map((tag) =>
+  tagsHandler.oneTag(tag.id)
+);
 ---
 
 <section class="mb-0 py-6">
@@ -26,7 +31,7 @@ const authors = authorsHandler.getAuthors(article.data.authors);
     <div class="mb-4">
       <a 
         href={`/categories/${category.id}`} 
-        class="text-sm font-bold uppercase tracking-wider text-primary dark:text-secondary hover:underline"
+        class="text-sm font-bold uppercase tracking-wider text-[color:var(--primary)] hover:underline"
       >
         {category.data.title}
       </a>
@@ -47,51 +52,88 @@ const authors = authorsHandler.getAuthors(article.data.authors);
     <!-- Meta Info -->
     <div class="flex flex-wrap items-center gap-4 text-sm text-base-content/70 pb-6 mb-6 border-b border-base-300">
       <!-- Authors -->
-      <div class="flex flex-wrap gap-3">
-        {
-          authors.map((author) => (
-            <a
-              href={`/authors/${author.id}`}
-              class="flex items-center gap-2 hover:text-primary dark:hover:text-secondary"
-            >
-              <div class="avatar">
-                <div class="w-8 rounded-full">
-                  <Image
-                    src={author.data.avatar}
-                    alt={author.data.name}
-                    width={48}
-                    height={48}
-                    loading={"eager"}
-                    format="webp"
-                    layout="constrained"
-                    quality={80}
-                  />
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-semibold text-base-content">Tác giả:</span>
+        <div class="flex flex-wrap gap-3">
+          {
+            authors.map((author) => (
+              <a
+                href={`/authors/${author.id}`}
+                class="flex items-center gap-2 hover:text-primary dark:hover:text-secondary"
+              >
+                <div class="avatar">
+                  <div class="w-8 rounded-full">
+                    <Image
+                      src={author.data.avatar}
+                      alt={author.data.name}
+                      width={48}
+                      height={48}
+                      loading={"eager"}
+                      format="webp"
+                      layout="constrained"
+                      quality={80}
+                    />
+                  </div>
                 </div>
-              </div>
-              <span class="font-semibold">{author.data.name}</span>
-            </a>
-          ))
-        }
+                <span class="font-semibold">{author.data.name}</span>
+              </a>
+            ))
+          }
+        </div>
       </div>
 
       <Divider />
 
-      <!-- Date -->
-      <span class="flex items-center gap-1">
+      <!-- Publish Date -->
+      <span class="flex items-center gap-2">
         <Calendar04 size="15" />
-        <time datetime={normalizeDate(article.data.publishedTime)}>
-          {formatDate(normalizeDate(article.data.publishedTime), "long")}
-        </time>
+        <span>
+          <span class="font-semibold text-base-content">Ngày đăng:</span>
+          <time class="ml-1" datetime={normalizeDate(article.data.publishedTime)}>
+            {formatDate(normalizeDate(article.data.publishedTime), "long")}
+          </time>
+        </span>
       </span>
+
+      {lastModified && (
+        <>
+          <Divider />
+          <span class="flex items-center gap-2">
+            <Time04 size="15" />
+            <span>
+              <span class="font-semibold text-base-content">Cập nhật:</span>
+              <time class="ml-1" datetime={normalizeDate(lastModified)}>
+                {formatDate(normalizeDate(lastModified), "long")}
+              </time>
+            </span>
+          </span>
+        </>
+      )}
 
       <Divider />
 
       <!-- Reading Time -->
-      <span class="flex items-center gap-1">
+      <span class="flex items-center gap-2">
         <Time04 size="15" />
-        <span>{readingTime}</span>
+        <span>
+          <span class="font-semibold text-base-content">Thời gian đọc:</span>
+          <span class="ml-1">{readingTime}</span>
+        </span>
       </span>
     </div>
+
+    {articleTags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-6">
+        {articleTags.map((tag) => (
+          <a
+            href={`/tags?tag=${tag.data.path}`}
+            class="inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+          >
+            #{tag.data.title}
+          </a>
+        ))}
+      </div>
+    )}
 
     <!-- Featured Image -->
     <div class="overflow-hidden rounded-lg mb-6">

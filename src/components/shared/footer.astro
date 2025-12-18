@@ -1,72 +1,89 @@
 ---
-import { NAVIGATION_LINKS, SOCIAL_LINKS, OTHER_LINKS } from "@/lib/config";
+import { SOCIAL_LINKS, SITE, OTHER_LINKS } from "@/lib/config";
 import Icon from "../bases/icon.astro";
-import { CONSTANTS } from "@/lib/config";
-import { SITE } from "@/lib/config";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { tagsHandler } from "@/lib/handlers/tags";
+
+const categories = categoriesHandler.allCategoriesWithLatestArticles();
+const tags = tagsHandler.allTagsWithCount();
 ---
 
-<footer class="bg-base-300/30 border-t border-base-300 py-12">
-  <div class="container">
-    <!-- Footer Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
-      <!-- Categories Columns -->
-      <div>
-        <h3 class="font-bold text-sm uppercase tracking-wider mb-4">ARCHITECTURE</h3>
-        <ul class="space-y-2 text-sm">
-          {NAVIGATION_LINKS.slice(0, 5).map(({ href, text }) => (
-            <li><a href={href} class="hover:text-primary transition-colors">{text}</a></li>
+<footer
+  class="py-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_90%,var(--bg-subtle)_10%)] text-[color:var(--text-primary)] transition-colors"
+>
+  <div class="container space-y-8">
+    <div class="grid gap-6 lg:grid-cols-3">
+      <!-- Categories column split into 2 sub-columns -->
+      <section
+        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+      >
+        <div class="flex items-center mb-4">
+          <h3 class="font-bold text-sm uppercase tracking-wider">Danh mục</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          {categories.map((category) => (
+            <a
+              href={`/categories/${category.data.path}/1`}
+              class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+            >
+              <span class="font-medium">{category.data.title}</span>
+            </a>
           ))}
-        </ul>
-      </div>
-      
-      <div>
-        <h3 class="font-bold text-sm uppercase tracking-wider mb-4">ENGINEERING</h3>
-        <ul class="space-y-2 text-sm">
-          {NAVIGATION_LINKS.slice(5, 10).map(({ href, text }) => (
-            <li><a href={href} class="hover:text-primary transition-colors">{text}</a></li>
+        </div>
+      </section>
+
+      <!-- Tags column -->
+      <section
+        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+      >
+        <div class="flex items-center mb-4">
+          <h3 class="font-bold text-sm uppercase tracking-wider">Thẻ</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <a
+              href={`/tags?tag=${tag.data.path}`}
+              class="inline-flex items-center gap-2 rounded-[var(--radius-chip)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+            >
+              <span>{tag.data.title}</span>
+            </a>
           ))}
-        </ul>
-      </div>
-      
-      <div>
-        <h3 class="font-bold text-sm uppercase tracking-wider mb-4">OPERATIONS</h3>
-        <ul class="space-y-2 text-sm">
-          {NAVIGATION_LINKS.slice(10, 15).map(({ href, text }) => (
-            <li><a href={href} class="hover:text-primary transition-colors">{text}</a></li>
-          ))}
-        </ul>
-      </div>
-      
-      <div>
-        <h3 class="font-bold text-sm uppercase tracking-wider mb-4">CHANNELS</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/articles" class="hover:text-primary transition-colors">Podcasts</a></li>
-          <li><a href="/articles" class="hover:text-primary transition-colors">Ebooks</a></li>
-          <li><a href="/articles" class="hover:text-primary transition-colors">Events</a></li>
-          <li><a href="/articles" class="hover:text-primary transition-colors">Webinars</a></li>
-          <li><a href="/articles" class="hover:text-primary transition-colors">Newsletter</a></li>
-        </ul>
-      </div>
-      
-      <div>
-        <h3 class="font-bold text-sm uppercase tracking-wider mb-4">RESOURCES</h3>
-        <ul class="space-y-2 text-sm">
+        </div>
+      </section>
+
+      <!-- Other links split into 2 sub-columns -->
+      <section
+        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-sm uppercase tracking-wider">Liên kết</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
           {OTHER_LINKS.map(({ href, text }) => (
-            <li><a href={href} class="hover:text-primary transition-colors">{text}</a></li>
+            <a
+              href={href}
+              class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+            >
+              <span class="font-medium">{text}</span>
+            </a>
           ))}
-        </ul>
-      </div>
+        </div>
+      </section>
     </div>
-    
-    <!-- Bottom Bar -->
-    <div class="border-t border-base-300 pt-8">
+
+    <div class="pt-8 text-[color:var(--text-muted)]">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-sm text-base-content/60">
+        <p class="text-sm text-[color:var(--text-muted)]">
           © {new Date().getFullYear()} {SITE.title}. All rights reserved.
         </p>
         <div class="flex items-center gap-4">
           {SOCIAL_LINKS.map(({ href, icon, text }) => (
-            <a href={href} target="_blank" aria-label={text} class="hover:text-primary transition-colors">
+            <a
+              href={href}
+              target="_blank"
+              aria-label={text}
+              class="transition-colors text-[color:var(--text-primary)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+            >
               <Icon icon={icon} />
             </a>
           ))}

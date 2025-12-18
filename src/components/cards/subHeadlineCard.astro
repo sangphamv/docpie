@@ -15,24 +15,33 @@ const { remarkPluginFrontmatter } = await render(article);
 const category = categoriesHandler.oneCategory(article.data.category.id);
 ---
 
-<article class="group relative isolate flex flex-col">
+<article
+  data-parallax-card
+  class="group relative isolate h-full"
+>
+  <div class="parallax-inner flex flex-col bg-[color:var(--bg-surface)] overflow-hidden h-full">
   <!-- Thumbnail -->
-  <a href={`/articles/${article.id}`} class="block w-full h-48 overflow-hidden rounded-lg mb-4">
+  <a
+    href={`/articles/${article.id}`}
+    class="block w-full h-48 overflow-hidden bg-[color:var(--bg-subtle)] mb-4"
+    data-skeleton
+  >
     <Image
       src={article.data.cover}
       alt={article.data.covert_alt ? article.data.covert_alt : article.data.title}
       layout="constrained"
       loading="eager"
+      format={"avif"}
       widths={[400, 600]}
       class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
     />
   </a>
   
   <!-- Content -->
-  <div class="flex flex-col gap-2 flex-1">
+  <div class="flex flex-col gap-2 flex-1 px-3 pb-3 sm:px-4 sm:pb-4">
     <!-- Category & Meta -->
     <div class="flex items-center text-xs text-base-content/70 gap-2">
-      <span class="text-primary dark:text-secondary font-medium uppercase tracking-wide">
+      <span class="text-[color:var(--primary)] font-medium uppercase tracking-wide">
         {category.data.title}
       </span>
       <Divider />
@@ -40,7 +49,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
     </div>
     
     <!-- Title -->
-    <h3 class="text-sm md:text-base font-semibold leading-snug line-clamp-2 group-hover:text-rose-500 dark:group-hover:text-purple-400 transition-colors">
+    <h3 class="text-sm md:text-base font-semibold leading-snug line-clamp-2 group-hover:text-[color:var(--accent)] transition-colors">
       <a href={`/articles/${article.id}`}>
         <span class="absolute inset-0 z-10 pointer-events-none"></span>
         {article.data.title}
@@ -52,4 +61,27 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
       {article.data.description}
     </p>
   </div>
+  </div>
 </article>
+
+<style>
+  [data-parallax-card] {
+    transition: box-shadow 200ms ease;
+  }
+
+  [data-parallax-card] .parallax-inner {
+    box-shadow: 0 12px 32px color-mix(in oklab, var(--shadow-soft) 50%, transparent);
+    transition: box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  [data-parallax-card]:hover .parallax-inner {
+    box-shadow: 0 24px 48px color-mix(in oklab, var(--shadow-soft) 70%, transparent);
+    transform: translateY(-6px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-parallax-card] .parallax-inner {
+      transition: none;
+    }
+  }
+</style>

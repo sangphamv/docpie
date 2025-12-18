@@ -4,17 +4,17 @@ import HeaderSection from "./headerSection.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { CONSTANTS } from "@/lib/config";
 
-const articles = articlesHandler.allArticles().slice(0, 4);
+const articles = articlesHandler.allArticles().slice(0, 6);
 ---
 
-<section class="bg-base-200/50 py-12 mt-12" data-pagefind-ignore="all">
+<section class="py-12 mt-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_92%,var(--bg-subtle)_8%)]" data-pagefind-ignore="all">
   <div class="container space-y-6">
     <HeaderSection
       title={CONSTANTS.Latest_News}
       link_title={CONSTANTS.View_All}
       link_url="/articles"
     />
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
       {
         articles.map((article, index) => <NewsCard article={article} index={index} />)
       }

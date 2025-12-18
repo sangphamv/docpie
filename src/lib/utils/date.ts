@@ -3,8 +3,8 @@
 import { formatDistanceToNow, parseISO, format } from "date-fns";
 import { vi } from "date-fns/locale";
 
-const FORMAT_LONG = "EEEE, dd MMMM , yyyy h:mm a zz";
-const FORMAT_SHORT = "dd MMMM , yyyy zz";
+const FORMAT_LONG = "dd 'tháng' MM , yyyy";
+const FORMAT_SHORT = "dd 'tháng' MM , yyyy";
 
 const dateCache = new Map<string, Date>();
 

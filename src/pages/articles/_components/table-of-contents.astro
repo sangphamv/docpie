@@ -24,7 +24,7 @@ const toc = headings.filter((heading) => heading.depth <= 3);
             <li>
               <a
                 href={`#${item.slug}`}
-                class={`text-base-content/70 hover:text-rose-500 dark:hover:text-purple-400 py-1 transition-colors ${
+                class={`text-base-content/70 hover:text-[color:var(--accent)] py-1 transition-colors ${
                   item.depth === 3 ? "pl-6 text-xs" : ""
                 }`}
               >

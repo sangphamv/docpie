@@ -1,0 +1,67 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry } from "astro:content";
+import { tagsHandler } from "@/lib/handlers/tags";
+import { articlesHandler } from "@/lib/handlers/articles";
+import NewsCard from "@/components/cards/newsCard.astro";
+
+const entry = await getEntry("views", "tags");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const tags = tagsHandler.allTagsWithCount();
+const selectedSlug = Astro.url.searchParams.get("tag");
+const selectedTag = selectedSlug
+  ? tags.find((tag) => tag.data.path === selectedSlug || tag.id === selectedSlug)
+  : null;
+const filteredArticles = selectedTag
+  ? tagsHandler.articlesByTagId(selectedTag.id)
+  : articlesHandler.allArticles();
+---
+
+<ListLayout header={"All Tags"} entry={entry}>
+  <div class="space-y-8">
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/tags"
+        class={`inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] ${
+          !selectedTag
+            ? "bg-[color:color-mix(in_oklab,var(--primary)_18%,var(--bg-subtle)_82%)] border-[color:color-mix(in_oklab,var(--primary)_40%,var(--border-color)_60%)] text-[color:color-mix(in_oklab,var(--primary)_75%,var(--text-primary)_25%)]"
+            : ""
+        }`}
+      >
+        Tất cả
+        <span class="inline-flex items-center justify-center min-w-[1.5rem] px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_14%,var(--bg-subtle)_86%)] text-[color:var(--primary)] text-[11px] font-semibold">
+          {filteredArticles.length}
+        </span>
+      </a>
+      {tags.map((tag) => (
+        <a
+          href={`/tags?tag=${tag.data.path}`}
+          class={`inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] ${
+            selectedTag && selectedTag.id === tag.id
+              ? "bg-[color:color-mix(in_oklab,var(--primary)_18%,var(--bg-subtle)_82%)] border-[color:color-mix(in_oklab,var(--primary)_40%,var(--border-color)_60%)] text-[color:color-mix(in_oklab,var(--primary)_75%,var(--text-primary)_25%)]"
+              : ""
+          }`}
+        >
+          <span>{tag.data.title}</span>
+          <span class="inline-flex items-center justify-center min-w-[1.5rem] px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_14%,var(--bg-subtle)_86%)] text-[color:var(--primary)] text-[11px] font-semibold">
+            {tag.data.count}
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {filteredArticles.length === 0 ? (
+        <p class="text-base-content/70">Không có bài viết cho thẻ này.</p>
+      ) : (
+        filteredArticles.map((article, index) => (
+          <NewsCard article={article} index={index} />
+        ))
+      )}
+    </div>
+  </div>
+</ListLayout>

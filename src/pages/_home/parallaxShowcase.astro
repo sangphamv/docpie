@@ -1,0 +1,138 @@
+---
+import HeaderSection from "./headerSection.astro";
+import { articlesHandler } from "@/lib/handlers/articles";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { CONSTANTS } from "@/lib/config";
+
+const items = articlesHandler.allArticles().slice(0, 6);
+---
+
+<section
+  class="py-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_90%,var(--bg-subtle)_10%)]"
+  data-pagefind-ignore="all"
+>
+  <div class="container space-y-6">
+    <HeaderSection
+      title={CONSTANTS.Parallax_Showcase_Title}
+      link_title={CONSTANTS.Parallax_Showcase_CTA}
+      link_url="/articles"
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+      {items.map((article) => {
+        const category = categoriesHandler.oneCategory(article.data.category.id) as any;
+        return (
+        <article class="group h-full" data-parallax-card>
+          <a
+            href={`/articles/${article.id}`}
+            class="parallax-inner h-full flex flex-col overflow-hidden bg-[color:var(--bg-surface)] shadow-[var(--shadow-soft)] transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg-page)]"
+          >
+            <div
+              class="relative aspect-video"
+              data-skeleton
+              data-loaded="false"
+            >
+              <img
+                src={article.data.cover.src}
+                alt={article.data.covert_alt || article.data.title}
+                loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onload="this.closest('[data-skeleton]').dataset.loaded='true'"
+              />
+            </div>
+            <div class="p-4 space-y-2 flex-1 flex flex-col text-left">
+              <p class="text-xs uppercase tracking-wide text-[color:var(--text-muted)]">
+                {category?.data?.title ?? category?.data?.name ?? category?.title ?? category?.name ?? article.data.category.id}
+              </p>
+              <h3 class="text-base md:text-lg font-semibold text-[color:var(--text-primary)] leading-snug line-clamp-2">
+                {article.data.title}
+              </h3>
+              <p class="text-sm text-[color:var(--text-muted)] line-clamp-2 flex-1">
+                {article.data.description}
+              </p>
+            </div>
+          </a>
+        </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-parallax-card] {
+    perspective: 1200px;
+  }
+
+  [data-parallax-card] .parallax-inner {
+    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    will-change: transform;
+  }
+
+  [data-skeleton] {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-subtle) 70%, var(--text-muted) 6%);
+  }
+
+  [data-skeleton]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      color-mix(in oklab, var(--bg-subtle) 80%, var(--text-muted) 5%) 0%,
+      color-mix(in oklab, var(--bg-subtle) 70%, white 10%) 50%,
+      color-mix(in oklab, var(--bg-subtle) 80%, var(--text-muted) 5%) 100%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 1.1s ease-in-out infinite;
+  }
+
+  [data-skeleton][data-loaded="true"]::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+  }
+
+  @keyframes shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+</style>
+
+<script type="module">
+  // @ts-nocheck
+  const cards = Array.from(document.querySelectorAll('[data-parallax-card]'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && cards.length) {
+    const maxTilt = 6;
+    const lift = 6;
+
+    const reset = (card) => {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+      card.style.setProperty('--lift', '0px');
+    };
+
+    const handleMove = (card, event) => {
+      const rect = card.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const halfW = rect.width / 2;
+      const halfH = rect.height / 2;
+      const tiltY = ((x - halfW) / halfW) * maxTilt;
+      const tiltX = ((halfH - y) / halfH) * maxTilt;
+      card.style.setProperty('--tilt-x', `${tiltX}deg`);
+      card.style.setProperty('--tilt-y', `${tiltY}deg`);
+      card.style.setProperty('--lift', `${lift}px`);
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => handleMove(card, event));
+      card.addEventListener('pointerleave', () => reset(card));
+      card.addEventListener('pointerenter', () => card.style.setProperty('--lift', `${lift}px`));
+    });
+  }
+</script>

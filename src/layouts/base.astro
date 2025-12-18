@@ -1,4 +1,5 @@
 ---
+import "@/styles/global.css";
 import { SITE } from "@/lib/config";
 import Head from "@/components/bases/head.astro";
 import Header from "@/components/shared/header.astro";
@@ -6,6 +7,7 @@ import Footer from "@/components/shared/footer.astro";
 import type { Entry } from "@/lib/types";
 import { getMeta } from "@/lib/utils/getMeta";
 import ScriptFooter from "@/components/bases/script-footer.astro";
+import { ViewTransitions } from "astro:transitions";
 
 type Props = {
   entry: Entry;
@@ -20,11 +22,77 @@ const meta = await getMeta(entry);
 <html lang={SITE.locale} dir={SITE.dir}>
   <Head meta={meta} />
   <body class="flex flex-col">
+    <ViewTransitions />
     <Header />
     <main class="flex-1">
       <slot />
     </main>
     <Footer />
     <ScriptFooter />
+    <script is:inline>
+      (() => {
+        const init = () => {
+          const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          const cards = Array.from(document.querySelectorAll("[data-parallax-card]"));
+          const maxTilt = 12;
+          const lift = 12;
+
+          if (!reduceMotion && cards.length) {
+            const setTilt = (card, e) => {
+              const inner = card.querySelector(".parallax-inner");
+              if (!inner) return;
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              const halfW = rect.width / 2;
+              const halfH = rect.height / 2;
+              const tiltY = ((x - halfW) / halfW) * maxTilt;
+              const tiltX = ((halfH - y) / halfH) * maxTilt;
+              inner.style.setProperty("--tilt-x", `${tiltX}deg`);
+              inner.style.setProperty("--tilt-y", `${tiltY}deg`);
+              inner.style.setProperty("--lift", `${lift}px`);
+            };
+
+            const reset = (card) => {
+              const inner = card.querySelector(".parallax-inner");
+              if (!inner) return;
+              inner.style.setProperty("--tilt-x", "0deg");
+              inner.style.setProperty("--tilt-y", "0deg");
+              inner.style.setProperty("--lift", "0px");
+            };
+
+            cards.forEach((card) => {
+              card.addEventListener("pointermove", (e) => setTilt(card, e));
+              card.addEventListener("pointerleave", () => reset(card));
+              card.addEventListener("pointerenter", () => {
+                const inner = card.querySelector(".parallax-inner");
+                if (inner) inner.style.setProperty("--lift", `${lift}px`);
+              });
+            });
+          }
+
+          const skeletons = Array.from(document.querySelectorAll("[data-skeleton]"));
+          skeletons.forEach((holder) => {
+            const img = holder.querySelector("img");
+            if (!img) return;
+            const markLoaded = () => holder.dataset.loaded = "true";
+            if (img.complete) {
+              markLoaded();
+            } else {
+              img.addEventListener("load", markLoaded, { once: true });
+              img.addEventListener("error", markLoaded, { once: true });
+            }
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init, { once: true });
+        } else {
+          init();
+        }
+
+        document.addEventListener("astro:after-swap", init);
+      })();
+    </script>
   </body>
 </html>

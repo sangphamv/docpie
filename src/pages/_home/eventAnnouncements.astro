@@ -5,9 +5,14 @@ import { CONSTANTS } from "@/lib/config";
 const eventArticles = articlesHandler.allArticles().slice(0, 4);
 ---
 
-<section class="bg-rose-100 dark:bg-slate-800 py-12" data-pagefind-ignore="all">
+<section
+  class="py-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_88%,var(--accent)_12%)] text-[color:var(--text-primary)] transition-colors"
+  data-pagefind-ignore="all"
+>
   <div class="container">
-    <h2 class="text-2xl font-bold font-serif text-rose-700 dark:text-purple-300 mb-6">
+    <h2
+      class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)] mb-6"
+    >
       {CONSTANTS.Event_Announcements}
     </h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -23,7 +28,9 @@ const eventArticles = articlesHandler.allArticles().slice(0, 4);
                   loading="lazy"
                 />
               </div>
-              <h3 class="text-white font-medium text-sm line-clamp-2 group-hover:underline">
+              <h3
+                class="text-[color:var(--text-primary)] font-medium text-sm line-clamp-2 group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] transition-colors"
+              >
                 {article.data.title}
               </h3>
             </a>

@@ -11,14 +11,20 @@ const { title, link_title, link_url } = Astro.props;
 ---
 
 <div class="flex items-center justify-between" data-pagefind-ignore="all">
-  <h2 class="text-xl font-bold">{title}</h2>
+  <h2 class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)]">
+    {title}
+  </h2>
   <a
     href={link_url}
-    class="flex items-center gap-1 text-sm text-base-content/80 group"
+    class="flex items-center gap-1 text-sm text-[color:var(--text-muted)] group"
   >
-    <span class="group-hover:text-primary transition-all">{link_title}</span>
     <span
-      class="group-hover:translate-x-0.5 transition-all group-hover:text-primary"
+      class="transition-all group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+    >
+      {link_title}
+    </span>
+    <span
+      class="group-hover:translate-x-0.5 transition-all group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
       ><ArrowRight02 /></span
     >
   </a>

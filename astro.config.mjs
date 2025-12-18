@@ -9,10 +9,15 @@ import keystatic from "@keystatic/astro";
 import react from "@astrojs/react";
 import { loadEnv } from "vite";
 import pagefind from "astro-pagefind";
+import robotsTxt from "astro-robots-txt";
 
 const { RUN_KEYSTATIC } = loadEnv(import.meta.env.MODE, process.cwd(), "");
 
-const integrations = [mdx(), sitemap(), pagefind()];
+const integrations = [mdx(), sitemap(), pagefind(), robotsTxt({
+  policy: [{ userAgent: "*", allow: "/" }],
+  sitemap: `${SITE.url}/sitemap-index.xml`,
+  host: SITE.url,
+})];
 if (RUN_KEYSTATIC === "true") {
   integrations.push(react());
   integrations.push(keystatic());
@@ -24,6 +29,9 @@ export default defineConfig({
   base: SITE.basePath,
   markdown: {
     remarkPlugins: [readingTime, modifiedTime],
+    shikiConfig: {
+      theme: "rose-pine-moon",
+    },
   },
   image: {
     responsiveStyles: true,
