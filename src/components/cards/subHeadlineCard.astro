@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import Divider from "@/components/bases/divider.astro";
 import { categoriesHandler } from "@/lib/handlers/categories";
+import { tagsHandler } from "@/lib/handlers/tags";
 
 type Props = {
   article: CollectionEntry<"articles">;
@@ -13,13 +14,14 @@ const { article } = Astro.props;
 
 const { remarkPluginFrontmatter } = await render(article);
 const category = categoriesHandler.oneCategory(article.data.category.id);
+const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
 ---
 
 <article
   data-parallax-card
   class="group relative isolate h-full"
 >
-  <div class="parallax-inner flex flex-col bg-[color:var(--bg-surface)] overflow-hidden h-full">
+  <div class="parallax-inner flex flex-col bg-[color:var(--color-base-100)] overflow-hidden h-full shadow-[var(--shadow-soft)]">
   <!-- Thumbnail -->
   <a
     href={`/articles/${article.id}`}
@@ -40,7 +42,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
   <!-- Content -->
   <div class="flex flex-col gap-2 flex-1 px-3 pb-3 sm:px-4 sm:pb-4">
     <!-- Category & Meta -->
-    <div class="flex items-center text-xs text-base-content/70 gap-2">
+    <div class="flex items-center text-xs text-[color:var(--text-secondary)] gap-2">
       <span class="text-[color:var(--primary)] font-medium uppercase tracking-wide">
         {category.data.title}
       </span>
@@ -49,17 +51,31 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
     </div>
     
     <!-- Title -->
-    <h3 class="text-sm md:text-base font-semibold leading-snug line-clamp-2 group-hover:text-[color:var(--accent)] transition-colors">
-      <a href={`/articles/${article.id}`}>
+    <h3 class="text-sm md:text-base font-semibold leading-snug line-clamp-2 text-[color:var(--text-primary)]">
+      <a href={`/articles/${article.id}`} class="text-[color:var(--text-primary)] hover:text-[color:var(--text-primary)] focus-visible:text-[color:var(--text-primary)]">
         <span class="absolute inset-0 z-10 pointer-events-none"></span>
         {article.data.title}
       </a>
     </h3>
     
     <!-- Description -->
-    <p class="text-xs text-base-content/70 leading-relaxed line-clamp-2">
+    <p class="text-xs text-[color:var(--text-muted)] leading-relaxed line-clamp-2">
       {article.data.description}
     </p>
+
+    <!-- Tags -->
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mt-2">
+        {tags.slice(0, 2).map((tag) => (
+          <a
+            href={`/tags/${tag.data.path}`}
+            class="text-xs px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_20%,transparent)] text-[color:var(--primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_30%,transparent)] transition-colors font-medium"
+          >
+            {tag.data.title}
+          </a>
+        ))}
+      </div>
+    )}
   </div>
   </div>
 </article>

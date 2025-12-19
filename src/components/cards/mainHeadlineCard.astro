@@ -5,6 +5,7 @@ import { render } from "astro:content";
 import Divider from "@/components/bases/divider.astro";
 import { categoriesHandler } from "@/lib/handlers/categories";
 import { authorsHandler } from "@/lib/handlers/authors";
+import { tagsHandler } from "@/lib/handlers/tags";
 import { formatDate, normalizeDate } from "@/lib/utils/date";
 
 type Props = {
@@ -21,6 +22,7 @@ const publishDate = formatDate(
   normalizeDate(article.data.publishedTime),
   "short"
 );
+const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
 ---
 
 <article
@@ -28,7 +30,7 @@ const publishDate = formatDate(
   class="group relative isolate"
 >
   <div
-    class="parallax-inner grid grid-cols-1 lg:grid-cols-2 gap-6 items-start overflow-hidden bg-[color:var(--bg-surface)]"
+    class="parallax-inner grid grid-cols-1 lg:grid-cols-2 gap-6 items-start overflow-hidden bg-[color:var(--color-base-100)] shadow-[var(--shadow-soft)]"
   >
   <!-- Featured Image - Left Side -->
   <a
@@ -51,7 +53,7 @@ const publishDate = formatDate(
   <!-- Content - Right Side -->
   <div class="relative z-10 flex flex-col gap-3 justify-start py-4 px-3 sm:px-4 md:px-6">
     <!-- Category & Meta -->
-    <div class="flex items-center text-xs text-base-content/70 gap-2">
+    <div class="flex items-center text-xs text-[color:var(--text-secondary)] gap-2">
       <span
         class="text-[color:var(--primary)] font-medium uppercase tracking-wide"
       >
@@ -62,28 +64,42 @@ const publishDate = formatDate(
     </div>
 
     <!-- Title -->
-    <h2
-      class="text-base md:text-lg lg:text-xl font-bold leading-snug group-hover:text-[color:var(--accent)] transition-colors"
+    <h3
+      class="text-base md:text-lg font-semibold leading-snug text-[color:var(--text-primary)]"
     >
-      <a href={`/articles/${article.id}`}>
+      <a href={`/articles/${article.id}`} class="text-[color:var(--text-primary)] hover:text-[color:var(--text-primary)] focus-visible:text-[color:var(--text-primary)]">
         <span class="absolute inset-0 z-10 pointer-events-none"></span>
         {article.data.title}
       </a>
-    </h2>
+    </h3>
 
     <!-- Description -->
     <p
-      class="text-sm md:text-base text-base-content/80 leading-relaxed line-clamp-2"
+      class="text-sm md:text-base text-[color:var(--text-muted)] leading-relaxed line-clamp-2"
     >
       {article.data.description}
     </p>
 
+    <!-- Tags -->
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-2">
+        {tags.slice(0, 3).map((tag) => (
+          <a
+            href={`/tags/${tag.data.path}`}
+            class="text-xs px-2 py-1 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_20%,transparent)] text-[color:var(--primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_30%,transparent)] transition-colors font-medium"
+          >
+            {tag.data.title}
+          </a>
+        ))}
+      </div>
+    )}
+
     <!-- Author & Date -->
-    <div class="mt-auto pt-3 border-t border-base-300">
-      <p class="text-xs md:text-xs text-base-content/60 tracking-wide">
+    <div class="mt-auto pt-3 border-t border-[color:var(--border-color)]">
+      <p class="text-xs md:text-xs text-[color:var(--text-tertiary)] tracking-wide">
         {authorName}
       </p>
-      <p class="text-xs md:text-xs text-base-content/60">{publishDate}</p>
+      <p class="text-xs md:text-xs text-[color:var(--text-tertiary)]">{publishDate}</p>
     </div>
   </div>
   </div>
