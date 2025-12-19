@@ -2,7 +2,7 @@
 import { articlesHandler } from "@/lib/handlers/articles";
 import { CONSTANTS } from "@/lib/config";
 
-const eventArticles = articlesHandler.allArticles().slice(0, 4);
+const eventArticles = articlesHandler.allArticles().slice(0, 6);
 ---
 
 <section
@@ -15,28 +15,167 @@ const eventArticles = articlesHandler.allArticles().slice(0, 4);
     >
       {CONSTANTS.Event_Announcements}
     </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {
-        eventArticles.map((article) => (
-          <article class="group">
-            <a href={`/articles/${article.id}`} class="block">
-              <div class="aspect-video overflow-hidden rounded-lg mb-3">
-                <img
-                  src={article.data.cover.src}
-                  alt={article.data.covert_alt || article.data.title}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-              <h3
-                class="text-[color:var(--text-primary)] font-medium text-sm line-clamp-2 group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] transition-colors"
-              >
-                {article.data.title}
-              </h3>
-            </a>
-          </article>
-        ))
-      }
+    
+    <div class="relative">
+      <!-- Previous Button -->
+      <button
+        id="prev-btn"
+        class="btn btn-circle btn-ghost absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-[color:var(--bg-surface)] hover:bg-[color:var(--bg-subtle)] shadow-lg"
+        aria-label="Previous"
+      >
+        ❮
+      </button>
+
+      <!-- Carousel Container -->
+      <div class="carousel-container overflow-hidden mx-12">
+        <div class="carousel-track flex transition-transform duration-500 ease-in-out gap-6">
+          {eventArticles.map((article) => (
+            <article class="carousel-card flex-shrink-0 w-[calc(25%-1.125rem)]">
+              <a href={`/articles/${article.id}`} class="block group">
+                <div class="aspect-video overflow-hidden rounded-lg mb-3">
+                  <img
+                    src={article.data.cover.src}
+                    alt={article.data.covert_alt || article.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+                <h3
+                  class="text-[color:var(--text-primary)] font-medium text-sm line-clamp-2 group-hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] transition-colors"
+                >
+                  {article.data.title}
+                </h3>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Next Button -->
+      <button
+        id="next-btn"
+        class="btn btn-circle btn-ghost absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[color:var(--bg-surface)] hover:bg-[color:var(--bg-subtle)] shadow-lg"
+        aria-label="Next"
+      >
+        ❯
+      </button>
     </div>
+
+    <!-- Carousel Indicators -->
+    <div class="flex justify-center gap-2 mt-6" id="indicators-container"></div>
   </div>
 </section>
+
+<script>
+  function initCarousel() {
+    const track = document.querySelector('.carousel-track') as HTMLElement;
+    const cards = document.querySelectorAll('.carousel-card');
+    const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement;
+    const nextBtn = document.getElementById('next-btn') as HTMLButtonElement;
+    const indicatorsContainer = document.getElementById('indicators-container');
+    
+    if (!track || !cards.length) return;
+
+    let currentIndex = 0;
+    const totalCards = cards.length;
+    const maxIndex = Math.max(0, totalCards - 4); // Show 4 cards at a time, minimum 0
+
+    // Create indicators only if we have more than 4 cards
+    if (indicatorsContainer && maxIndex > 0) {
+      indicatorsContainer.innerHTML = '';
+      for (let i = 0; i <= maxIndex; i++) {
+        const indicator = document.createElement('button');
+        indicator.className = 'carousel-indicator w-3 h-3 rounded-full transition-colors bg-[color:var(--bg-subtle)]';
+        indicator.dataset.index = i.toString();
+        indicator.setAttribute('aria-label', `Go to position ${i + 1}`);
+        indicatorsContainer.appendChild(indicator);
+      }
+    }
+
+    function updateCarousel() {
+      const cardWidth = (cards[0] as HTMLElement).offsetWidth;
+      const gap = 24; // 1.5rem = 24px
+      const offset = currentIndex * (cardWidth + gap);
+      track.style.transform = `translateX(-${offset}px)`;
+
+      // Update indicators
+      document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
+        if (index === currentIndex) {
+          indicator.classList.add('bg-[color:var(--primary)]');
+          indicator.classList.remove('bg-[color:var(--bg-subtle)]');
+        } else {
+          indicator.classList.remove('bg-[color:var(--primary)]');
+          indicator.classList.add('bg-[color:var(--bg-subtle)]');
+        }
+      });
+
+      // Update button states
+      if (prevBtn && prevBtn instanceof HTMLButtonElement) {
+        prevBtn.disabled = currentIndex === 0;
+        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+      }
+      if (nextBtn && nextBtn instanceof HTMLButtonElement) {
+        nextBtn.disabled = currentIndex >= maxIndex;
+        nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+        nextBtn.style.cursor = currentIndex >= maxIndex ? 'not-allowed' : 'pointer';
+      }
+    }
+
+    // Previous button - move 1 card left
+    prevBtn?.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    });
+
+    // Next button - move 1 card right
+    nextBtn?.addEventListener('click', () => {
+      if (currentIndex < maxIndex) {
+        currentIndex++;
+        updateCarousel();
+      }
+    });
+
+    // Indicator buttons
+    document.querySelectorAll('.carousel-indicator').forEach((indicator) => {
+      indicator.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        currentIndex = parseInt(target.dataset.index || '0');
+        updateCarousel();
+      });
+    });
+
+    // Initialize
+    updateCarousel();
+
+    // Handle window resize
+    let resizeTimeout: NodeJS.Timeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateCarousel, 100);
+    });
+  }
+
+  // Run on page load
+  document.addEventListener('astro:page-load', initCarousel);
+</script>
+
+<style>
+  .carousel-indicator.bg-\[color\:var\(--primary\)\] {
+    background-color: var(--primary);
+  }
+
+  @media (max-width: 1023px) {
+    .carousel-card {
+      width: calc(50% - 0.75rem) !important;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .carousel-card {
+      width: 100% !important;
+    }
+  }
+</style>

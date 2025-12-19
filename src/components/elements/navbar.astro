@@ -5,7 +5,7 @@ import { CONSTANTS } from "@/lib/config";
 ---
 
 <nav class="navbar-center hidden lg:flex container">
-  <ul class="menu menu-md menu-horizontal px-1 mx-auto uppercase font-medium text-sm text-[color:var(--text-primary)] gap-6">
+  <ul class="menu menu-md menu-horizontal px-1 mx-auto uppercase font-medium text-sm text-primary gap-6">
     <NavbarItem item={{ href: "/", text: CONSTANTS.Homepage }} />
     <NavbarItem item={{ href: "/articles", text: CONSTANTS.Articles }} />
     {NAVIGATION_LINKS.slice(0, 6).map((item) => <NavbarItem item={item} />)}

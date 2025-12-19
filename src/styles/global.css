@@ -221,6 +221,30 @@
   }
 }
 
+@utility text-primary {
+  color: var(--text-primary);
+}
+
+@utility text-muted {
+  color: var(--text-muted);
+}
+
+@utility bg-page {
+  background-color: var(--bg-page);
+}
+
+@utility bg-surface {
+  background-color: var(--bg-surface);
+}
+
+@utility bg-subtle {
+  background-color: var(--bg-subtle);
+}
+
+@utility border-color {
+  border-color: var(--border-color);
+}
+
 @layer components {
   [data-parallax-card] {
     perspective: 1400px;

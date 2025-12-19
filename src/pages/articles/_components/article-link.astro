@@ -18,7 +18,8 @@ const { article } = Astro.props;
         href={article.data.link}
         rel="noopener noreferrer"
         target="_blank"
-        class="btn btn-primary btn-wide gap-2"
+        aria-label="Download attachment"
+        class="btn btn-wide gap-2 border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-primary hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)]"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

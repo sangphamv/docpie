@@ -21,7 +21,7 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
   data-parallax-card
   class="group relative isolate h-full"
 >
-  <div class="parallax-inner flex flex-col bg-[color:var(--color-base-100)] overflow-hidden h-full shadow-[var(--shadow-soft)]">
+  <div class="parallax-inner flex flex-col bg-[color:var(--bg-surface)] overflow-hidden h-full shadow-[var(--shadow-soft)] transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg-page)]">
   <!-- Thumbnail -->
   <a
     href={`/articles/${article.id}`}
@@ -43,7 +43,7 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
   <div class="flex flex-col gap-2 flex-1 px-3 pb-3 sm:px-4 sm:pb-4">
     <!-- Category & Meta -->
     <div class="flex items-center text-xs text-[color:var(--text-secondary)] gap-2">
-      <span class="text-[color:var(--primary)] font-medium uppercase tracking-wide">
+      <span class="text-[color:var(--primary)] font-medium tracking-wide">
         {category.data.title}
       </span>
       <Divider />
@@ -82,17 +82,19 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
 
 <style>
   [data-parallax-card] {
-    transition: box-shadow 200ms ease;
+    perspective: 1200px;
   }
 
   [data-parallax-card] .parallax-inner {
+    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg));
+    will-change: transform;
     box-shadow: 0 12px 32px color-mix(in oklab, var(--shadow-soft) 50%, transparent);
     transition: box-shadow 200ms ease, transform 200ms ease;
   }
 
   [data-parallax-card]:hover .parallax-inner {
     box-shadow: 0 24px 48px color-mix(in oklab, var(--shadow-soft) 70%, transparent);
-    transform: translateY(-6px);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -101,3 +103,42 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
     }
   }
 </style>
+
+<script type="module">
+  const cards = Array.from(document.querySelectorAll("[data-parallax-card]"));
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (!reduceMotion && cards.length) {
+    const maxTilt = 6;
+    const lift = 6;
+
+    const reset = (card) => {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+      card.style.setProperty("--lift", "0px");
+    };
+
+    const handleMove = (card, event) => {
+      const rect = card.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const halfW = rect.width / 2;
+      const halfH = rect.height / 2;
+      const tiltY = ((x - halfW) / halfW) * maxTilt;
+      const tiltX = ((halfH - y) / halfH) * maxTilt;
+      card.style.setProperty("--tilt-x", `${tiltX}deg`);
+      card.style.setProperty("--tilt-y", `${tiltY}deg`);
+      card.style.setProperty("--lift", `${lift}px`);
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener("pointermove", (event) => handleMove(card, event));
+      card.addEventListener("pointerleave", () => reset(card));
+      card.addEventListener("pointerenter", () =>
+        card.style.setProperty("--lift", `${lift}px`)
+      );
+    });
+  }
+</script>

@@ -4,6 +4,7 @@ import { articlesHandler } from "@/lib/handlers/articles";
 import { categoriesHandler } from "@/lib/handlers/categories";
 import { render } from "astro:content";
 import { CONSTANTS } from "@/lib/config";
+import Divider from "@/components/bases/divider.astro";
 
 const items = articlesHandler.allArticles().slice(0, 6);
 ---
@@ -20,47 +21,55 @@ const items = articlesHandler.allArticles().slice(0, 6);
     />
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-      {items.map(async (article) => {
-        const category = categoriesHandler.oneCategory(article.data.category.id) as any;
-        const { remarkPluginFrontmatter } = await render(article);
-        return (
-        <article class="group h-full" data-parallax-card>
-          <a
-            href={`/articles/${article.id}`}
-            class="parallax-inner h-full flex flex-col overflow-hidden bg-[color:var(--color-base-100)] shadow-[var(--shadow-soft)] transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg-page)]"
-          >
-            <div
-              class="relative aspect-video"
-              data-skeleton
-              data-loaded="false"
-            >
-              <img
-                src={article.data.cover.src}
-                alt={article.data.covert_alt || article.data.title}
-                loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                onload="this.closest('[data-skeleton]').dataset.loaded='true'"
-              />
-            </div>
-            <div class="p-4 space-y-2 flex-1 flex flex-col text-left">
-              <div class="flex items-center text-xs uppercase tracking-wide text-[color:var(--text-secondary)] gap-2">
-                <span>
-                  {category?.data?.title ?? category?.data?.name ?? category?.title ?? category?.name ?? article.data.category.id}
-                </span>
-                <span>•</span>
-                <span>{remarkPluginFrontmatter.minutesRead}</span>
-              </div>
-              <h3 class="text-base md:text-lg font-semibold text-[color:var(--text-primary)] leading-snug line-clamp-2">
-                {article.data.title}
-              </h3>
-              <p class="text-sm text-[color:var(--text-muted)] line-clamp-2 flex-1">
-                {article.data.description}
-              </p>
-            </div>
-          </a>
-        </article>
-        );
-      })}
+      {
+        items.map(async (article) => {
+          const category = categoriesHandler.oneCategory(
+            article.data.category.id
+          ) as any;
+          const { remarkPluginFrontmatter } = await render(article);
+          return (
+            <article class="group h-full" data-parallax-card>
+              <a
+                href={`/articles/${article.id}`}
+                class="parallax-inner h-full flex flex-col overflow-hidden bg-[color:var(--color-base-100)] shadow-[var(--shadow-soft)] transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg-page)]"
+              >
+                <div
+                  class="relative aspect-video"
+                  data-skeleton
+                  data-loaded="false"
+                >
+                  <img
+                    src={article.data.cover.src}
+                    alt={article.data.covert_alt || article.data.title}
+                    loading="lazy"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onload="this.closest('[data-skeleton]').dataset.loaded='true'"
+                  />
+                </div>
+                <div class="p-4 space-y-2 flex-1 flex flex-col text-left">
+                  <div class="flex items-center text-xs tracking-wide text-[color:var(--text-secondary)] gap-2">
+                    <span>
+                      {category?.data?.title ??
+                        category?.data?.name ??
+                        category?.title ??
+                        category?.name ??
+                        article.data.category.id}
+                    </span>
+                    <Divider />
+                    <span>{remarkPluginFrontmatter.minutesRead}</span>
+                  </div>
+                  <h3 class="text-base md:text-lg font-semibold text-[color:var(--text-primary)] leading-snug line-clamp-2">
+                    {article.data.title}
+                  </h3>
+                  <p class="text-sm text-[color:var(--text-muted)] line-clamp-2 flex-1">
+                    {article.data.description}
+                  </p>
+                </div>
+              </a>
+            </article>
+          );
+        })
+      }
     </div>
   </div>
 </section>
@@ -71,7 +80,8 @@ const items = articlesHandler.allArticles().slice(0, 6);
   }
 
   [data-parallax-card] .parallax-inner {
-    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg));
     will-change: transform;
   }
 
@@ -85,7 +95,8 @@ const items = articlesHandler.allArticles().slice(0, 6);
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       color-mix(in oklab, var(--bg-subtle) 80%, var(--text-muted) 5%) 0%,
       color-mix(in oklab, var(--bg-subtle) 70%, white 10%) 50%,
       color-mix(in oklab, var(--bg-subtle) 80%, var(--text-muted) 5%) 100%
@@ -109,17 +120,19 @@ const items = articlesHandler.allArticles().slice(0, 6);
 
 <script type="module">
   // @ts-nocheck
-  const cards = Array.from(document.querySelectorAll('[data-parallax-card]'));
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cards = Array.from(document.querySelectorAll("[data-parallax-card]"));
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
   if (!reduceMotion && cards.length) {
     const maxTilt = 6;
     const lift = 6;
 
     const reset = (card) => {
-      card.style.setProperty('--tilt-x', '0deg');
-      card.style.setProperty('--tilt-y', '0deg');
-      card.style.setProperty('--lift', '0px');
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+      card.style.setProperty("--lift", "0px");
     };
 
     const handleMove = (card, event) => {
@@ -130,15 +143,17 @@ const items = articlesHandler.allArticles().slice(0, 6);
       const halfH = rect.height / 2;
       const tiltY = ((x - halfW) / halfW) * maxTilt;
       const tiltX = ((halfH - y) / halfH) * maxTilt;
-      card.style.setProperty('--tilt-x', `${tiltX}deg`);
-      card.style.setProperty('--tilt-y', `${tiltY}deg`);
-      card.style.setProperty('--lift', `${lift}px`);
+      card.style.setProperty("--tilt-x", `${tiltX}deg`);
+      card.style.setProperty("--tilt-y", `${tiltY}deg`);
+      card.style.setProperty("--lift", `${lift}px`);
     };
 
     cards.forEach((card) => {
-      card.addEventListener('pointermove', (event) => handleMove(card, event));
-      card.addEventListener('pointerleave', () => reset(card));
-      card.addEventListener('pointerenter', () => card.style.setProperty('--lift', `${lift}px`));
+      card.addEventListener("pointermove", (event) => handleMove(card, event));
+      card.addEventListener("pointerleave", () => reset(card));
+      card.addEventListener("pointerenter", () =>
+        card.style.setProperty("--lift", `${lift}px`)
+      );
     });
   }
 </script>
