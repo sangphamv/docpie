@@ -15,47 +15,89 @@ if (!entry) {
 const articles = categoriesHandler.allCategoriesWithLatestArticles();
 ---
 
-{/* Use your BaseLayout and pass the entry for metadata */}
 <ListLayout header={"All Categories"} entry={entry}>
-  <ul class="w-full space-y-8 my-6">
+  <div class="w-full space-y-12 my-8">
     {
-      articles.map((category) => {
+      articles.map((category, catIndex) => {
         const { path, title, latestArticles } = category.data;
         const articleCount = category.data.count;
         return (
-          <div class="flex flex-col items-start gap-4">
-            <div class="flex items-center w-full justify-between gap-2 border-b border-accent/30">
-              <h2 class="text-xl inline-flex items-center">
-                {title}{" "}
-                <span class="text-xs font-sans ml-2 text-primary">
-                  ({articleCount} Articles)
+          <section class="category-section">
+            {/* Category Header */}
+            <div class="flex items-center justify-between gap-4 mb-6 pb-3 border-b-2 border-[color:var(--primary)]">
+              <div class="flex items-baseline gap-3">
+                <h2 class="text-2xl md:text-3xl font-bold text-[color:var(--text-primary)]">
+                  {title}
+                </h2>
+                <span class="text-sm font-medium text-[color:var(--primary)] bg-[color:color-mix(in_oklab,var(--primary)_15%,transparent)] px-3 py-1 rounded-full">
+                  {articleCount} {articleCount === 1 ? 'Article' : 'Articles'}
                 </span>
-              </h2>
+              </div>
               <a
                 href={`/categories/${path}/1`}
-                class="group flex text-sm items-center gap-1 hover:gap-2 transition-all duration-200"
+                class="group flex items-center gap-2 text-sm font-semibold text-[color:var(--primary)] hover:text-[color:var(--primary)] transition-all duration-200 hover:gap-3"
               >
-                See All
-                <span class="transform group-hover:translate-x-1 transition-transform duration-200">
-                  <ArrowRight02 size="16" />
+                View All
+                <span class="transition-transform duration-200 group-hover:translate-x-1">
+                  <ArrowRight02 size="18" />
                 </span>
               </a>
             </div>
-            <div class="snap-x">
-              {/* {latestArticles.slice(0, 6).map((article, index) => (
-                <NewsCard article={article} index={index} />
-              ))} */}
-              <div class="flex overflow-x-auto pb-4 space-x-4 snap-x snap-proximity">
-                {latestArticles.slice(0, 6).map((article, index) => (
-                  <div class="snap-start flex-none lg:flex-initial">
-                    <NewsCard article={article} index={index} />
+
+            {/* Articles Grid - Desktop: 3 columns, Mobile: Horizontal scroll */}
+            <div class="articles-container">
+              {/* Mobile: Horizontal Scroll */}
+              <div class="md:hidden flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide">
+                {latestArticles.slice(0, 8).map((article, index) => (
+                  <div class="snap-start flex-none w-[280px] sm:w-[320px]">
+                    <NewsCard article={article} index={catIndex === 0 && index < 3 ? index : index + 3} />
                   </div>
                 ))}
               </div>
+
+              {/* Desktop: Grid */}
+              <div class="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {latestArticles.slice(0, 6).map((article, index) => (
+                  <NewsCard article={article} index={catIndex === 0 && index < 3 ? index : index + 3} />
+                ))}
+              </div>
             </div>
-          </div>
+          </section>
         );
       })
     }
-  </ul>
+  </div>
+
+  <style>
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-section {
+      scroll-margin-top: 2rem;
+    }
+
+    .articles-container {
+      position: relative;
+    }
+
+    /* Fade effect for horizontal scroll */
+    @media (max-width: 768px) {
+      .articles-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 1rem;
+        width: 3rem;
+        background: linear-gradient(to left, var(--bg-page), transparent);
+        pointer-events: none;
+      }
+    }
+  </style>
 </ListLayout>

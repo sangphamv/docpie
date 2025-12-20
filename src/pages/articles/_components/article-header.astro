@@ -27,14 +27,29 @@ const articleTags = (article.data.tags ?? []).map((tag) =>
 
 <section class="mb-0 py-6">
   <div class="container max-w-5xl">
-    <!-- Category -->
-    <div class="mb-4">
+    <!-- Category & Tags -->
+    <div class="mb-4 flex items-center flex-wrap gap-2 text-sm font-bold uppercase tracking-wider">
       <a 
         href={`/categories/${category.id}`} 
-        class="text-sm font-bold uppercase tracking-wider text-[color:var(--primary)] hover:underline"
+        class="text-[color:var(--primary)] hover:underline"
       >
         {category.data.title}
       </a>
+      {articleTags.length > 0 && (
+        <>
+          {articleTags.map((tag) => (
+            <>
+              <Divider />
+              <a
+                href={`/tags/${tag.data.path}`}
+                class="text-[color:var(--primary)] hover:underline"
+              >
+                {tag.data.title}
+              </a>
+            </>
+          ))}
+        </>
+      )}
     </div>
 
     <!-- Title -->
@@ -121,19 +136,6 @@ const articleTags = (article.data.tags ?? []).map((tag) =>
         </span>
       </span>
     </div>
-
-    {articleTags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-6">
-        {articleTags.map((tag) => (
-          <a
-            href={`/tags?tag=${tag.data.path}`}
-            class="inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
-          >
-            #{tag.data.title}
-          </a>
-        ))}
-      </div>
-    )}
 
     <!-- Featured Image -->
     <div class="overflow-hidden rounded-lg mb-6">

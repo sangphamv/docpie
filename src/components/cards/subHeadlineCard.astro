@@ -41,11 +41,26 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
   
   <!-- Content -->
   <div class="flex flex-col gap-2 flex-1 px-3 pb-3 sm:px-4 sm:pb-4">
-    <!-- Category & Meta -->
-    <div class="flex items-center text-xs text-[color:var(--text-secondary)] gap-2">
+    <!-- Category, Tags & Meta -->
+    <div class="flex items-center flex-wrap text-xs text-[color:var(--text-secondary)] gap-2">
       <span class="text-[color:var(--primary)] font-medium tracking-wide">
         {category.data.title}
       </span>
+      {tags.length > 0 && (
+        <>
+          <Divider />
+          <div class="flex items-center gap-1.5">
+            {tags.slice(0, 2).map((tag) => (
+              <a
+                href={`/tags/${tag.data.path}`}
+                class="text-[color:var(--primary)] font-medium tracking-wide hover:underline"
+              >
+                {tag.data.title}
+              </a>
+            ))}
+          </div>
+        </>
+      )}
       <Divider />
       <span>{remarkPluginFrontmatter.minutesRead}</span>
     </div>
@@ -62,20 +77,6 @@ const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
     <p class="text-xs text-[color:var(--text-muted)] leading-relaxed line-clamp-2">
       {article.data.description}
     </p>
-
-    <!-- Tags -->
-    {tags.length > 0 && (
-      <div class="flex flex-wrap gap-1.5 mt-2">
-        {tags.slice(0, 2).map((tag) => (
-          <a
-            href={`/tags/${tag.data.path}`}
-            class="text-xs px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_20%,transparent)] text-[color:var(--primary)] hover:bg-[color:color-mix(in_oklab,var(--primary)_30%,transparent)] transition-colors font-medium"
-          >
-            {tag.data.title}
-          </a>
-        ))}
-      </div>
-    )}
   </div>
   </div>
 </article>

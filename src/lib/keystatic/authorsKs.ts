@@ -3,7 +3,7 @@ import { KEYSTATIC_AUTHORS } from "@/lib/config";
 export const authorsKs = collection({
   label: KEYSTATIC_AUTHORS.label,
   slugField: "name",
-  path: "src/content/authors/*/",
+  path: "src/content/authors/*",
   format: { contentField: "content" },
   entryLayout: "form",
   schema: {

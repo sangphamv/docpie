@@ -3,7 +3,7 @@ import { KEYSTATIC_ARTICLES } from "@/lib/config";
 export const articlesKs = collection({
   label: KEYSTATIC_ARTICLES.label,
   slugField: "title",
-  path: "src/content/articles/*/",
+  path: "src/content/articles/*",
   format: { contentField: "content" },
   entryLayout: "form",
   schema: {

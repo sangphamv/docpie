@@ -2,6 +2,7 @@
 import HeaderSection from "./headerSection.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { categoriesHandler } from "@/lib/handlers/categories";
+import { tagsHandler } from "@/lib/handlers/tags";
 import { render } from "astro:content";
 import { CONSTANTS } from "@/lib/config";
 import Divider from "@/components/bases/divider.astro";
@@ -26,6 +27,7 @@ const items = articlesHandler.allArticles().slice(0, 6);
           const category = categoriesHandler.oneCategory(
             article.data.category.id
           ) as any;
+          const tags = (article.data.tags ?? []).map(tag => tagsHandler.oneTag(tag.id));
           const { remarkPluginFrontmatter } = await render(article);
           return (
             <article class="group h-full" data-parallax-card>
@@ -47,7 +49,7 @@ const items = articlesHandler.allArticles().slice(0, 6);
                   />
                 </div>
                 <div class="p-4 space-y-2 flex-1 flex flex-col text-left">
-                  <div class="flex items-center text-xs tracking-wide text-[color:var(--text-secondary)] gap-2">
+                  <div class="flex items-center flex-wrap text-xs tracking-wide text-[color:var(--text-secondary)] gap-2">
                     <span>
                       {category?.data?.title ??
                         category?.data?.name ??
@@ -55,6 +57,18 @@ const items = articlesHandler.allArticles().slice(0, 6);
                         category?.name ??
                         article.data.category.id}
                     </span>
+                    {tags.length > 0 && (
+                      <>
+                        <Divider />
+                        <div class="flex items-center gap-1.5">
+                          {tags.slice(0, 2).map((tag) => (
+                            <span class="text-[color:var(--primary)] font-medium tracking-wide">
+                              {tag.data.title}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                     <Divider />
                     <span>{remarkPluginFrontmatter.minutesRead}</span>
                   </div>

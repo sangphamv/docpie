@@ -4,7 +4,7 @@ import { KEYSTATIC_TAGS } from "@/lib/config";
 export const tagsKs = collection({
   label: KEYSTATIC_TAGS.label,
   slugField: "path",
-  path: "src/content/tags/*/",
+  path: "src/content/tags/*",
   format: { data: "json" },
   schema: {
     title: fields.text({

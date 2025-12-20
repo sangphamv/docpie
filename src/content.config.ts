@@ -19,17 +19,17 @@ const viewCollection = defineCollection({
 });
 
 const categoryCollection = defineCollection({
-  loader: glob({ pattern: "**/index.json", base: "./src/content/categories" }),
+  loader: glob({ pattern: "**/*.json", base: "./src/content/categories" }),
   schema: categorySchema,
 });
 
 const tagCollection = defineCollection({
-  loader: glob({ pattern: "**/index.json", base: "./src/content/tags" }),
+  loader: glob({ pattern: "**/*.json", base: "./src/content/tags" }),
   schema: tagSchema,
 });
 
 const authorCollection = defineCollection({
-  loader: glob({ pattern: "**/index.mdx", base: "./src/content/authors" }),
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/authors" }),
   schema: ({ image }) => authorSchema(image),
 });
 
