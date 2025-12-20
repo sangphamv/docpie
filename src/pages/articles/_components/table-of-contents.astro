@@ -13,29 +13,33 @@ const toc = headings.filter((heading) => heading.depth <= 3);
 ---
 
 <div class="card bg-base-200 shadow-sm mb-6">
-  <div class="card-body p-5">
-    <h3 class="card-title text-sm uppercase tracking-wider opacity-80">
-      {CONSTANTS.Table_Of_Contents}
-    </h3>
-    {toc.length > 0 ? (
-      <nav class="text-sm">
-        <ul class="menu menu-compact space-y-1">
-          {toc.map((item) => (
-            <li>
-              <a
-                href={`#${item.slug}`}
-                class={`text-base-content/70 hover:text-[color:var(--accent)] py-1 transition-colors ${
-                  item.depth === 3 ? "pl-6 text-xs" : ""
-                }`}
-              >
-                {item.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    ) : (
-      <p class="text-sm text-base-content/60">No headings found</p>
-    )}
+  <div class="card-body p-4">
+    <details class="group" aria-label={CONSTANTS.Table_Of_Contents}>
+      <summary class="flex items-center justify-between text-sm uppercase tracking-wider opacity-80 cursor-pointer select-none">
+        <span>{CONSTANTS.Table_Of_Contents}</span>
+        <span class="transition-transform duration-200 group-open:rotate-180">⌄</span>
+      </summary>
+
+      {toc.length > 0 ? (
+        <nav class="text-sm mt-3 max-h-72 overflow-auto pr-1">
+          <ul class="space-y-1">
+            {toc.map((item) => (
+              <li>
+                <a
+                  href={`#${item.slug}`}
+                  class={`block text-base-content/80 hover:text-[color:var(--accent)] py-1 transition-colors ${
+                    item.depth === 3 ? "pl-5 text-xs" : ""
+                  }`}
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : (
+        <p class="text-sm text-base-content/60 mt-3">No headings found</p>
+      )}
+    </details>
   </div>
 </div>

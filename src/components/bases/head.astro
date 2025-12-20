@@ -7,6 +7,8 @@ import { ClientRouter } from "astro:transitions";
 import { SITE } from "@/lib/config";
 import type { ArticleMeta, Meta } from "@/lib/types";
 import { SEO } from "astro-seo";
+import { generateWebSiteSchema, generateOrganizationSchema } from "@/lib/utils/schemaGenerator";
+import HreflangLinks from "@/components/bases/hreflang-links.astro";
 
 type Props = {
   meta: Meta | ArticleMeta;
@@ -47,6 +49,8 @@ const seoProps = {
           publishedTime: new Date(meta.publishedTime).toISOString(),
           modifiedTime: new Date(meta.lastModified).toISOString(),
           authors: meta.authors.map((author) => `${SITE.url}/authors/${author.link}`),
+          ...(meta.tags && meta.tags.length > 0 ? { tags: meta.tags } : {}),
+          ...(meta.category ? { section: meta.category } : {}),
         }
       : undefined,
   },
@@ -65,6 +69,13 @@ const seoProps = {
   <!-- Global Metadata -->
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="generator" content={Astro.generator} />
+
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -85,5 +96,35 @@ const seoProps = {
 
   <SEO {...seoProps} />
 
+  <HreflangLinks currentUrl={canonicalURL} currentLang={SITE.locale.split("-")[0]} />
+
   <ClientRouter />
+
+  <!-- Service Worker Registration for PWA -->
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(
+          (registration) => {
+            console.log('Service Worker registered:', registration);
+          },
+          (error) => {
+            console.log('Service Worker registration failed:', error);
+          }
+        );
+      });
+    }
+  </script>
+
+  <!-- WebSite Schema with Search Action -->
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(generateWebSiteSchema(SITE))}></script>
+
+  <!-- Organization Schema -->
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(generateOrganizationSchema(SITE))}></script>
 </head>

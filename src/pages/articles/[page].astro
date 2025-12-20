@@ -3,10 +3,13 @@ import type { GetStaticPaths } from "astro";
 import ListLayout from "@/layouts/list.astro";
 import { SITE } from "@/lib/config";
 import Pagination from "@/components/shared/pagination.astro";
+import SeoPaginationLinks from "@/components/bases/seo-pagination-links.astro";
 import { getEntry } from "astro:content";
 import WideCard from "@/components/cards/wideCard.astro";
 
 import { articlesHandler } from "@/lib/handlers/articles";
+
+export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const articles = articlesHandler.allArticles();
@@ -25,9 +28,15 @@ if (!entry) {
 }
 
 const [HEADER] = entry.data.blocks;
+const canonicalUrl = `${SITE.url}${page.url.current}`;
 ---
 
 <ListLayout header={HEADER.title} entry={entry}>
+  <SeoPaginationLinks
+    prevUrl={page.url.prev ? `${SITE.url}${page.url.prev}` : undefined}
+    nextUrl={page.url.next ? `${SITE.url}${page.url.next}` : undefined}
+    canonicalUrl={canonicalUrl}
+  />
   <section class="flex-1">
     <ul class="flex flex-col gap-4">
       {

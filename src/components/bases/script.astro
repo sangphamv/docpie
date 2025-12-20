@@ -3,9 +3,13 @@
   function attachSocialShareEvents() {
     const shareButtons = document.querySelectorAll("[data-aw-social-share]");
 
-    shareButtons.forEach((elem) => {
-      elem.addEventListener("click", handleSocialShare, false);
-    });
+    if (shareButtons && shareButtons.length > 0) {
+      shareButtons.forEach((elem) => {
+        if (elem) {
+          elem.addEventListener("click", handleSocialShare, false);
+        }
+      });
+    }
   }
 
   function handleSocialShare(event) {

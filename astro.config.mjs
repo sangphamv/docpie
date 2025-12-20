@@ -13,12 +13,15 @@ import robotsTxt from "astro-robots-txt";
 
 const { RUN_KEYSTATIC } = loadEnv(import.meta.env.MODE, process.cwd(), "");
 
+// Only add Keystatic in development mode
 const integrations = [mdx(), sitemap(), pagefind(), robotsTxt({
   policy: [{ userAgent: "*", allow: "/" }],
   sitemap: `${SITE.url}/sitemap-index.xml`,
   host: SITE.url,
 })];
-if (RUN_KEYSTATIC === "true") {
+
+// Only add Keystatic and React if explicitly enabled
+if (RUN_KEYSTATIC === "true" && import.meta.env.DEV) {
   integrations.push(react());
   integrations.push(keystatic());
 }
@@ -27,6 +30,11 @@ if (RUN_KEYSTATIC === "true") {
 export default defineConfig({
   site: SITE.url,
   base: SITE.basePath,
+  output: 'static',
+  prerender: {
+    crawlLinks: true,
+    routes: ['/', '404'],
+  },
   markdown: {
     remarkPlugins: [readingTime, modifiedTime],
     shikiConfig: {

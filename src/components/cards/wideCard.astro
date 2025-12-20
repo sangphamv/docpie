@@ -27,16 +27,22 @@ const { article, isLast } = Astro.props;
     ]}
   >
     <div class="w-full lg:w-60 aspect-video">
-      <Image
-        src={article.data.cover}
-        alt={article.data.covert_alt
-          ? article.data.covert_alt
-          : article.data.title}
-        layout="constrained"
-        loading={"eager"}
-        format={"avif"}
-        class="aspect-video rounded-none w-full h-full"
-      />
+      <a
+        href={`/articles/${article.id}`}
+        aria-label={`Read article: ${article.data.title}`}
+        class="block w-full h-full"
+      >
+        <Image
+          src={article.data.cover}
+          alt={article.data.covert_alt
+            ? article.data.covert_alt
+            : article.data.title}
+          layout="constrained"
+          loading="lazy"
+          format={"avif"}
+          class="aspect-video rounded-none w-full h-full"
+        />
+      </a>
     </div>
     <div class="flex-1 space-y-2">
       <h3 class="text-xl font-semibold lg:group-hover:text-rose-500 dark:lg:group-hover:text-purple-400 transition-colors">

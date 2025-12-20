@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi-VN" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline - Docpie</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        --bg-page: #faf7f2;
+        --text-primary: #292524;
+        --text-muted: #78716f;
+        --primary: #a16207;
+      }
+
+      html.dark {
+        --bg-page: #0f0f0f;
+        --text-primary: #faf7f2;
+        --text-muted: #a89f98;
+        --primary: #fb923c;
+      }
+
+      body {
+        font-family: 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-page);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        text-align: center;
+      }
+
+      .icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      a,
+      button {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .primary:hover {
+        opacity: 0.9;
+      }
+
+      .secondary {
+        background-color: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+      }
+
+      .secondary:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .tips {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        text-align: left;
+        background: rgba(0, 0, 0, 0.02);
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      html.dark .tips {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .tips h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+      }
+
+      .tips ul {
+        font-size: 14px;
+        color: var(--text-muted);
+        list-style-position: inside;
+        line-height: 1.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="icon">📱</div>
+      <h1>Không Có Kết Nối Mạng</h1>
+      <p>
+        Bạn đang ngoại tuyến. Vui lòng kiểm tra kết nối Internet của bạn để tiếp
+        tục.
+      </p>
+
+      <div class="actions">
+        <a href="/" class="primary">Quay Lại Trang Chủ</a>
+        <button class="secondary" onclick="location.reload()">Thử Lại</button>
+      </div>
+
+      <div class="tips">
+        <h3>💡 Mẹo</h3>
+        <ul>
+          <li>Kiểm tra WiFi hoặc dữ liệu di động của bạn</li>
+          <li>
+            Các trang đã truy cập trước đó có thể được xem trong chế độ ngoại
+            tuyến
+          </li>
+          <li>Thử tắt và bật lại máy bay của bạn (nếu sử dụng máy bay)</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // Detect dark mode preference
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+      if (prefersDark) {
+        document.documentElement.classList.add('dark');
+      }
+
+      // Attempt to reconnect when back online
+      window.addEventListener('online', () => {
+        console.log('Connection restored');
+        location.reload();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+---
+/**
+ * hreflang Links Component
+ * Declares alternate language versions for SEO
+ * Prepare for future multi-language support
+ */
+
+type Props = {
+  currentUrl: string;
+  currentLang?: string;
+  alternateVersions?: Array<{
+    lang: string;
+    url: string;
+  }>;
+};
+
+const {
+  currentUrl,
+  currentLang = "vi",
+  alternateVersions = [],
+} = Astro.props;
+---
+
+<!-- hreflang for current language -->
+<link rel="alternate" hreflang={currentLang} href={currentUrl} />
+
+<!-- hreflang for x-default (default language) -->
+<link rel="alternate" hreflang="x-default" href={currentUrl} />
+
+<!-- hreflang for alternate language versions -->
+{alternateVersions.map((version) => (
+  <link rel="alternate" hreflang={version.lang} href={version.url} />
+))}

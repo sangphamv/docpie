@@ -1,0 +1,79 @@
+---
+/**
+ * Breadcrumb Navigation Component
+ * Displays hierarchical navigation for better UX and SEO
+ */
+
+import ArrowRight02 from "@/assets/svgs/arrow-right-02.astro";
+
+export interface BreadcrumbItem {
+  name: string;
+  url?: string;
+  current?: boolean;
+}
+
+type Props = {
+  items: BreadcrumbItem[];
+  class?: string;
+};
+
+const { items, class: className } = Astro.props;
+---
+
+<nav
+  aria-label="Breadcrumb"
+  class:list={[
+    "mb-2 w-full pt-6",
+    className,
+  ]}
+>
+  <ol
+    class="flex items-center gap-2 flex-wrap rounded-xl border border-[color:var(--border-color)] bg-[color:color-mix(in_oklab,var(--bg-surface)_92%,transparent_8%)] px-3 py-2 text-sm"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {
+      items.map((item, index) => (
+        <>
+          <li
+            class="flex items-center gap-2"
+            itemscope
+            itemprop="itemListElement"
+            itemtype="https://schema.org/ListItem"
+          >
+            {item.current ? (
+              <span
+                class="text-[color:var(--text-primary)] font-medium truncate max-w-[14ch] sm:max-w-none"
+                aria-current="page"
+                itemprop="name"
+                title={item.name}
+              >
+                {item.name}
+              </span>
+            ) : item.url ? (
+              <a
+                href={item.url}
+                class="text-[color:var(--text-muted)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)] transition-colors truncate max-w-[14ch] sm:max-w-none"
+                itemprop="item"
+                title={item.name}
+              >
+                <span itemprop="name">{item.name}</span>
+              </a>
+            ) : (
+              <span class="truncate max-w-[14ch] sm:max-w-none" itemprop="name" title={item.name}>
+                {item.name}
+              </span>
+            )}
+            <meta itemprop="position" content={(index + 1).toString()} />
+
+            {index < items.length - 1 && (
+              <span class="text-[color:var(--border-color)]" aria-hidden="true">
+                <ArrowRight02 />
+              </span>
+            )}
+          </li>
+        </>
+      ))
+    }
+  </ol>
+</nav>

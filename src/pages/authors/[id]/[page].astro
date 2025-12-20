@@ -7,7 +7,11 @@ import { authorsHandler } from "@/lib/handlers/authors";
 import ListLayout from "@/layouts/list.astro";
 import WideCard from "@/components/cards/wideCard.astro";
 import Pagination from "@/components/shared/pagination.astro";
+import SeoPaginationLinks from "@/components/bases/seo-pagination-links.astro";
 import { getEntry } from "astro:content";
+import { generateBreadcrumbSchema, generatePersonSchema } from "@/lib/utils/schemaGenerator";
+
+export const prerender = true;
 
 export const getStaticPaths = (({ paginate }) => {
   const allAuthors = authorsHandler.allAuthors();
@@ -38,6 +42,18 @@ if (!entry) {
 }
 
 const [HEADER] = entry.data.blocks;
+
+// Generate Breadcrumb schema
+const breadcrumbItems = [
+  { name: "Trang chủ", url: SITE.url },
+  { name: "Tác giả", url: `${SITE.url}/authors` },
+  { name: author.data.name, url: `${SITE.url}/authors/${params.id}` },
+];
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
+// Generate Person schema for author
+const personSchema = generatePersonSchema(author, SITE.url);
+const canonicalUrl = `${SITE.url}${page.url.current}`;
 ---
 
 <ListLayout
@@ -50,6 +66,13 @@ const [HEADER] = entry.data.blocks;
     },
   }}
 >
+  <SeoPaginationLinks
+    prevUrl={page.url.prev ? `${SITE.url}${page.url.prev}` : undefined}
+    nextUrl={page.url.next ? `${SITE.url}${page.url.next}` : undefined}
+    canonicalUrl={canonicalUrl}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)}></script>
   <section class="flex-1">
     <ul class="flex flex-col gap-4">
       {

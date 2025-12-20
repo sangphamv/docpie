@@ -9,9 +9,19 @@ type Props = {
   article: CollectionEntry<"articles">;
   content?: any;
   headings?: Array<{ depth: number; slug: string; text: string }>;
+  showTOC?: boolean;
+  showShare?: boolean;
+  showTrending?: boolean;
 };
 
-const { article, content, headings = [] } = Astro.props;
+const {
+  article,
+  content,
+  headings = [],
+  showTOC = true,
+  showShare = true,
+  showTrending = true,
+} = Astro.props;
 
 const shareUrl = `${import.meta.env.SITE}/articles/${article.id}`;
 const shareText = article.data.title;
@@ -48,61 +58,62 @@ const socialPlatforms = [
 ] as const;
 ---
 
-<aside class="sticky top-4 space-y-6">
-  <!-- Table of Contents -->
-  <TableOfContents headings={headings} />
+<aside class="space-y-6">
+  {showTOC && <TableOfContents headings={headings} />}
 
-  <!-- Share This -->
-  <div class="bg-base-100 border border-base-300 rounded-lg p-5">
-    <h3 class="text-sm font-bold uppercase tracking-wider mb-4 text-base-content/80">Share This</h3>
-    <div class="flex flex-col gap-2">
-      {
-        socialPlatforms.map((platform) => (
-          <ShareItem
-            className={`${platform.hoverColor} w-full justify-start`}
-            title={platform.title}
-            dataAwSocialShare={platform.platform}
-            dataAwUrl={shareUrl}
-            dataAwText={shareText}
-            icon={platform.icon}
-          />
-        ))
-      }
+  {showShare && (
+    <div class="bg-base-100 border border-base-300 rounded-lg p-5">
+      <h3 class="text-sm font-bold uppercase tracking-wider mb-4 text-base-content/80">Share This</h3>
+      <div class="flex flex-col gap-2">
+        {
+          socialPlatforms.map((platform) => (
+            <ShareItem
+              className={`${platform.hoverColor} w-full justify-start`}
+              title={platform.title}
+              dataAwSocialShare={platform.platform}
+              dataAwUrl={shareUrl}
+              dataAwText={shareText}
+              icon={platform.icon}
+            />
+          ))
+        }
+      </div>
     </div>
-  </div>
+  )}
 
-  <!-- Trending Stories -->
-  <div>
-    <h3 class="text-sm font-bold uppercase tracking-wider mb-6 pb-3 border-b-2 border-base-300">
-      Trending Stories
-    </h3>
-    <ul class="space-y-6">
-      {
-        trendingArticles.map((trendingArticle, index) => (
-          <li class="group">
-            <a
-              href={`/articles/${trendingArticle.id}`}
-              class="flex items-start gap-4 transition-opacity hover:opacity-70"
-            >
-              <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded">
-                <img
-                  src={trendingArticle.data.cover.src}
-                  alt={trendingArticle.data.covert_alt || trendingArticle.data.title}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="text-sm font-medium leading-tight line-clamp-3">
-                  {trendingArticle.data.title}
-                </h3>
-              </div>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+  {showTrending && (
+    <div>
+      <h3 class="text-sm font-bold uppercase tracking-wider mb-6 pb-3 border-b-2 border-base-300">
+        Trending Stories
+      </h3>
+      <ul class="space-y-6">
+        {
+          trendingArticles.map((trendingArticle, index) => (
+            <li class="group">
+              <a
+                href={`/articles/${trendingArticle.id}`}
+                class="flex items-start gap-4 transition-opacity hover:opacity-70"
+              >
+                <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded">
+                  <img
+                    src={trendingArticle.data.cover.src}
+                    alt={trendingArticle.data.covert_alt || trendingArticle.data.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-sm font-medium leading-tight line-clamp-3">
+                    {trendingArticle.data.title}
+                  </h3>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  )}
 </aside>
 
 <ScriptShare />

@@ -2,16 +2,22 @@
 import { render } from "astro:content";
 import BaseLayout from "@/layouts/base.astro";
 import ContentLayout from "@/layouts/content.astro";
+import Breadcrumb from "@/components/bases/breadcrumb.astro";
 import ArticleHeader from "./_components/article-header.astro";
 import ArticleLink from "./_components/article-link.astro";
 import ArticleSidebar from "./_components/article-sidebar.astro";
 import Giscus from "@/components/bases/giscus.astro";
 import ReadingProgress from "@/components/bases/reading-progress.astro";
+import RelatedPosts from "@/components/bases/related-posts.astro";
+import NewsletterForm from "@/components/bases/newsletter-form.astro";
 
 import { articlesHandler } from "@/lib/handlers/articles";
-import { GISCUS } from "@/lib/config";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { GISCUS, SITE } from "@/lib/config";
 import { authorsHandler } from "@/lib/handlers/authors";
-import { SITE } from "@/lib/config";
+import { generateBreadcrumbSchema, generatePersonSchema } from "@/lib/utils/schemaGenerator";
+
+export const prerender = true;
 
 export const getStaticPaths = async () => {
   const articles = articlesHandler.allArticles();
@@ -37,6 +43,34 @@ const coverUrl = article.data.cover?.src
   ? new URL(article.data.cover.src, SITE.url).toString()
   : undefined;
 const canonicalUrl = `${SITE.url}/articles/${article.id}`;
+
+// Get category info for breadcrumb
+const categoryRef = article.data.category;
+let categoryName = "Danh mục";
+let categoryPath = "";
+
+if (categoryRef && categoryRef.id) {
+  try {
+    const categoryEntry = await categoriesHandler.oneCategory(categoryRef.id);
+    categoryName = categoryEntry?.data?.title || "Danh mục";
+    categoryPath = categoryEntry?.data?.path || "";
+  } catch (error) {
+    console.warn(`Could not load category ${categoryRef.id}:`, error);
+  }
+}
+
+// Generate Breadcrumb schema
+const breadcrumbItems = [
+  { name: "Trang chủ", url: SITE.url },
+  { name: "Bài viết", url: `${SITE.url}/articles` },
+  ...(categoryPath ? [{ name: categoryName, url: `${SITE.url}/categories/${categoryPath}` }] : []),
+  { name: article.data.title, url: canonicalUrl },
+];
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
+// Generate Author schemas
+const authorSchemas = articleAuthors.map((author) => generatePersonSchema(author, SITE.url));
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "NewsArticle",
@@ -64,42 +98,87 @@ const structuredData = {
 
 <BaseLayout entry={article}>
   <ReadingProgress />
+  <!-- NewsArticle Schema -->
   <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)}></script>
+  <!-- Author Person Schemas -->
+  {authorSchemas.map((authorSchema) => (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(authorSchema)}></script>
+  ))}
+  
+  <div class="container max-w-5xl">
+    <Breadcrumb
+      items={breadcrumbItems.map((item) => ({
+        name: item.name,
+        url: item.url,
+        current: item.url === canonicalUrl,
+      }))}
+    />
+  </div>
+
   <ArticleHeader
     article={article}
     readingTime={remarkPluginFrontmatter.minutesRead}
     lastModified={lastModifiedDisplay}
   />
   
-  <div class="container max-w-5xl pb-12">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <div class="lg:col-span-8" data-reading-target>
-        <ContentLayout>
-          <Content />
-          <ArticleLink article={article} />
-          {hasGiscusConfig && (
-            <div class="mt-10">
-              <Giscus
-                repo={GISCUS.repo}
-                repoId={GISCUS.repoId}
-                category={GISCUS.category}
-                categoryId={GISCUS.categoryId}
-                mapping={GISCUS.mapping}
-                strict={GISCUS.strict}
-                reactionsEnabled={GISCUS.reactionsEnabled}
-                emitMetadata={GISCUS.emitMetadata}
-                inputPosition={GISCUS.inputPosition}
-                theme={GISCUS.theme}
-                lang={GISCUS.lang}
-              />
-            </div>
-          )}
-        </ContentLayout>
-      </div>
-      
-      <div class="lg:col-span-4">
-        <ArticleSidebar article={article} content={Content} headings={headings} />
-      </div>
+  <div class="container max-w-5xl pb-12 space-y-12">
+    <div class="space-y-6">
+      <ArticleSidebar
+        article={article}
+        content={Content}
+        headings={headings}
+        showShare={false}
+        showTrending={false}
+      />
+    </div>
+
+    <div class="space-y-10" data-reading-target>
+      <ContentLayout>
+        <Content />
+        
+        <ArticleLink article={article} />
+        {hasGiscusConfig && (
+          <div class="mt-10">
+            <Giscus
+              repo={GISCUS.repo}
+              repoId={GISCUS.repoId}
+              category={GISCUS.category}
+              categoryId={GISCUS.categoryId}
+              mapping={GISCUS.mapping}
+              strict={GISCUS.strict}
+              reactionsEnabled={GISCUS.reactionsEnabled}
+              emitMetadata={GISCUS.emitMetadata}
+              inputPosition={GISCUS.inputPosition}
+              theme={GISCUS.theme}
+              lang={GISCUS.lang}
+            />
+          </div>
+        )}
+      </ContentLayout>
+
+      <!-- Related Posts Section -->
+      <RelatedPosts article={article} limit={3} />
+
+      <!-- Share + Trending placed before Newsletter -->
+      <ArticleSidebar
+        article={article}
+        content={Content}
+        headings={headings}
+        showTOC={false}
+      />
+
+      <!-- Newsletter Section -->
+      <section class="pt-8 border-t border-base-300 space-y-4">
+        <h2 class="text-2xl font-bold text-[color:var(--text-primary)]">
+          📧 Đăng ký nhận tin
+        </h2>
+        <p class="text-[color:var(--text-muted)]">
+          Nhận những bài viết mới nhất và những lời khuyên hữu ích trực tiếp vào email của bạn.
+        </p>
+        <NewsletterForm />
+      </section>
     </div>
   </div>
 </BaseLayout>

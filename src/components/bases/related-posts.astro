@@ -1,0 +1,107 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import SubHeadlineCard from "@/components/cards/subHeadlineCard.astro";
+
+type Props = {
+  article: CollectionEntry<"articles">;
+  limit?: number;
+};
+
+const { article, limit = 3 } = Astro.props;
+
+// Get all articles
+const allArticles = await getCollection("articles");
+
+// Filter out current article and get related ones based on tags and category
+const relatedArticles = allArticles
+  .filter((a) => a.id !== article.id)
+  .map((a) => {
+    // Calculate relevance score based on shared tags and category
+    let score = 0;
+
+    // Same category gets 3 points
+    if (a.data.category.id === article.data.category.id) {
+      score += 3;
+    }
+
+    // Each shared tag gets 1 point
+    const sharedTags = (article.data.tags ?? []).filter((tag) =>
+      (a.data.tags ?? []).some((t) => t.id === tag.id)
+    );
+    score += sharedTags.length;
+
+    return { article: a, score };
+  })
+  .filter((a) => a.score > 0) // Only articles with at least one connection
+  .sort((a, b) => b.score - a.score) // Sort by relevance
+  .slice(0, limit)
+  .map((a) => a.article);
+
+// Sort by published time (newest first)
+const sortedRelated = relatedArticles.sort(
+  (a, b) =>
+    new Date(b.data.publishedTime).getTime() -
+    new Date(a.data.publishedTime).getTime()
+);
+---
+
+{
+  sortedRelated.length > 0 && (
+    <section
+      class="mt-12 pt-8 border-t border-base-300"
+      aria-labelledby="related-posts-heading"
+    >
+      <h2
+        id="related-posts-heading"
+        class="text-2xl font-bold mb-6 text-[color:var(--text-primary)]"
+      >
+        📖 Bài viết liên quan
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="related-posts-grid">
+        {sortedRelated.map((relatedArticle) => (
+          <div data-related-article-id={relatedArticle.id} data-source-article-id={article.id}>
+            <SubHeadlineCard article={relatedArticle} />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { navigationTracking } from "@/lib/utils/analytics";
+
+  // Track related post clicks
+  const grid = document.getElementById("related-posts-grid");
+  if (grid) {
+    grid.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest("a");
+      
+      if (link) {
+        const articleContainer = link.closest("[data-related-article-id]") as HTMLElement;
+        if (articleContainer) {
+          const sourceArticleId = articleContainer.dataset.sourceArticleId || "unknown";
+          const relatedArticleId = articleContainer.dataset.relatedArticleId || "unknown";
+          const title = link.textContent || "Unknown";
+          
+          navigationTracking.clickRelatedPost(sourceArticleId, relatedArticleId, title);
+        }
+      }
+    });
+
+    // Track that related posts section was viewed
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sourceArticleId = document.querySelector("[data-source-article-id]")?.getAttribute("data-source-article-id") || "unknown";
+          navigationTracking.viewRelatedPosts(sourceArticleId);
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    observer.observe(grid);
+  }
+</script>

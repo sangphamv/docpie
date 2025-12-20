@@ -18,8 +18,8 @@ type Props = {
 const { length, currentUrl, currentPage, baseUrl, prevUrl, nextUrl, lastUrl } =
   Astro.props;
 
-// Define the maximum number of visible buttons
-const maxVisibleButtons = 4;
+// Configuration
+const maxVisibleButtons = 5; // Show 5 page buttons at a time
 
 // Calculate the range of visible page numbers
 const startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
@@ -65,11 +65,11 @@ const btnActive = "bg-[color:var(--primary)] border-[color:var(--primary)] text-
 
     {
       prevUrl ? (
-        <a href={prevUrl} class={btnBase}>
+        <a href={prevUrl} class={btnBase} aria-label="Previous page">
           <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </a>
       ) : (
-        <span class={btnDisabled}>
+        <span class={btnDisabled} aria-label="Previous page (disabled)">
           <ArrowLeft01 /> <span class="hidden lg:block">{PAGINATION.previous}</span>
         </span>
       )
@@ -80,6 +80,8 @@ const btnActive = "bg-[color:var(--primary)] border-[color:var(--primary)] text-
         <a
           href={`${baseUrl}${num == 1 ? "" : "/" + num}`}
           class={`${btnBase} ${currentPage == num ? btnActive : ""}`}
+          aria-label={`Page ${num}${currentPage == num ? " (current)" : ""}`}
+          aria-current={currentPage == num ? "page" : undefined}
         >
           {num}
         </a>
@@ -88,11 +90,11 @@ const btnActive = "bg-[color:var(--primary)] border-[color:var(--primary)] text-
 
     {
       !nextUrl ? (
-        <span class={btnDisabled}>
+        <span class={btnDisabled} aria-label="Next page (disabled)">
           <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </span>
       ) : (
-        <a href={nextUrl} class={btnBase}>
+        <a href={nextUrl} class={btnBase} aria-label="Next page">
           <span class="hidden lg:block">{PAGINATION.next}</span> <ArrowRight01 />
         </a>
       )

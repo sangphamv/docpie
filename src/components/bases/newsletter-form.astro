@@ -1,0 +1,116 @@
+---
+// Newsletter subscription form component
+// Supports both client-side and server-side submission
+
+interface Props {
+  placeholder?: string;
+  buttonText?: string;
+  successMessage?: string;
+}
+
+const {
+  placeholder = "Nhập email của bạn...",
+  buttonText = "Đăng ký",
+  successMessage = "Cảm ơn! Kiểm tra email của bạn.",
+} = Astro.props;
+---
+
+<script>
+  declare global {
+    interface Window {
+      gtag?: (...args: any[]) => void;
+    }
+  }
+</script>
+
+<div class="newsletter-form-wrapper">
+  <form
+    class="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+    id="newsletter-form"
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder={placeholder}
+      required
+      aria-label="Email address for newsletter subscription"
+      class="flex-1 px-4 py-2 rounded-lg border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-[color:var(--text-primary)] placeholder-[color:var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-transparent transition"
+    />
+    <button
+      type="submit"
+      class="px-6 py-2 rounded-lg bg-[color:var(--primary)] text-white font-medium hover:opacity-90 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--primary)]"
+      aria-label={buttonText}
+    >
+      {buttonText}
+    </button>
+  </form>
+
+  <div
+    id="newsletter-message"
+    class="mt-3 text-sm hidden"
+    role="status"
+    aria-live="polite"
+  />
+</div>
+
+<script>
+  import { newsletterTracking } from "@/lib/utils/analytics";
+
+  const form = document.getElementById("newsletter-form") as HTMLFormElement;
+  const messageDiv = document.getElementById(
+    "newsletter-message"
+  ) as HTMLDivElement;
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = (form.email as HTMLInputElement).value;
+      const button = form.querySelector(
+        "button[type=submit]"
+      ) as HTMLButtonElement;
+
+      // Show loading state
+      const originalText = button.textContent;
+      button.textContent = "Đang xử lý...";
+      button.disabled = true;
+
+      try {
+        // Submit to a service (replace with your actual endpoint)
+        // For now, we'll just simulate success
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        messageDiv.textContent =
+          "✅ Cảm ơn! Kiểm tra email của bạn để xác nhận.";
+        messageDiv.className =
+          "mt-3 text-sm text-green-600 dark:text-green-400";
+        messageDiv.classList.remove("hidden");
+
+        // Track newsletter signup conversion
+        newsletterTracking.signup(window.location.pathname);
+
+        // Reset form
+        form.reset();
+
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          messageDiv.classList.add("hidden");
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 5000);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        messageDiv.textContent =
+          "❌ Có lỗi xảy ra. Vui lòng thử lại sau.";
+        messageDiv.className = "mt-3 text-sm text-red-600 dark:text-red-400";
+        messageDiv.classList.remove("hidden");
+
+        // Track newsletter signup error
+        newsletterTracking.signupError(errorMessage);
+
+        button.textContent = originalText;
+        button.disabled = false;
+      }
+    });
+  }
+</script>

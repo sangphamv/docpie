@@ -4,6 +4,7 @@ import { SITE } from "@/lib/config";
 import Head from "@/components/bases/head.astro";
 import Header from "@/components/shared/header.astro";
 import Footer from "@/components/shared/footer.astro";
+import SkipToMain from "@/components/bases/skip-to-main.astro";
 import type { Entry } from "@/lib/types";
 import { getMeta } from "@/lib/utils/getMeta";
 import ScriptFooter from "@/components/bases/script-footer.astro";
@@ -23,6 +24,7 @@ const meta = await getMeta(entry);
   <Head meta={meta} />
   <body class="flex flex-col">
     <ViewTransitions />
+    <SkipToMain />
     <Header />
     <main class="flex-1">
       <slot />

@@ -98,16 +98,19 @@ const eventArticles = articlesHandler.allArticles().slice(0, 6);
       const offset = currentIndex * (cardWidth + gap);
       track.style.transform = `translateX(-${offset}px)`;
 
-      // Update indicators
-      document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
-        if (index === currentIndex) {
-          indicator.classList.add('bg-[color:var(--primary)]');
-          indicator.classList.remove('bg-[color:var(--bg-subtle)]');
-        } else {
-          indicator.classList.remove('bg-[color:var(--primary)]');
-          indicator.classList.add('bg-[color:var(--bg-subtle)]');
-        }
-      });
+      // Update indicators - add safety check
+      const indicators = document.querySelectorAll('.carousel-indicator');
+      if (indicators && indicators.length > 0) {
+        indicators.forEach((indicator, index) => {
+          if (index === currentIndex) {
+            indicator.classList.add('bg-[color:var(--primary)]');
+            indicator.classList.remove('bg-[color:var(--bg-subtle)]');
+          } else {
+            indicator.classList.remove('bg-[color:var(--primary)]');
+            indicator.classList.add('bg-[color:var(--bg-subtle)]');
+          }
+        });
+      }
 
       // Update button states
       if (prevBtn && prevBtn instanceof HTMLButtonElement) {
@@ -138,14 +141,17 @@ const eventArticles = articlesHandler.allArticles().slice(0, 6);
       }
     });
 
-    // Indicator buttons
-    document.querySelectorAll('.carousel-indicator').forEach((indicator) => {
-      indicator.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        currentIndex = parseInt(target.dataset.index || '0');
-        updateCarousel();
+    // Indicator buttons - add safety check
+    const indicatorBtns = document.querySelectorAll('.carousel-indicator');
+    if (indicatorBtns && indicatorBtns.length > 0) {
+      indicatorBtns.forEach((indicator) => {
+        indicator.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          currentIndex = parseInt(target.dataset.index || '0');
+          updateCarousel();
+        });
       });
-    });
+    }
 
     // Initialize
     updateCarousel();

@@ -1,5 +1,7 @@
 import { render, type CollectionEntry } from "astro:content";
 import { authorsHandler } from "@/lib/handlers/authors";
+import { tagsHandler } from "@/lib/handlers/tags";
+import { categoriesHandler } from "@/lib/handlers/categories";
 import { SITE } from "@/lib/config";
 import defaultImage from "@/assets/images/default-image.jpg";
 import type { ArticleMeta, Meta } from "@/lib/types";
@@ -25,6 +27,11 @@ export const getMeta = async (
 
       const { remarkPluginFrontmatter } = await render(collection);
       const authors = authorsHandler.getAuthors(collection.data.authors);
+      const category = categoriesHandler.oneCategory(collection.data.category.id);
+      const tags = (collection.data.tags ?? []).map((tag) => {
+        const tagEntry = tagsHandler.oneTag(tag.id);
+        return tagEntry.data.title;
+      });
 
       const meta: ArticleMeta = {
         title: `${capitalizeFirstLetter(collection.data.title)} - ${SITE.title}`,
@@ -38,6 +45,8 @@ export const getMeta = async (
           name: author.data.name,
           link: `${author.id}`,
         })),
+        tags: tags,
+        category: category.data.title,
         type: "article",
       }
 

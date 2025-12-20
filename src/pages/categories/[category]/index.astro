@@ -1,6 +1,8 @@
 ---
 import { categoriesHandler } from "@/lib/handlers/categories";
 
+export const prerender = true;
+
 export function getStaticPaths() {
   const categories = categoriesHandler.allCategories();
   return categories.map((category) => ({ params: { category: category.id } }));

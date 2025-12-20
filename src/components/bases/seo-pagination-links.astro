@@ -1,0 +1,18 @@
+---
+/**
+ * SEO Pagination Links Component
+ * Adds rel="prev/next" and canonical link headers for paginated pages
+ */
+
+type Props = {
+  prevUrl?: string;
+  nextUrl?: string;
+  canonicalUrl?: string;
+};
+
+const { prevUrl, nextUrl, canonicalUrl } = Astro.props;
+---
+
+{prevUrl && <link rel="prev" href={prevUrl} />}
+{nextUrl && <link rel="next" href={nextUrl} />}
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}

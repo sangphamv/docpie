@@ -7,9 +7,13 @@ import ListLayout from "@/layouts/list.astro";
 
 import Pagination from "@/components/shared/pagination.astro";
 import WideCard from "@/components/cards/wideCard.astro";
+import SeoPaginationLinks from "@/components/bases/seo-pagination-links.astro";
 import { getEntry } from "astro:content";
 
 import { CATEGORY_TITLES } from "@/lib/config";
+import { generateBreadcrumbSchema } from "@/lib/utils/schemaGenerator";
+
+export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allCategories = categoriesHandler.allCategories();
@@ -41,9 +45,24 @@ if (!entry) {
 }
 
 const category = CATEGORY_TITLES[params.category] ?? params.category;
+
+// Generate Breadcrumb schema
+const breadcrumbItems = [
+  { name: "Trang chủ", url: SITE.url },
+  { name: "Danh mục", url: `${SITE.url}/categories` },
+  { name: category, url: `${SITE.url}/categories/${params.category}` },
+];
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+const canonicalUrl = `${SITE.url}${page.url.current}`;
 ---
 
 <ListLayout header={category} entry={entry}>
+  <SeoPaginationLinks
+    prevUrl={page.url.prev ? `${SITE.url}${page.url.prev}` : undefined}
+    nextUrl={page.url.next ? `${SITE.url}${page.url.next}` : undefined}
+    canonicalUrl={canonicalUrl}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)}></script>
   <ul class="flex flex-col gap-2 flex-1">
     {
       articles.map((article) => (

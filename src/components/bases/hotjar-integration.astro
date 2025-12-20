@@ -1,0 +1,172 @@
+---
+/**
+ * Hotjar Integration for Heatmaps & Session Recording
+ * Captures user behavior, heatmaps, and session replays
+ */
+const hotjarSiteId = import.meta.env.HOTJAR_SITE_ID || '';
+---
+
+<!-- Hotjar Script Integration -->
+<!-- Place this in your <head> component for site-wide tracking -->
+
+<script is:inline define:vars={{ hotjarSiteId }}>
+  // Only initialize if site ID is configured
+  if (!hotjarSiteId) {
+    console.warn('Hotjar: HOTJAR_SITE_ID environment variable is not set');
+  } else {
+    // Hotjar Tracking Code
+    (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+      h._hjSettings={hjid:hotjarSiteId,hjsv:6};
+      a=o.getElementsByTagName('head')[0];
+      r=o.createElement('script');r.async=1;
+      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+
+    // Hotjar Identify User
+    // Optional: Identify user for better insights
+    if (window.hj) {
+      window.hj('identify', {
+        userId: 'anonymous', // Replace with actual user ID if available
+        userProperties: {
+          pageType: 'article', // Set based on current page
+        }
+      });
+    }
+  }
+</script>
+
+<script>
+  /**
+   * Hotjar API - Available globally as window.hj
+   */
+  declare global {
+    interface Window {
+      hj?: (command: string, ...args: any[]) => void;
+      _hjSettings?: { hjid: string; hjsv: number };
+    }
+  }
+
+  export const hotjarTracking = {
+    /**
+     * Identify user for session tracking
+     */
+    identify: (userId: string, properties?: Record<string, any>) => {
+      if (window.hj) {
+        window.hj('identify', {
+          userId,
+          userProperties: properties || {},
+        });
+      }
+    },
+
+    /**
+     * Record custom event
+     */
+    event: (eventName: string) => {
+      if (window.hj) {
+        window.hj('event', eventName);
+      }
+    },
+
+    /**
+     * Tag session with custom data
+     */
+    tagRecording: (tags: string[]) => {
+      if (window.hj) {
+        window.hj('tagRecording', tags);
+      }
+    },
+
+    /**
+     * Set custom attributes
+     */
+    setAttributes: (attributes: Record<string, any>) => {
+      if (window.hj) {
+        window.hj('setAttributes', attributes);
+      }
+    },
+
+    /**
+     * Track conversion goal
+     */
+    goal: (goalId: string) => {
+      if (window.hj) {
+        window.hj('goal', goalId);
+      }
+    },
+  };
+
+  // Make available globally
+  (window as any).hotjarTracking = hotjarTracking;
+</script>
+
+<script>
+  /**
+   * Hotjar Configuration & Guides
+   */
+
+  export const hotjarConfig = {
+    // Site ID - Set via environment variable HOTJAR_SITE_ID
+    siteId: import.meta.env.HOTJAR_SITE_ID || '',
+
+    // Tracking settings
+    trackingEnabled: import.meta.env.MODE === 'production',
+
+    // Heatmap settings
+    heatmaps: {
+      enabled: true,
+      captureDesktop: true,
+      captureMobile: true,
+    },
+
+    // Session recording settings
+    sessionRecording: {
+      enabled: true,
+      sampleRate: 0.1, // 10% of sessions in production
+      captureConsole: false,
+      sensitiveDataMasks: true,
+    },
+
+    // Custom goals/conversions
+    goals: {
+      NEWSLETTER_SIGNUP: 1,
+      ARTICLE_VIEWED: 2,
+      RELATED_POST_CLICKED: 3,
+      SOCIAL_SHARED: 4,
+      EXTERNAL_LINK_CLICKED: 5,
+    },
+
+    // Custom events
+    events: {
+      SCROLL_TO_BOTTOM: 'scroll_to_bottom',
+      TIME_ON_PAGE_MILESTONE: 'time_on_page',
+      FORM_INTERACTION: 'form_interaction',
+      VIDEO_PLAY: 'video_play',
+    },
+
+    // Page tagging for better insights
+    pageTags: {
+      article: 'article_page',
+      homepage: 'homepage',
+      category: 'category_page',
+      author: 'author_page',
+      archive: 'archive_page',
+    },
+  };
+
+  export default hotjarConfig;
+</script>
+
+<style>
+  /**
+   * Hotjar Styling Notes:
+   * - Hotjar automatically handles overlay styling
+   * - Custom data attributes can be added to elements for recording
+   * - Use data-hj-suppress to exclude elements from recordings (PII)
+   */
+
+  /* Example: Suppress sensitive elements from recordings */
+  /* input[type="password"] { --hj-suppress: true; } */
+</style>

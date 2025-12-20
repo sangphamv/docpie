@@ -1,6 +1,8 @@
 ---
 import { authorsHandler } from "@/lib/handlers/authors";
 
+export const prerender = true;
+
 export const getStaticPaths = async () => {
   const authors = authorsHandler.allAuthors();
 

@@ -23,7 +23,7 @@ const { author } = Astro.props;
   />
   <div class="flex flex-col gap-1">
     <h3 class="text-base font-semibold lg:group-hover:text-rose-500 dark:group-hover:text-purple-400 transition-colors">
-      <a href={`/authors/${author.id}`}>
+      <a href={`/authors/${author.id}`} aria-label={`View author: ${author.data.name}`}>
         <span class="absolute inset-0 z-10 pointer-events-none"></span>
         {author.data.name}
       </a>
