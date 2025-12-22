@@ -12,7 +12,7 @@ const eventArticles = articlesHandler.allArticles().slice(0, 6);
 >
   <div class="container">
     <h2
-      class="text-xl md:text-2xl font-serif font-bold text-base-content mb-6"
+      class="text-xl md:text-xl font-serif font-bold text-base-content mb-6"
     >
       {CONSTANTS.Event_Announcements}
     </h2>
@@ -33,7 +33,7 @@ const eventArticles = articlesHandler.allArticles().slice(0, 6);
           {eventArticles.map((article) => (
             <article class="carousel-card flex-shrink-0 w-[calc(25%-1.125rem)]">
               <a href={`/articles/${article.id}`} class="block group">
-                <div class="aspect-video overflow-hidden mb-3">
+                <div class="aspect-video rounded-lg overflow-hidden mb-3">
                   <Image
                     src={article.data.cover}
                     alt={article.data.covert_alt || article.data.title}

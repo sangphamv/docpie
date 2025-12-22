@@ -20,7 +20,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
   data-parallax-card
   class="group flex flex-col h-full relative isolate"
 >
-  <div class="parallax-inner flex flex-col gap-3 overflow-hidden bg-base-200 shadow-lg text-base-content transition-transform duration-300 h-full">
+  <div class="parallax-inner flex flex-col gap-3 overflow-hidden rounded-lg bg-base-200 shadow-lg text-base-content transition-transform duration-300 h-full">
     <a href={`/articles/${article.id}`} aria-label={`Read article: ${article.data.title}`} class="block aspect-video overflow-hidden" data-skeleton>
       <Image
         src={article.data.cover}

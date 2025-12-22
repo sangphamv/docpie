@@ -7,7 +7,7 @@ const allCategories = categoriesHandler.allCategories();
 const allArticles = articlesHandler.allArticles();
 
 // Get articles for each category
-const categoryColumns = allCategories.slice(0, 4).map((category) => {
+const categoryColumns = allCategories.slice(0, 2).map((category) => {
   const categoryArticles = allArticles
     .filter((article) => article.data.category.id === category.id)
     .slice(0, 5);
@@ -19,12 +19,12 @@ const categoryColumns = allCategories.slice(0, 4).map((category) => {
 ---
 
 <section class="container py-12" data-pagefind-ignore="all">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
     {
       categoryColumns.map((column) => (
         <div class="space-y-4">
           <h2
-            class="text-xl md:text-2xl font-serif font-bold text-base-content border-b border-base-300 pb-2"
+            class="text-xl md:text-xl font-serif font-bold text-base-content border-b border-base-300 pb-2"
           >
             {column.category.data.title}
           </h2>
@@ -38,7 +38,7 @@ const categoryColumns = allCategories.slice(0, 4).map((category) => {
                     class="flex items-start gap-3"
                   >
                     <h3
-                      class="text-sm font-medium line-clamp-2 text-base-content transition-colors group-hover:text-primary"
+                      class="text-base font-bolds line-clamp-2 text-base-content transition-colors group-hover:text-primary"
                     >
                       {article.data.title}
                     </h3>
