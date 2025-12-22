@@ -1,5 +1,5 @@
 ---
-import { Image, Picture } from "astro:assets";
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { formatDate, normalizeDate } from "@/lib/utils/date";
 import ResourcesAdd from "@/assets/svgs/resources-add.astro";
@@ -84,7 +84,7 @@ const articleTags = (article.data.tags ?? []).map((tag) =>
                       width={48}
                       height={48}
                       loading={"eager"}
-                      format="webp"
+                      format="avif"
                       layout="constrained"
                       quality={80}
                     />
@@ -139,12 +139,12 @@ const articleTags = (article.data.tags ?? []).map((tag) =>
 
     <!-- Featured Image -->
     <div class="overflow-hidden rounded-lg mb-6">
-      <Picture
+      <Image
         src={article.data.cover}
         alt={article.data.covert_alt || article.data.title}
         layout="constrained"
         loading={"eager"}
-        formats={["avif", "webp"]}
+        format="avif"
         class="w-full h-auto object-center"
       />
     </div>

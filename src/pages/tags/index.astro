@@ -26,28 +26,28 @@ const filteredArticles = selectedTag
     <div class="flex flex-wrap gap-3">
       <a
         href="/tags"
-        class={`inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] ${
+        class={`btn btn-sm ${
           !selectedTag
-            ? "bg-[color:color-mix(in_oklab,var(--primary)_18%,var(--bg-subtle)_82%)] border-[color:color-mix(in_oklab,var(--primary)_40%,var(--border-color)_60%)] text-[color:color-mix(in_oklab,var(--primary)_75%,var(--text-primary)_25%)]"
-            : ""
+            ? "btn-primary"
+            : "btn-ghost border border-base-300"
         }`}
       >
         Tất cả
-        <span class="inline-flex items-center justify-center min-w-[1.5rem] px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_14%,var(--bg-subtle)_86%)] text-[color:var(--primary)] text-[11px] font-semibold">
+        <span class="badge badge-sm badge-primary">
           {filteredArticles.length}
         </span>
       </a>
       {tags.map((tag) => (
         <a
           href={`/tags?tag=${tag.data.path}`}
-          class={`inline-flex items-center gap-2 rounded-[var(--radius-chip)] border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_10%,var(--bg-subtle)_90%)] hover:border-[color:color-mix(in_oklab,var(--primary)_35%,var(--border-color)_65%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)] ${
+          class={`btn btn-sm ${
             selectedTag && selectedTag.id === tag.id
-              ? "bg-[color:color-mix(in_oklab,var(--primary)_18%,var(--bg-subtle)_82%)] border-[color:color-mix(in_oklab,var(--primary)_40%,var(--border-color)_60%)] text-[color:color-mix(in_oklab,var(--primary)_75%,var(--text-primary)_25%)]"
-              : ""
+              ? "btn-primary"
+              : "btn-ghost border border-base-300"
           }`}
         >
           <span>{tag.data.title}</span>
-          <span class="inline-flex items-center justify-center min-w-[1.5rem] px-2 py-0.5 rounded-full bg-[color:color-mix(in_oklab,var(--primary)_14%,var(--bg-subtle)_86%)] text-[color:var(--primary)] text-[11px] font-semibold">
+          <span class="badge badge-sm badge-primary">
             {tag.data.count}
           </span>
         </a>

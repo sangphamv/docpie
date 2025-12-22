@@ -9,13 +9,13 @@ const tags = tagsHandler.allTagsWithCount();
 ---
 
 <footer
-  class="py-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_90%,var(--bg-subtle)_10%)] text-[color:var(--text-primary)] transition-colors"
+  class="py-12 bg-base-200 text-base-content transition-colors"
 >
   <div class="container space-y-8">
     <div class="grid gap-6 lg:grid-cols-3">
       <!-- Categories column split into 2 sub-columns -->
       <section
-        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+        class="rounded-box bg-transparent p-6 text-base-content transition-colors"
       >
         <div class="flex items-center mb-4">
           <h3 class="font-bold text-sm uppercase tracking-wider">Danh mục</h3>
@@ -24,7 +24,7 @@ const tags = tagsHandler.allTagsWithCount();
           {categories.map((category) => (
             <a
               href={`/categories/${category.data.path}/1`}
-              class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+              class="flex items-center rounded-lg px-3 py-2 text-base-content transition-colors hover:bg-primary/10 hover:text-primary"
             >
               <span class="font-medium">{category.data.title}</span>
             </a>
@@ -34,7 +34,7 @@ const tags = tagsHandler.allTagsWithCount();
 
       <!-- Tags column -->
       <section
-        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+        class="rounded-box bg-transparent p-6 text-base-content transition-colors"
       >
         <div class="flex items-center mb-4">
           <h3 class="font-bold text-sm uppercase tracking-wider">Thẻ</h3>
@@ -43,7 +43,7 @@ const tags = tagsHandler.allTagsWithCount();
           {tags.map((tag) => (
             <a
               href={`/tags?tag=${tag.data.path}`}
-              class="inline-flex items-center gap-2 rounded-[var(--radius-chip)] px-3 py-1 text-sm text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+              class="badge badge-primary transition-colors hover:brightness-110"
             >
               <span>{tag.data.title}</span>
             </a>
@@ -53,7 +53,7 @@ const tags = tagsHandler.allTagsWithCount();
 
       <!-- Other links split into 2 sub-columns -->
       <section
-        class="rounded-[var(--radius-card)] bg-transparent p-6 text-[color:var(--text-primary)] transition-colors"
+        class="rounded-box bg-transparent p-6 text-base-content transition-colors"
       >
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-bold text-sm uppercase tracking-wider">Liên kết</h3>
@@ -62,7 +62,7 @@ const tags = tagsHandler.allTagsWithCount();
           {OTHER_LINKS.map(({ href, text }) => (
             <a
               href={href}
-              class="flex items-center rounded-lg px-3 py-2 text-[color:var(--text-primary)] transition-colors hover:bg-[color:color-mix(in_oklab,var(--primary)_12%,var(--bg-surface)_88%)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+              class="flex items-center rounded-lg px-3 py-2 text-base-content transition-colors hover:bg-primary/10 hover:text-primary"
             >
               <span class="font-medium">{text}</span>
             </a>
@@ -71,9 +71,9 @@ const tags = tagsHandler.allTagsWithCount();
       </section>
     </div>
 
-    <div class="pt-8 text-[color:var(--text-muted)]">
+    <div class="pt-8 opacity-70">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-sm text-[color:var(--text-muted)]">
+        <p class="text-sm">
           © {new Date().getFullYear()} {SITE.title}. All rights reserved.
         </p>
         <div class="flex items-center gap-4">
@@ -82,7 +82,7 @@ const tags = tagsHandler.allTagsWithCount();
               href={href}
               target="_blank"
               aria-label={text}
-              class="transition-colors text-[color:var(--text-primary)] hover:text-[color:color-mix(in_oklab,var(--primary)_70%,var(--text-primary)_30%)]"
+              class="transition-colors text-base-content hover:text-primary"
             >
               <Icon icon={icon} />
             </a>

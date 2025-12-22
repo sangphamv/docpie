@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import HeaderSection from "./headerSection.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { categoriesHandler } from "@/lib/handlers/categories";
@@ -11,7 +12,7 @@ const items = articlesHandler.allArticles().slice(0, 6);
 ---
 
 <section
-  class="py-12 bg-[color:color-mix(in_oklab,var(--bg-surface)_90%,var(--bg-subtle)_10%)]"
+  class="py-12 bg-base-200"
   data-pagefind-ignore="all"
 >
   <div class="container space-y-6">
@@ -33,24 +34,25 @@ const items = articlesHandler.allArticles().slice(0, 6);
             <article class="group h-full" data-parallax-card>
               <a
                 href={`/articles/${article.id}`}
-                class="parallax-inner h-full flex flex-col overflow-hidden bg-[color:var(--color-base-100)] shadow-[var(--shadow-soft)] transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg-page)]"
+                class="parallax-inner h-full flex flex-col overflow-hidden bg-base-100 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <div
                   class="relative aspect-video"
                   data-skeleton
                   data-loaded="false"
                 >
-                  <img
-                    src={article.data.cover.src}
+                  <Image
+                    src={article.data.cover}
                     alt={article.data.covert_alt || article.data.title}
+                    layout="constrained"
                     loading="lazy"
+                    format="avif"
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onload="this.closest('[data-skeleton]').dataset.loaded='true'"
                   />
                 </div>
                 <div class="p-4 space-y-2 flex-1 flex flex-col text-left">
-                  <div class="flex items-center flex-wrap text-xs tracking-wide text-[color:var(--text-secondary)] gap-2">
-                    <span>
+                  <div class="flex items-center flex-wrap text-xs tracking-wide opacity-70 gap-2">
+                    <span class="text-base-content"> 
                       {category?.data?.title ??
                         category?.data?.name ??
                         category?.title ??
@@ -62,7 +64,7 @@ const items = articlesHandler.allArticles().slice(0, 6);
                         <Divider />
                         <div class="flex items-center gap-1.5">
                           {tags.slice(0, 2).map((tag) => (
-                            <span class="text-[color:var(--primary)] font-medium tracking-wide">
+                            <span class="text-base-content font-medium tracking-wide">
                               {tag.data.title}
                             </span>
                           ))}
@@ -70,12 +72,12 @@ const items = articlesHandler.allArticles().slice(0, 6);
                       </>
                     )}
                     <Divider />
-                    <span>{remarkPluginFrontmatter.minutesRead}</span>
+                    <span class="text-base-content">{remarkPluginFrontmatter.minutesRead}</span>
                   </div>
-                  <h3 class="text-base md:text-lg font-semibold text-[color:var(--text-primary)] leading-snug line-clamp-2">
+                  <h3 class="text-base md:text-lg font-semibold text-primary leading-snug line-clamp-2">
                     {article.data.title}
                   </h3>
-                  <p class="text-sm text-[color:var(--text-muted)] line-clamp-2 flex-1">
+                  <p class="text-sm opacity-70 line-clamp-2 flex-1 text-base-content">
                     {article.data.description}
                   </p>
                 </div>

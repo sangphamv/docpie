@@ -35,9 +35,9 @@ const paginationList = Array.from(
 );
 
 // Common button style classes
-const btnBase = "join-item btn btn-sm border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-primary hover:bg-[color:color-mix(in_oklab,var(--primary)_8%,var(--bg-subtle)_92%)] hover:border-[color:color-mix(in_oklab,var(--primary)_25%,var(--border-color)_75%)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)] transition-colors";
-const btnDisabled = "join-item btn btn-sm btn-disabled border border-[color:var(--border-color)] bg-[color:var(--bg-subtle)] text-muted";
-const btnActive = "bg-[color:var(--primary)] border-[color:var(--primary)] text-[color:var(--primary-contrast)] pointer-events-none";
+const btnBase = "join-item btn btn-sm";
+const btnDisabled = "join-item btn btn-sm btn-disabled";
+const btnActive = "btn-primary pointer-events-none";
 ---
 
 <section
@@ -46,7 +46,7 @@ const btnActive = "bg-[color:var(--primary)] border-[color:var(--primary)] text-
     !prevUrl && !nextUrl ? "hidden" : "",
   ]}
 >
-  <nav class="join shadow-[var(--shadow-soft)]">
+  <nav class="join shadow-lg">
     {
       `${baseUrl}/1` == `${currentUrl}` ? (
         <span class={btnDisabled} aria-label="First page">

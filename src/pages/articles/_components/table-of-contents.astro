@@ -12,12 +12,20 @@ const { headings = [] } = Astro.props;
 const toc = headings.filter((heading) => heading.depth <= 3);
 ---
 
-<div class="card bg-base-200 shadow-sm mb-6">
+<div class="card bg-base-100 shadow-sm mb-6">
   <div class="card-body p-4">
-    <details class="group" aria-label={CONSTANTS.Table_Of_Contents}>
+    <details class="group" open aria-label={CONSTANTS.Table_Of_Contents}>
       <summary class="flex items-center justify-between text-sm uppercase tracking-wider opacity-80 cursor-pointer select-none">
         <span>{CONSTANTS.Table_Of_Contents}</span>
-        <span class="transition-transform duration-200 group-open:rotate-180">⌄</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="h-4 w-4 transition-transform duration-200 group-open:rotate-180 text-base-content/70"
+          aria-hidden="true"
+        >
+          <path fill-rule="evenodd" d="M12 15.25a.75.75 0 0 1-.53-.22l-6-6a.75.75 0 1 1 1.06-1.06L12 13.44l5.47-5.47a.75.75 0 1 1 1.06 1.06l-6 6a.75.75 0 0 1-.53.22Z" clip-rule="evenodd" />
+        </svg>
       </summary>
 
       {toc.length > 0 ? (
@@ -38,7 +46,7 @@ const toc = headings.filter((heading) => heading.depth <= 3);
           </ul>
         </nav>
       ) : (
-        <p class="text-sm text-base-content/60 mt-3">No headings found</p>
+        <p class="text-sm text-base-content/60 mt-3">Không có nội dung</p>
       )}
     </details>
   </div>

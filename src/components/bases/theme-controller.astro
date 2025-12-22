@@ -7,7 +7,7 @@ import Sun from "@/assets/svgs/sun.astro";
   <input
     type="checkbox"
     class="theme-controller"
-    value="dark"
+    value="dim"
     name="theme-controller"
     id="theme-controller"
   />
@@ -21,23 +21,23 @@ import Sun from "@/assets/svgs/sun.astro";
 <script is:inline>
   // Function to apply the initial theme and set the checkbox state
   function applyTheme() {
-    const theme = localStorage.getItem("astro-theme") || "light"; // Default to light theme
+    const theme = localStorage.getItem("astro-theme") || "winter"; // Default to winter theme
     const themeController = document.querySelector(".theme-controller");
 
     // Update the checkbox state and apply the theme
-    if (theme === "dark") {
+    if (theme === "dim") {
       themeController.checked = true;
-      document.documentElement.setAttribute("data-theme", "dark");
+      document.documentElement.setAttribute("data-theme", "dim");
     } else {
       themeController.checked = false;
-      document.documentElement.setAttribute("data-theme", "light");
+      document.documentElement.setAttribute("data-theme", "winter");
     }
   }
 
   // Add event listener to toggle theme when the checkbox is clicked
   function handleThemeToggle(event) {
     const isDark = event.target.checked;
-    const newTheme = isDark ? "dark" : "light";
+    const newTheme = isDark ? "dim" : "winter";
     localStorage.setItem("astro-theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
   }

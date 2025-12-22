@@ -28,7 +28,7 @@ const { items, class: className } = Astro.props;
   ]}
 >
   <ol
-    class="flex items-center gap-2 flex-wrap rounded-xl border border-[color:var(--border-color)] bg-[color:color-mix(in_oklab,var(--bg-surface)_92%,transparent_8%)] px-3 py-2 text-sm"
+    class="flex items-center gap-2 flex-wrap rounded-xl border border-base-300 bg-base-200/50 px-3 py-2 text-sm"
     itemscope
     itemtype="https://schema.org/BreadcrumbList"
   >
@@ -43,7 +43,7 @@ const { items, class: className } = Astro.props;
           >
             {item.current ? (
               <span
-                class="text-[color:var(--text-primary)] font-medium truncate max-w-[14ch] sm:max-w-none"
+                class="text-base-content font-medium truncate max-w-[14ch] sm:max-w-none"
                 aria-current="page"
                 itemprop="name"
                 title={item.name}
@@ -53,7 +53,7 @@ const { items, class: className } = Astro.props;
             ) : item.url ? (
               <a
                 href={item.url}
-                class="text-[color:var(--text-muted)] hover:text-[color:color-mix(in_oklab,var(--primary)_60%,var(--text-primary)_40%)] transition-colors truncate max-w-[14ch] sm:max-w-none"
+                class="opacity-70 hover:text-primary hover:opacity-100 transition-colors truncate max-w-[14ch] sm:max-w-none"
                 itemprop="item"
                 title={item.name}
               >
@@ -67,7 +67,7 @@ const { items, class: className } = Astro.props;
             <meta itemprop="position" content={(index + 1).toString()} />
 
             {index < items.length - 1 && (
-              <span class="text-[color:var(--border-color)]" aria-hidden="true">
+              <span class="text-neutral" aria-hidden="true">
                 <ArrowRight02 />
               </span>
             )}

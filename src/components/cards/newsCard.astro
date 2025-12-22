@@ -20,7 +20,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
   data-parallax-card
   class="group flex flex-col h-full relative isolate"
 >
-  <div class="parallax-inner flex flex-col gap-3 overflow-hidden bg-[color:var(--bg-surface)] shadow-[var(--shadow-soft)] text-[color:var(--text-primary)] transition-transform duration-300 h-full">
+  <div class="parallax-inner flex flex-col gap-3 overflow-hidden bg-base-200 shadow-lg text-base-content transition-transform duration-300 h-full">
     <a href={`/articles/${article.id}`} aria-label={`Read article: ${article.data.title}`} class="block aspect-video overflow-hidden" data-skeleton>
       <Image
         src={article.data.cover}
@@ -33,7 +33,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
     </a>
     
     <div class="flex flex-col flex-1 px-3 pb-3 sm:px-4 sm:pb-4">
-      <div class="flex items-center text-xs gap-2 mb-2 text-[color:var(--text-muted)]">
+      <div class="flex items-center text-xs gap-2 mb-2 opacity-70">
         <span class="text-primary font-medium uppercase tracking-wide">
           {category.data.title}
         </span>
@@ -48,7 +48,7 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
         </a>
       </h3>
       
-      <p class="text-sm text-[color:var(--text-muted)] line-clamp-2 flex-1">
+      <p class="text-sm opacity-70 line-clamp-2 flex-1">
         {article.data.description}
       </p>
     </div>

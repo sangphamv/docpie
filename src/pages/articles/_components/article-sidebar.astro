@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import ShareItem from "@/components/bases/share-item.astro";
 import ScriptShare from "@/components/bases/script.astro";
@@ -16,7 +17,6 @@ type Props = {
 
 const {
   article,
-  content,
   headings = [],
   showTOC = true,
   showShare = true,
@@ -53,7 +53,7 @@ const socialPlatforms = [
     icon: "clipboard" as const,
     title: "Copy Link",
     platform: "clipboard",
-    hoverColor: "hover:bg-base-300",
+    hoverColor: "hover:text-primary",
   },
 ] as const;
 ---
@@ -84,7 +84,7 @@ const socialPlatforms = [
   {showTrending && (
     <div>
       <h3 class="text-sm font-bold uppercase tracking-wider mb-6 pb-3 border-b-2 border-base-300">
-        Trending Stories
+        Bài viết thịnh hành
       </h3>
       <ul class="space-y-6">
         {
@@ -95,15 +95,17 @@ const socialPlatforms = [
                 class="flex items-start gap-4 transition-opacity hover:opacity-70"
               >
                 <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded">
-                  <img
-                    src={trendingArticle.data.cover.src}
+                  <Image
+                    src={trendingArticle.data.cover}
                     alt={trendingArticle.data.covert_alt || trendingArticle.data.title}
-                    class="w-full h-full object-cover"
+                    layout="constrained"
                     loading="lazy"
+                    format={"avif"}
+                    class="w-full h-full object-cover"
                   />
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-sm font-medium leading-tight line-clamp-3">
+                  <h3 class="text-content-base text-sm font-medium leading-tight line-clamp-3">
                     {trendingArticle.data.title}
                   </h3>
                 </div>

@@ -7,7 +7,7 @@ const trendingArticles = articlesHandler.allArticles().slice(0, 8);
 ---
 
 <aside class="lg:sticky lg:top-6">
-  <h2 class="text-xl md:text-2xl font-serif font-bold text-[color:var(--text-primary)] border-b border-[color:var(--border-color)] pb-2 mb-6">
+  <h2 class="text-xl md:text-2xl font-serif font-bold text-base-content border-b border-base-300 pb-2 mb-6">
     {CONSTANTS.Latest_Stories_Published}
   </h2>
   <ul class="space-y-6">
@@ -20,11 +20,11 @@ const trendingArticles = articlesHandler.allArticles().slice(0, 8);
               href={`/articles/${article.id}`}
               class="flex items-start gap-4 transition-opacity hover:opacity-70"
             >
-              <div class="flex items-center gap-2">
-              <span class="text-lg text-[color:var(--primary)] font-bold">
+              <div class="flex items-start gap-2">
+              <span class="text-lg text-primary font-bold">
                 {index + 1}.
               </span>
-              <h3 class="text-base font-bold leading-tight line-clamp-3 text-[color:var(--text-primary)]">
+              <h3 class="text-base font-bold leading-tight line-clamp-3 text-base-content">
                 {article.data.title}
               </h3>
               </div>
