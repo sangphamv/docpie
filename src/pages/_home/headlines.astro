@@ -1,6 +1,7 @@
 ---
 import MainHeadlineCard from "@/components/cards/mainHeadlineCard.astro";
 import SubHeadlineCard from "@/components/cards/subHeadlineCard.astro";
+import SectionTitle from "@/components/shared/SectionTitle.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { CONSTANTS } from "@/lib/config";
 
@@ -11,13 +12,7 @@ const subHeadlines = allArticles.slice(0, 2);
 
 <section data-pagefind-ignore="all">
   <!-- Section Title -->
-  <div class="mb-6">
-    <h2
-      class="text-xl md:text-xl font-serif font-bold text-base-content border-b border-base-300 pb-2"
-    >
-      {CONSTANTS.Featured_Stories}
-    </h2>
-  </div>
+  <SectionTitle title={CONSTANTS.Featured_Stories} />
   
   <!-- Main Headline - Full Width -->
   <div class="mb-8">

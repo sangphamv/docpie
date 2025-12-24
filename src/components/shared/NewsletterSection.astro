@@ -1,0 +1,27 @@
+---
+/**
+ * NewsletterSection - Component section đăng ký newsletter
+ * Có thể tái sử dụng ở bất kỳ trang nào cần form đăng ký newsletter
+ */
+
+import NewsletterForm from "@/components/bases/newsletter-form.astro";
+---
+
+<section class="py-16 bg-gradient-to-r from-primary to-accent" data-pagefind-ignore="all">
+  <div class="container">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-primary-content/90 text-sm uppercase tracking-wide mb-2">
+        BẢN TIN HÀNG NGÀY
+      </p>
+      <h2 class="text-3xl md:text-4xl font-bold font-serif text-primary-content mb-4">
+        Nhận tóm tắt miễn phí những bài viết mới nhất hàng ngày vào hộp thư của bạn.
+      </h2>
+      <div class="mt-8 flex justify-center">
+        <NewsletterForm />
+      </div>
+      <p class="text-primary-content/80 text-xs mt-4">
+        Chúng tôi sẽ không gửi spam. Bạn có thể hủy đăng ký bất cứ lúc nào.
+      </p>
+    </div>
+  </div>
+</section>

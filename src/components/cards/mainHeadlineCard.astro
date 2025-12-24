@@ -109,24 +109,24 @@ const tags = (article.data.tags ?? []).map((tag) => tagsHandler.oneTag(tag.id));
   [data-parallax-card] .parallax-inner {
     transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg))
       rotateY(var(--tilt-y, 0deg));
-    will-change: transform;
+    /* will-change: transform;
     box-shadow: 0 12px 32px
       color-mix(in oklab, var(--bc) 15%, transparent);
     transition:
       box-shadow 200ms ease,
-      transform 200ms ease;
+      transform 200ms ease; */
   }
 
-  [data-parallax-card]:hover .parallax-inner {
+  /* [data-parallax-card]:hover .parallax-inner {
     box-shadow: 0 12px 32px
       color-mix(in oklab, var(--bc) 25%, transparent);
-  }
+  } */
 
-  @media (prefers-reduced-motion: reduce) {
+  /* @media (prefers-reduced-motion: reduce) {
     [data-parallax-card] .parallax-inner {
       transition: none;
     }
-  }
+  } */
 </style>
 
 <script type="module">

@@ -1,3 +1,107 @@
+/* ==========================================================================
+   DAISYUI THEME: WINTER
+========================================================================== 
+*/
+
+/* 1. NHÓM MÀU CHÍNH (MAIN COLORS)
+   -----------------------------------------------------------------------
+   Dùng cho các thành phần tương tác quan trọng nhất.
+*/
+
+/* --primary (Màu Xanh dương sáng):
+   - Ý nghĩa: Màu thương hiệu hoặc hành động chính.
+   - Các component sử dụng: 
+     .btn-primary (Nút chính)
+     .checkbox-primary (Ô tích)
+     .radio-primary (Nút chọn)
+     .tab-active (Tab đang chọn)
+     .progress-primary (Thanh tiến trình)
+*/
+
+/* --secondary (Màu Xanh/Tím nhạt):
+   - Ý nghĩa: Màu bổ trợ cho primary, nhẹ nhàng hơn.
+   - Các component sử dụng: 
+     .btn-secondary (Nút phụ)
+     .badge-secondary (Nhãn phụ)
+     .toggle-secondary (Nút gạt)
+*/
+
+/* --accent (Màu Nhấn - thường là xanh bạc hà):
+   - Ý nghĩa: Tạo điểm nhấn nổi bật trên giao diện sáng.
+   - Các component sử dụng: 
+     .btn-accent, .badge-accent, .link-accent
+*/
+
+/* 2. NHÓM MÀU NỀN (BASE COLORS)
+   -----------------------------------------------------------------------
+   Dùng để phân cấp không gian và bố cục (Layout).
+*/
+
+/* --base-100 (Trắng tuyệt đối):
+   - Ý nghĩa: Nền chính của toàn bộ trang web.
+   - Sử dụng: class="bg-base-100"
+*/
+
+/* --base-200 (Xám cực nhạt):
+   - Ý nghĩa: Nền cho các khối nằm trên nền chính để tạo chiều sâu.
+   - Các component sử dụng: 
+     .card, .collapse, .footer, .menu
+*/
+
+/* --base-300 (Xám nhạt hơn):
+   - Ý nghĩa: Dùng cho các đường kẻ (border) hoặc hiệu ứng hover của nền.
+*/
+
+/* 3. NHÓM MÀU TRẠNG THÁI (STATE COLORS)
+   -----------------------------------------------------------------------
+   Dùng cho các thông điệp phản hồi từ hệ thống.
+*/
+
+/* --info (Xanh dương): .alert-info, .badge-info
+   --success (Xanh lá): .btn-success, .alert-success, .badge-success
+   --warning (Vàng/Cam): .alert-warning, .badge-warning
+   --error (Đỏ): .btn-error, .alert-error, .input-error
+*/
+/* 4. MÀU ĐỒ HỌA (UI ELEMENT COLORS)
+  -----------------------------------------------------------------------
+  --border: Màu đường viền chung cho các thành phần giao diện
+  --input: Màu nền của các trường nhập liệu (input, textarea)
+  --ring: Màu viền khi một thành phần được focus
+  --background: Màu nền tổng thể của ứng dụng
+*/
+
+/* 
+  5. Màu chữ (chữ và biểu tượng)
+  -----------------------------------------------------------------------
+  --base-content: Màu chữ chính trên nền sáng (thường là đen hoặc xám đậm)
+  --primary-content: Màu chữ trên nền primary (thường là trắng)
+  --secondary-content: Màu chữ trên nền secondary
+  --accent-content: Màu chữ trên nền accent
+  --base-200-content, --base-300-content:
+     Màu chữ trên các nền base-200 và base-300
+  --info-content, --success-content, --warning-content, --error-content:
+     Màu chữ trên các nền trạng thái tương ứng
+
+  Lưu ý: Màu chữ được tối ưu để đảm bảo độ tương phản cao với nền, giúp dễ đọc.
+*/
+
+/* 6. MÀU TRUNG TÍNH (NEUTRAL)
+   -----------------------------------------------------------------------
+   --neutral: Dùng cho các thành phần cần sự tối giản hoặc trang trọng (Footer, Dark Sidebar).
+   --neutral-content: Màu chữ trên nền neutral (thường là trắng hoặc xám rất nhạt).
+*/
+
+/* 7. CÁC BIẾN HỆ THỐNG (SYSTEM DESIGN TOKENS)
+   -----------------------------------------------------------------------
+   Quy định "cảm giác" của theme Winter (mềm mại, hiện đại).
+   
+   --rounded-box: Độ bo góc của Card, Modal.
+   --rounded-btn: Độ bo góc của Button, Input.
+   --rounded-badge: Độ bo góc của Badge.
+   --animation-btn: Tốc độ hiệu ứng co giãn khi click nút (thường là 0.25s).
+   --animation-input: Tốc độ hiệu ứng khi focus vào ô nhập liệu (0.2s).
+*/
+
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 

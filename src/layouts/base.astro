@@ -8,7 +8,7 @@ import SkipToMain from "@/components/bases/skip-to-main.astro";
 import type { Entry } from "@/lib/types";
 import { getMeta } from "@/lib/utils/getMeta";
 import ScriptFooter from "@/components/bases/script-footer.astro";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 type Props = {
   entry: Entry;
@@ -23,10 +23,10 @@ const meta = await getMeta(entry);
 <html lang={SITE.locale} dir={SITE.dir} data-theme="winter">
   <Head meta={meta} />
   <body class="flex flex-col">
-    <ViewTransitions />
+    <ClientRouter />
     <SkipToMain />
     <Header />
-    <main class="flex-1 bg-base-200">
+    <main class="flex-1 bg-base-100">
       <slot />
     </main>
     <Footer />

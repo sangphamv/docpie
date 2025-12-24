@@ -1,0 +1,44 @@
+---
+/**
+ * ContentPageWrapper - Component tái sử dụng cho các trang content tĩnh
+ * Sử dụng cho: about, contact, privacy, terms, cookie-policy
+ * 
+ * @param viewName - Tên entry trong collection "views"
+ */
+
+import ContentLayout from "@/layouts/content.astro";
+import BaseLayout from "@/layouts/base.astro";
+import { getEntry, render } from "astro:content";
+
+interface Props {
+  viewName: string;
+}
+
+const { viewName } = Astro.props;
+
+const entry = await getEntry("views", viewName);
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await render(entry);
+---
+
+<BaseLayout entry={entry}>
+  <div class="container max-w-4xl py-8">
+    <header class="mb-8 pb-6 border-b border-base-300">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">
+        {entry.data.title}
+      </h1>
+      {entry.data.description && (
+        <p class="text-lg text-base-content/80">
+          {entry.data.description}
+        </p>
+      )}
+    </header>
+    <ContentLayout>
+      <Content />
+    </ContentLayout>
+  </div>
+</BaseLayout>

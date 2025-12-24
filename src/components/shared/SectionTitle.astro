@@ -1,0 +1,32 @@
+---
+/**
+ * SectionTitle - Component tiêu đề section tái sử dụng
+ * Dùng cho các tiêu đề section có border bottom
+ * 
+ * @param title - Tiêu đề section
+ * @param size - Kích thước text (mặc định: xl)
+ */
+
+interface Props {
+  title: string;
+  size?: "sm" | "base" | "lg" | "xl" | "2xl";
+}
+
+const { title, size = "xl" } = Astro.props;
+
+const sizeClasses = {
+  sm: "text-sm md:text-base",
+  base: "text-base md:text-lg",
+  lg: "text-lg md:text-xl",
+  xl: "text-xl md:text-xl",
+  "2xl": "text-xl md:text-2xl"
+};
+---
+
+<div class="mb-6">
+  <h2
+    class={`${sizeClasses[size]} font-serif font-bold text-base-content border-b border-base-300 pb-2`}
+  >
+    {title}
+  </h2>
+</div>

@@ -36,10 +36,18 @@ function formatHref(href: string) {
 <li
   class:list={[
     "relative after:absolute after:-bottom-2 after:left-0 after:h-[1.5px] after:w-full after:transition-all after:duration-300",
-    isActive(item, currentPath)
-      ? "after:bg-base-content pointer-events-none"
-      : "after:bg-transparent",
+    isActive(item, currentPath) && "after:bg-primary pointer-events-none",
+    !isActive(item, currentPath) && "after:bg-transparent",
   ]}
 >
-  <a href={formatHref(item.href)} class="text-base-content hover:text-primary" aria-label={item.text}>{item.text}</a>
+  <a
+    href={formatHref(item.href)}
+    class:list={[
+      "text-base-content font-medium hover:text-primary",
+      isActive(item, currentPath) && "text-primary",
+    ]}
+    aria-label={item.text}
+  >
+    {item.text}
+  </a>
 </li>

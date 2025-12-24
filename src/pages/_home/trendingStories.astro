@@ -1,4 +1,5 @@
 ---
+import SectionTitle from "@/components/shared/SectionTitle.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 import { render } from "astro:content";
 import { CONSTANTS } from "@/lib/config";
@@ -7,9 +8,7 @@ const trendingArticles = articlesHandler.allArticles().slice(0, 8);
 ---
 
 <aside class="lg:sticky lg:top-6">
-  <h2 class="text-xl md:text-xl font-serif font-bold text-base-content border-b border-base-300 pb-2 mb-6">
-    {CONSTANTS.Latest_Stories_Published}
-  </h2>
+  <SectionTitle title={CONSTANTS.Latest_Stories_Published} />
   <ul class="space-y-6">
     {
       trendingArticles.map(async (article, index) => {
